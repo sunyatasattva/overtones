@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Overtone scale</title>
+</head>
+    <style type="text/css">
+        img {
+          max-width: 100%;
+        }
+
+        area {
+          cursor: pointer;
+        }
+    </style>
+<body>
+    <input type="range" min="100" max="1000" id="base" value="220"/>
+    <span id="base-frequency-label"></span>
+    <img src="http://i.imgur.com/Hlo41r1.png" alt="" usemap="#overtone-spiral" />
+    <map name="overtone-spiral" id="overtone-spiral">
+        <area shape="circle" coords="879, 877, 62" />
+        <area shape="circle" coords="877, 700, 60" />
+        <area shape="circle" coords="737, 1117, 64" />
+        <area shape="circle" coords="878, 532, 64" />
+        <area shape="circle" coords="1247, 1059, 63" />
+        <area shape="circle" coords="646, 1270, 64" />
+        <area shape="circle" coords="415, 715, 63" />
+        <area shape="circle" coords="879, 354, 62" />
+        <area shape="circle" coords="1368, 615, 63" />
+        <area shape="circle" coords="1404, 1143, 63" />
+        <area shape="circle" coords="1031, 1470, 64" />
+        <area shape="circle" coords="557, 1423, 64" />
+        <area shape="circle" coords="258, 1080, 64" />
+        <area shape="circle" coords="249, 645, 65" />
+        <area shape="circle" coords="500, 309, 64" />
+        <area shape="circle" coords="879, 176, 62" />
+    </map>
+    <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
