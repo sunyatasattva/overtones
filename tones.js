@@ -1,4 +1,5 @@
 var extend   = require('lodash.assign'),
+    utils    = require('./utils.js'),
     ctx      = new (window.AudioContext || window.webkitAudioContext)(),
     defaults = {
         attack:  150,
@@ -59,46 +60,33 @@ function _createOscillator(frequency, detune, type) {
     return oscillatorNode;
 }
 
-/*
- * Given the oscillator and the envelope, returns an object with their main properties
- *
- * @param  {obj}  oscillator  The oscillator node
- * @param  {obj}  envelope    The envelope object
- *
- * @return {obj}  The sound properties
- *
- * @todo Is this necessary? Can it be improved with methods for the sound itself? Maybe stop should be moved here?
- */
-function _getSoundProperties(oscillator, envelope) {
-    return {
-        envelope: {
-            node:    envelope.node,
-            attack:  envelope.attack * 1000,
-            decay:   envelope.decay * 1000,
-            sustain: envelope.sustain * 1000,
-            release: envelope.release * 1000
-        },
-        oscillator: oscillator,
-        frequency:  oscillator.frequency.value,
-        detune:     oscillator.detune.value,
-        waveType:   oscillator.type
-    }
+function Sound(oscillator, envelope){
+   this.envelope = {
+        node:    envelope.node,
+        attack:  envelope.attack * 1000,
+        decay:   envelope.decay * 1000,
+        sustain: envelope.sustain * 1000,
+        release: envelope.release * 1000
+   };
+   this.oscillator = oscillator;
+   this.frequency  = oscillator.frequency.value;
+   this.detune     = oscillator.detune.value;
+   this.waveType   = oscillator.type;
 }
 
-/*
- * Stops a sound and disconnects it from the context and removes it from the list.
- *
- * @param  {obj}  sound  The sound object.
- *
- * @return {obj}  The stopped sound.
- */
-function stopSound(sound) {
-    sound.oscillator.stop();
-    sound.oscillator.disconnect(sound.envelope.node);
-    sound.envelope.node.gain.cancelScheduledValues(ctx.currentTime);
-    sound.envelope.node.disconnect(ctx.destination);
+Sound.prototype.stop = function(){
+    this.oscillator.stop();
+    this.oscillator.disconnect(this.envelope.node);
+    this.envelope.node.gain.cancelScheduledValues(ctx.currentTime);
+    this.envelope.node.disconnect(ctx.destination);
     
-    return sounds.splice( sounds.indexOf(sound), 1 )
+    return sounds.splice( sounds.indexOf(this), 1 );
+}
+
+Sound.prototype.intervalInCents = function(tone){
+    var ratio = this.frequency / tone.frequency;
+    
+    return Math.round( 1200 * utils.logBase(2, ratio) );
 }
 
 /*
@@ -124,7 +112,7 @@ function playFrequency(frequency, opts) {
     var opts       = extend( {}, defaults, opts ),
         envelope   = _createEnvelope(opts.attack, opts.decay, opts.sustain, opts.release),
         oscillator = _createOscillator(frequency, opts.detune, opts.type),
-        thisSound  = _getSoundProperties(oscillator, envelope),
+        thisSound  = new Sound(oscillator, envelope),
         now        = ctx.currentTime,
         soundDuration;
     
@@ -166,7 +154,7 @@ function playFrequency(frequency, opts) {
         // Start the removal of the sound process after a little more than the sound duration to account for
         // the approximation. (To make sure that the sound doesn't get cut off while still audible)
         setTimeout( function() {
-            stopSound(thisSound);
+            thisSound.stop();
         }, soundDuration * 1250 );
     }
     
@@ -178,5 +166,5 @@ module.exports = {
     context:       ctx,
     playFrequency: playFrequency,
     stopSound:     stopSound,
-    sounds:        sounds
+    sounds:        sounds,
 }
