@@ -165,6 +165,5 @@ function playFrequency(frequency, opts) {
 module.exports = {
     context:       ctx,
     playFrequency: playFrequency,
-    stopSound:     stopSound,
     sounds:        sounds,
 }
