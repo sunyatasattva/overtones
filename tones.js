@@ -9,7 +9,7 @@ var extend   = require('lodash.assign'),
         detune:  0,
         type:    'sine'
     },
-    sounds = []; // @todo push sounds here as they are created and pop them as they are erased
+    sounds = [];
 
 function _createEnvelope(attack, decay, sustain, release) {
     var gainNode = ctx.createGain();
@@ -51,19 +51,20 @@ function _getSoundProperties(oscillator, envelope) {
     }
 }
 
-function stopSound(oscillator, envelope) {
-    oscillator.stop();
-    oscillator.disconnect(envelope.node);
-    envelope.node.gain.cancelScheduledValues(ctx.currentTime);
-    envelope.node.disconnect(ctx.destination);
+function stopSound(sound) {
+    sound.oscillator.stop();
+    sound.oscillator.disconnect(sound.envelope.node);
+    sound.envelope.node.gain.cancelScheduledValues(ctx.currentTime);
+    sound.envelope.node.disconnect(ctx.destination);
     
-    return _getSoundProperties(oscillator, envelope);
+    return sounds.splice( sounds.indexOf(sound), 1 )
 }
 
 function playFrequency(frequency, opts) {
     var opts       = extend( {}, defaults, opts ),
         envelope   = _createEnvelope(opts.attack, opts.decay, opts.sustain, opts.release),
         oscillator = _createOscillator(frequency, opts.detune, opts.type),
+        thisSound  = _getSoundProperties(oscillator, envelope),
         now        = ctx.currentTime,
         soundDuration;
     
@@ -85,11 +86,12 @@ function playFrequency(frequency, opts) {
         envelope.node.gain.setTargetAtTime( 0, now + envelope.attack + envelope.decay + envelope.sustain, envelope.release / 5 );
 
         setTimeout( function() {
-            stopSound(oscillator, envelope);
+            stopSound(thisSound);
         }, soundDuration * 1250 );
     }
     
-    return _getSoundProperties(oscillator, envelope);
+    this.sounds.push(thisSound);
+    return thisSound;
 }
 
 module.exports = {
