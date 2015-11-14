@@ -9,8 +9,23 @@ var extend   = require('lodash.assign'),
         detune:  0,
         type:    'sine'
     },
+    /*
+     * A list of currently active sounds for manipulation
+     */
     sounds = [];
 
+/*
+ * Creates the ADSR Envelope for the sound
+ *
+ * The parameters should be passed in milliseconds.
+ *
+ * @param  {int}  attack  The amount of time the sound will take to reach full amplitude
+ * @param  {int}  decay   The amount of time for the sound to reach sustain amplitude after attack
+ * @param  {int}  sustain The duration of the sound is kept being played
+ * @param  {int}  release The amount of time for the sound to fade out
+ *
+ * @return {obj}  The envelope object, containing the gain node.
+ */
 function _createEnvelope(attack, decay, sustain, release) {
     var gainNode = ctx.createGain();
     
@@ -25,16 +40,35 @@ function _createEnvelope(attack, decay, sustain, release) {
     }
 }
 
+/*
+ * Creates an Oscillator
+ *
+ * @param  {int}  frequency     The frequency of the wave
+ * @param  {int}  [detune=0]    The number of cents to manipulate the frequency of the wave
+ * @param  {str}  [type='sine'] The shape of the wave. Can be ['sine', 'square', 'sawtooth', 'triangle', 'custom']
+ *
+ * @return {obj}  The oscillator node
+ */
 function _createOscillator(frequency, detune, type) {
     var oscillatorNode = ctx.createOscillator();
     
     oscillatorNode.frequency.value = frequency;
-    oscillatorNode.detune.value    = detune;
-    oscillatorNode.type            = type;
+    oscillatorNode.detune.value    = detune || 0;
+    oscillatorNode.type            = type || 'sine';
     
     return oscillatorNode;
 }
 
+/*
+ * Given the oscillator and the envelope, returns an object with their main properties
+ *
+ * @param  {obj}  oscillator  The oscillator node
+ * @param  {obj}  envelope    The envelope object
+ *
+ * @return {obj}  The sound properties
+ *
+ * @todo Is this necessary? Can it be improved with methods for the sound itself? Maybe stop should be moved here?
+ */
 function _getSoundProperties(oscillator, envelope) {
     return {
         envelope: {
@@ -51,6 +85,13 @@ function _getSoundProperties(oscillator, envelope) {
     }
 }
 
+/*
+ * Stops a sound and disconnects it from the context and removes it from the list.
+ *
+ * @param  {obj}  sound  The sound object.
+ *
+ * @return {obj}  The stopped sound.
+ */
 function stopSound(sound) {
     sound.oscillator.stop();
     sound.oscillator.disconnect(sound.envelope.node);
@@ -60,6 +101,25 @@ function stopSound(sound) {
     return sounds.splice( sounds.indexOf(sound), 1 )
 }
 
+/*
+ * Plays a given frequency
+ *
+ * The function accepts an optional `opts` argument.
+ *
+ * @param  {int}  frequency  The frequency of the wave
+ * @param  {obj}  [opts]     Options for the playing frequency
+ * @param  {int}  [opts.attack]     The attack duration of the sound (in ms). See {@link _createEnvelope}
+ * @param  {int}  [opts.decay]      The decay duration of the sound (in ms). See {@link _createEnvelope}
+ * @param  {int}  [opts.detune]     The amount of cents to detune the frequency with. See {@link _createOscillator}
+ * @param  {flo}  [opts.maxVolume]  The maximum amplitude of the sound, reached after the attack. 1 is full amplitude.
+ *                                  If not provided, will default to volume.
+ * @param  {int}  [opts.release]    The release duration of the sound (in ms). See {@link _createEnvelope}
+ * @param  {int}  [opts.sustain]    The sustain duration of the sound (in ms). See {@link _createEnvelope}
+ * @param  {str}  [opts.type]       The shape of the wave. See {@link _createOscillator}
+ * @param  {flo}  [opts.volume]     The amplitude of the sound, after the decay. 1 is full amplitude.
+ *
+ * @return {obj}  The oscillator node
+ */
 function playFrequency(frequency, opts) {
     var opts       = extend( {}, defaults, opts ),
         envelope   = _createEnvelope(opts.attack, opts.decay, opts.sustain, opts.release),
@@ -75,16 +135,36 @@ function playFrequency(frequency, opts) {
     
     oscillator.start();
     
-    // @todo put an if with opts.linear = true to use linearRampToValueAtTime instead
+    /*
+     * Using `setTargetAtTime` because `exponentialRampToValueAtTime` doesn't seem to work properly under
+     * the current build of Chrome I'm developing in. Not sure if a bug, or I didn't get something.
+     * `setTargetAtTime` gets the `timeCostant` as third argument, which is the amount of time it takes
+     * for the curve to reach 1 - 1/e * 100% of the target. The reason why the provided arguments are divided
+     * by 5 is because after 5 times worth of the Time Constant the value reaches 99.32% of the target, which
+     * is an acceptable approximation for me.
+     *
+     * @see {@link https://en.wikipedia.org/wiki/Time_constant}
+     *
+     * @todo put an if with opts.linear = true to use linearRampToValueAtTime instead
+     */
+    
+    // The note starts NOW from 0 and will get to `maxVolume` in approximately `attack` seconds 
     envelope.node.gain.setTargetAtTime( opts.maxVolume, now, envelope.attack / 5 )
+    // After `attack` seconds, start a transition to fade to sustain volume in `decay` seconds
     envelope.node.gain.setTargetAtTime( opts.volume, now + envelope.attack, envelope.decay / 5 )
 
+    // @todo if sustain is null, note has to be stopped manually. Also document this.
     if( envelope.sustain !== null ) {
+        // The whole approximate sound duration.
         soundDuration = envelope.attack + envelope.decay + envelope.sustain + envelope.release;
         
+        // Setting a "keyframe" for the volume to be kept until `sustain` seconds have passed (plus all the rest)
         envelope.node.gain.setValueAtTime( opts.volume, now + envelope.attack + envelope.decay + envelope.sustain );
+        // Fade out completely starting at the end of the `sustain` in `release` seconds
         envelope.node.gain.setTargetAtTime( 0, now + envelope.attack + envelope.decay + envelope.sustain, envelope.release / 5 );
 
+        // Start the removal of the sound process after a little more than the sound duration to account for
+        // the approximation. (To make sure that the sound doesn't get cut off while still audible)
         setTimeout( function() {
             stopSound(thisSound);
         }, soundDuration * 1250 );
@@ -100,66 +180,3 @@ module.exports = {
     stopSound:     stopSound,
     sounds:        sounds
 }
-
-
-/*
-(function(window) {
-    var tones = {
-        context: new (window.AudioContext || window.webkitAudioContext)(),
-        attack: 1,
-        release: 100,
-        volume: 1,
-        type: "sine",
-
-        /** 
-         * Usage: 
-         * notes.play(440);     // plays 440 hz tone
-         * notes.play("c");     // plays note c in default 4th octave
-         * notes.play("c#");    // plays note c sharp in default 4th octave
-         * notes.play("eb");    // plays note e flat in default 4th octave
-         * notes.play("c", 2);  // plays note c in 2nd octave
-         *
-        play: function(freqOrNote, octave) {
-            if(typeof freqOrNote === "number") {
-                this.playFrequency(freqOrNote);
-            }
-            else if(typeof freqOrNote === "string") {
-                if(octave == null) {
-                    octave = 4;
-                }
-                this.playFrequency(this.map[octave][freqOrNote.toLowerCase()]);
-            }
-        },
-
-        map: [{
-            // octave 0
-            "c": 16.351,
-            "c#": 17.324,
-            "db": 17.324,
-            "d": 18.354,
-            "d#": 19.445,
-            "eb": 19.445,
-            "e": 20.601,
-            "f": 21.827,
-            "f#": 23.124,
-            "gb": 23.124,
-            "g": 24.499,
-            "g#": 25.956,
-            "ab": 25.956,
-            "a": 27.5,
-            "a#": 29.135,
-            "bb": 29.135,
-            "b": 30.868
-        }]
-    };
-
-    // need to create a node in order to kick off the timer in Chrome.
-    tones.context.createGain();
-
-    if (typeof define === "function" && define.amd) {
-        define(tones);
-    } else {
-       window.tones = tones;
-    }
-
-}(window)); */
