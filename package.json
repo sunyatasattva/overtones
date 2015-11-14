@@ -1,0 +1,26 @@
+{
+  "name": "overtones",
+  "version": "0.0.1",
+  "description": "Visualization of the overtones spiral of a sound",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sunyatasattva/overtones.git"
+  },
+  "author": "M. L. Giannotta",
+  "license": "GNU",
+  "bugs": {
+    "url": "https://github.com/sunyatasattva/overtones/issues"
+  },
+  "homepage": "https://github.com/sunyatasattva/overtones#readme",
+  "dependencies": {
+    "lodash.assign": "^3.2.0"
+  },
+  "devDependencies": {
+    "browserify": "^12.0.1",
+    "watchify": "^3.6.0"
+  }
+}
