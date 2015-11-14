@@ -4,8 +4,8 @@ var extend   = require('lodash.assign'),
         attack:  150,
         decay:   200,
         sustain: 0,
-        release: 300,
-        volume:  1,
+        release: 1250,
+        volume:  0.5,
         detune:  0,
         type:    'sine'
     },
@@ -38,14 +38,16 @@ function _createOscillator(frequency, detune, type) {
 function _getSoundProperties(oscillator, envelope) {
     return {
         envelope: {
+            node:    envelope.node,
             attack:  envelope.attack * 1000,
             decay:   envelope.decay * 1000,
             sustain: envelope.sustain * 1000,
             release: envelope.release * 1000
         },
-        frequency: oscillator.frequency.value,
-        detune:    oscillator.detune.value,
-        waveType:  oscillator.type
+        oscillator: oscillator,
+        frequency:  oscillator.frequency.value,
+        detune:     oscillator.detune.value,
+        waveType:   oscillator.type
     }
 }
 
@@ -54,8 +56,6 @@ function stopSound(oscillator, envelope) {
     oscillator.disconnect(envelope.node);
     envelope.node.gain.cancelScheduledValues(ctx.currentTime);
     envelope.node.disconnect(ctx.destination);
-    
-    console.log("Sound stopped");
     
     return _getSoundProperties(oscillator, envelope);
 }
@@ -74,19 +74,19 @@ function playFrequency(frequency, opts) {
     
     oscillator.start();
     
-    // @todo put an if with opts.exponential = true to use setValueAtTime instead
-    
-    envelope.node.gain.linearRampToValueAtTime( opts.maxVolume, now + envelope.attack );
-    envelope.node.gain.linearRampToValueAtTime( opts.volume, now + envelope.attack + envelope.decay );
+    // @todo put an if with opts.linear = true to use linearRampToValueAtTime instead
+    envelope.node.gain.setTargetAtTime( opts.maxVolume, now, envelope.attack / 5 )
+    envelope.node.gain.setTargetAtTime( opts.volume, now + envelope.attack, envelope.decay / 5 )
 
     if( envelope.sustain !== null ) {
         soundDuration = envelope.attack + envelope.decay + envelope.sustain + envelope.release;
         
         envelope.node.gain.setValueAtTime( opts.volume, now + envelope.attack + envelope.decay + envelope.sustain );
-        envelope.node.gain.linearRampToValueAtTime( 0, now + soundDuration );
+        envelope.node.gain.setTargetAtTime( 0, now + envelope.attack + envelope.decay + envelope.sustain, envelope.release / 5 );
+
         setTimeout( function() {
             stopSound(oscillator, envelope);
-        }, soundDuration * 1000 );
+        }, soundDuration * 1250 );
     }
     
     return _getSoundProperties(oscillator, envelope);
@@ -95,7 +95,8 @@ function playFrequency(frequency, opts) {
 module.exports = {
     context:       ctx,
     playFrequency: playFrequency,
-    stopSound:     stopSound
+    stopSound:     stopSound,
+    sounds:        sounds
 }
 
 
