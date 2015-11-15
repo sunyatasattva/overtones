@@ -24,6 +24,7 @@ module.exports = {
         return array[highestIndex];
     },
     
-    findKey: require("lodash.findkey"),
-    values:  require("lodash.values")
+    debounce: require("lodash.debounce"),
+    findKey:  require("lodash.findkey"),
+    values:   require("lodash.values")
 }

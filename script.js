@@ -5,20 +5,39 @@ var utils    = require("./utils.js"),
 
 var tTET = require('./12-tet.json');
 
+var hideElementWhenIdle = utils.debounce(function($element){
+          $element.removeClass('visible');
+    }, 5000);
+
 $(document).ready(function($){
  
-  $('#cents').animateNumber({ number: 0});
   $('.overtone').on('click', function(){
-      var baseFrequency = $('#base').val(),
-          idx           = $(this).index() + 1;
-      console.log(baseFrequency);
-      var tone = tones.playFrequency( idx * baseFrequency );
+      var idx           = $(this).index() + 1,
+          baseFrequency = $('#base').val(),
+          noteFrequency = idx * baseFrequency;
+
+      var tone = tones.playFrequency(noteFrequency);
       
       // @todo obviously clean this up
       var frequencies      = utils.values(tTET),
-          closestFrequency = utils.binarySearch( idx * baseFrequency, frequencies),
+          closestFrequency = utils.binarySearch(noteFrequency, frequencies),
           note             = utils.findKey( tTET, function(frequency){ return frequency === closestFrequency } ).split(/(\d)/),
           centsDifference  = tone.intervalInCents( { frequency: closestFrequency } );
+      
+      $('#sound-details').addClass('visible');
+      hideElementWhenIdle( $('#sound-details') );
+      
+      $('#note-frequency')
+          .prop( 'number', $('#note-frequency').text().match(/\d+/)[0] )
+          .animateNumber({
+             number: noteFrequency,
+             numberStep: function(now, tween){
+                var floored_number = Math.floor(now),
+                    $target        = $(tween.elem);
+
+                $target.text(floored_number + " Hz");
+             }
+          }, 200)
       
       $('#note-name').text(note[0]);
       $('#note sub').text(note[1]);

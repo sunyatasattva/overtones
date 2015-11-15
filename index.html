@@ -21,17 +21,31 @@
             font-family: "Helvetica Neue", sans-serif;
             font-weight: 100;
             min-width:   240px;
+            opacity:     0;
             padding:     10px;
             text-align:  center;
             width:       20%;
             position:    absolute;
             top:         20px;
             right:       20px;
+            
+            transition:  opacity 0.5s ease-in-out;
+        }
+        
+        #sound-details.visible {
+            opacity: 1;
         }
 
         div#note {
             font-size:      128px;
             text-transform: uppercase;
+        }
+        
+        div#note-frequency {
+            font-size: 14px;
+            position:  absolute;
+            top:       10px;
+            right:     10px;
         }
 
         div#cents-difference {
@@ -60,9 +74,10 @@
     <input type="range" min="100" max="1000" id="base" value="220"/>
     <span id="base-frequency-label"></span>
     <div id="sound-details">
-        <div id="note"><span id="note-name">F</span><sub>4</sub></div>
+        <div id="note"><span id="note-name"></span><sub></sub></div>
+        <div id="note-frequency">0 Hz</div>
         <div id="cents-difference">
-            <span id="cents">+23</span>
+            <span id="cents">0</span>
             <div id="cent-bar"></div>
         </div>
     </div>
