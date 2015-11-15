@@ -9,6 +9,12 @@ var hideElementWhenIdle = utils.debounce(function($element){
           $element.removeClass('visible');
     }, 5000);
 
+window.App = {
+    options: {
+        groupNotes: true
+    }
+};
+
 $(document).ready(function($){
  
   $('.overtone').on('click', function(){
@@ -62,8 +68,17 @@ $(document).ready(function($){
       var baseFrequency = $('#base').val(),
           idx           = $(this).index() + 1;
       console.log(baseFrequency);
-      tones.playFrequency( idx * baseFrequency );
-      tones.playFrequency( (idx + 1)  * baseFrequency );
+      
+      if( App.options.groupNotes ) {
+          tones.playFrequency( idx * baseFrequency );
+          tones.playFrequency( (idx + 1)  * baseFrequency );
+      }
+      else {
+          tones.playFrequency( idx * baseFrequency );
+          setTimeout( function(){
+              tones.playFrequency( (idx + 1)  * baseFrequency );
+          }, 250)
+      }
   });
     
   $('.axis').on('click', function(){
@@ -72,15 +87,34 @@ $(document).ready(function($){
       console.log(baseFrequency);
       tones.playFrequency( baseFrequency );
       
-      while( $('#overtone-' + interval).length ) {
-          tones.playFrequency( interval * baseFrequency );
-          interval = interval * 2;
-       }
+      if( App.options.groupNotes ){
+          while( $('#overtone-' + interval).length ) {
+              tones.playFrequency( interval * baseFrequency );
+              interval = interval * 2;
+           }
+      }
+      else {
+          var intervals = [];
+          while( $('#overtone-' + interval).length ) {
+              intervals.push(interval);
+              interval = interval * 2;
+          }
+          intervals.forEach(function(interval, idx){
+              setTimeout(function(){
+                  tones.playFrequency( interval * baseFrequency );
+              }, 250 * (idx + 1));
+          });
+      }
   });
   
   $('#base').on('change', function(){
       var val = Math.floor( $(this).val() );
       tones.playFrequency(val);
       $('#base-frequency-label').text(val + "Hz");
+  });
+    
+  $('#group-notes').on('click', function(){
+      App.options.groupNotes = App.options.groupNotes ? false : true;
+      $(this).toggleClass('grouped');
   });
 });
