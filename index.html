@@ -20,41 +20,51 @@
             color:       #fff;
             font-family: "Helvetica Neue", sans-serif;
             font-weight: 100;
+            min-width:   240px;
             padding:     10px;
             text-align:  center;
             width:       20%;
             position:    absolute;
-            right:       0;
+            top:         20px;
+            right:       20px;
         }
 
-        div#note-name {
-            font-size: 128px;
+        div#note {
+            font-size:      128px;
+            text-transform: uppercase;
         }
 
-        div#cent-difference {
+        div#cents-difference {
             border-top:  1px solid white;
             opacity:     0.5;
             padding-top: 10px;
-            text-indent: 23%;
             position:    relative;
+            
+            transition: text-indent 0.2s ease-in-out;
         }
 
-        div#cent-difference::after {
+        div#cent-bar {
             border-bottom: 5px solid white;
             border-left:   5px solid transparent;
             border-right:  5px solid transparent;
             content:       "";
             position:      absolute;
             top:           0;
-            left:          61%;
+            left:          50%;
+            margin-left:   -5px;
+            
+            transition: left 0.2s ease-in-out;
         }
     </style>
 <body>
     <input type="range" min="100" max="1000" id="base" value="220"/>
     <span id="base-frequency-label"></span>
     <div id="sound-details">
-        <div id="note-name">F<sub>4</sub></div>
-        <div id="cent-difference">+23</div>
+        <div id="note"><span id="note-name">F</span><sub>4</sub></div>
+        <div id="cents-difference">
+            <span id="cents">+23</span>
+            <div id="cent-bar"></div>
+        </div>
     </div>
     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="1000px" height="1000px" viewBox="0 0 1000 1000" style="enable-background:new 0 0 1000 1000;" xml:space="preserve">
@@ -619,6 +629,7 @@
 </g>
 </svg>
     <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="jquery.animate-number.js"></script>
     <script src="bundle.js"></script>
 </body>
 </html>
