@@ -1,11 +1,13 @@
 window.tones = require("./tones.js");
 
-var utils = require("./utils.js");
+var utils    = require("./utils.js"),
+    Odometer = require("odometer");
 
 var tTET = require('./12-tet.json');
 
 $(document).ready(function($){
-    
+ 
+  $('#cents').animateNumber({ number: 0});
   $('.overtone').on('click', function(){
       var baseFrequency = $('#base').val(),
           idx           = $(this).index() + 1;
@@ -22,7 +24,15 @@ $(document).ready(function($){
       $('#note sub').text(note[1]);
       $('#cents-difference')
           .css('text-indent', centsDifference + "%")
-          .find('span')[0].innerHTML = centsDifference > 0 ? "+" + centsDifference : centsDifference;
+          .find('span').prop( 'number', $('#cents').text() ).animateNumber({
+               number: centsDifference,
+               numberStep: function(now, tween){
+                   var floored_number = Math.floor(now),
+                       target = tween.elem;
+
+                  target.innerHTML = floored_number > 0 ? "+" + floored_number : floored_number;
+               }
+          }, 200);
 
       $('#cent-bar').css('left', 50 + centsDifference / 2 + "%");
       
