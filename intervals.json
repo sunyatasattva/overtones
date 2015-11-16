@@ -149,6 +149,12 @@
             "Diatessaron"
         ]
     },
+    "11/8": {
+        "name": "Superfourth",
+        "alternateNames": [
+            "Undecimal semi-augmented fourth"
+        ]
+    },
     "45/32": {
         "name": "Augmented fourth",
         "short": "A4",
@@ -183,12 +189,28 @@
             "Semitonus maius cum diapente"
         ]
     },
+    "13/8": {
+        "name": "Neutral sixth",
+        "short": "n6",
+        "alternateNames": [
+            "Tridecimal neutral sixth"
+        ]
+    },
     "5/3": {
         "name": "Major sixth",
         "short": "M6",
         "alternateNames": [
             "Hexachordum maius",
             "Tonus cum diapente"
+        ]
+    },
+    "7/4": {
+        "name": "Harmonic seventh",
+        "short": "m7",
+        "alternateNames": [
+            "Septimal minor seventh",
+            "Subminor seventh",
+            "Augmented sixth"
         ]
     },
     "16/9": {
