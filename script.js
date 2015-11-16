@@ -10,8 +10,10 @@ var hideElementWhenIdle = utils.debounce(function($element){
     }, 5000);
 
 window.App = {
+    baseTone: tones.createSound( $('#base').val() ),
     options: {
-        groupNotes: true
+        groupNotes:      true,
+        octaveReduction: false
     }
 };
 
@@ -19,14 +21,18 @@ $(document).ready(function($){
  
   $('.overtone').on('click', function(){
       var idx           = $(this).index() + 1,
-          baseFrequency = $('#base').val(),
-          noteFrequency = idx * baseFrequency;
+          noteFrequency = idx * App.baseTone.frequency;
 
-      var tone = tones.playFrequency(noteFrequency);
+      var tone = tones.createSound(noteFrequency);
+      
+      if( App.options.octaveReduction )
+          tone.reduceToSameOctaveAs(App.baseTone);
+      
+      tone.play();
       
       // @todo obviously clean this up
       var frequencies      = utils.values(tTET),
-          closestFrequency = utils.binarySearch(noteFrequency, frequencies),
+          closestFrequency = utils.binarySearch(tone.frequency, frequencies),
           note             = utils.findKey( tTET, function(frequency){ return frequency === closestFrequency } ).split(/(\d)/),
           centsDifference  = tone.intervalInCents( { frequency: closestFrequency } );
       
@@ -36,7 +42,7 @@ $(document).ready(function($){
       $('#note-frequency')
           .prop( 'number', $('#note-frequency').text().match(/\d+/)[0] )
           .animateNumber({
-             number: noteFrequency,
+             number: tone.frequency,
              numberStep: function(now, tween){
                 var floored_number = Math.floor(now),
                     $target        = $(tween.elem);
@@ -65,17 +71,14 @@ $(document).ready(function($){
   });
     
   $('.spiral-piece').on('click', function(){
-      var baseFrequency   = $('#base').val(),
-          idx             = $(this).index() + 1,
-          firstFrequency  = idx * baseFrequency,
-          secondFrequency = (idx + 1)  * baseFrequency,
-          ratio           = utils.fraction( secondFrequency/firstFrequency, 999),
+          var idx         = $(this).index() + 1,
+          firstTone       = tones.createSound(idx * App.baseTone.frequency),
+          secondTone      = tones.createSound( (idx + 1)  * App.baseTone.frequency ),
+          ratio           = utils.fraction( secondTone.frequency/firstTone.frequency, 999),
           intervalName,
-          firstTone,
           centsDifference;
       
-      firstTone       = tones.playFrequency( firstFrequency );
-      centsDifference = Math.abs( firstTone.intervalInCents( { frequency: secondFrequency } ) );
+      centsDifference = Math.abs( firstTone.intervalInCents(secondTone) );
       
       try {
           intervalName = intervals[ ratio[1] + "/" + ratio[2] ].name;
@@ -83,13 +86,20 @@ $(document).ready(function($){
       catch(e) {
           intervalName = "Unknown interval";
       }
+      console.log( secondTone.isOctaveOf( App.baseTone ) );
+      if( App.options.octaveReduction ){
+          firstTone.reduceToSameOctaveAs(App.baseTone, true);
+          secondTone.reduceToSameOctaveAs(App.baseTone);
+      }
+      
+      firstTone.play();
       
       if( App.options.groupNotes ) {
-          tones.playFrequency( secondFrequency );
+          secondTone.play();
       }
       else {
           setTimeout( function(){
-              tones.playFrequency( secondFrequency );
+              secondTone.play();
           }, 250)
       }
       
@@ -109,17 +119,15 @@ $(document).ready(function($){
   });
     
   $('.axis').on('click', function(){
-      var baseFrequency = $('#base').val(),
-          interval      = parseInt( $(this).data('interval') ),
-          octaveReducedTone,
+      var interval      = parseInt( $(this).data('interval') ),
+          tone          = tones.createSound(interval * App.baseTone.frequency).reduceToSameOctaveAs(App.baseTone),
           centsDifference,
           ratio,
           intervalName;
 
-      octaveReducedTone = tones.playFrequency( baseFrequency ).reduceToSameOctaveAs( { frequency: interval * baseFrequency } );
-      centsDifference   = Math.abs( octaveReducedTone.intervalInCents( { frequency: interval * baseFrequency } ) );
+      centsDifference   = Math.abs( tone.intervalInCents(App.baseTone) );
 
-      ratio = utils.fraction( octaveReducedTone.frequency / (interval * baseFrequency), 999 );
+      ratio = utils.fraction( tone.frequency / App.baseTone.frequency, 999 );
       
       try {
           intervalName = intervals[ ratio[1] + "/" + ratio[2] ].name;
@@ -127,7 +135,46 @@ $(document).ready(function($){
       catch(e) {
           intervalName = "Unknown interval";
       }
-
+      
+      tones.playFrequency( App.baseTone.frequency );
+      
+      if( App.options.groupNotes ){
+          if( App.options.octaveReduction ) {
+              tone.play();
+          }
+          else {
+              while( $('#overtone-' + interval).length ) {
+                  tones.playFrequency( interval * App.baseTone.frequency );
+                  interval = interval * 2;
+               }
+              
+              tone.remove();
+          }
+      }
+      else {
+          if( App.options.octaveReduction ){
+              setTimeout(function(){
+                  tone.play();
+              }, 250);
+          }
+          else {
+              var axisIntervals = [];
+              
+              while( $('#overtone-' + interval).length ) {
+                  axisIntervals.push(interval);
+                  interval = interval * 2;
+              }
+              
+              axisIntervals.forEach(function(interval, idx){
+                  setTimeout(function(){
+                      tones.playFrequency( interval * App.baseTone.frequency );
+                  }, 250 * (idx + 1));
+              });
+              
+              tone.remove();
+          }
+      }
+      
       $('#sound-details').addClass('visible show-interval').removeClass('show-note');;
       hideElementWhenIdle( $('#sound-details') );
       
@@ -142,29 +189,11 @@ $(document).ready(function($){
       
       $('.interval .cent-bar').css('left', centsDifference / 12 + "%");
       
-      if( App.options.groupNotes ){
-          while( $('#overtone-' + interval).length ) {
-              tones.playFrequency( interval * baseFrequency );
-              interval = interval * 2;
-           }
-      }
-      else {
-          var axisIntervals = [];
-          while( $('#overtone-' + interval).length ) {
-              axisIntervals.push(interval);
-              interval = interval * 2;
-          }
-          axisIntervals.forEach(function(interval, idx){
-              setTimeout(function(){
-                  tones.playFrequency( interval * baseFrequency );
-              }, 250 * (idx + 1));
-          });
-      }
   });
   
   $('#base').on('change', function(){
       var val = Math.floor( $(this).val() );
-      tones.playFrequency(val);
+      App.baseTone = tones.playFrequency(val);
       $('#base-frequency-label').text(val + "Hz");
   });
     
@@ -177,5 +206,10 @@ $(document).ready(function($){
   $('#group-notes').on('click', function(){
       App.options.groupNotes = App.options.groupNotes ? false : true;
       $(this).toggleClass('grouped');
+  });
+    
+  $('#reduce-to-octave').on('click', function(){
+      App.options.octaveReduction = App.options.octaveReduction ? false : true;
+      $(this).toggleClass('off');
   });
 });

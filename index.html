@@ -89,7 +89,7 @@
         
         .interval div.cent-bar { left: 0; }
         
-        a#group-notes {
+        a#group-notes, a#reduce-to-octave {
             background:      url("ico-link-broken.svg") no-repeat 5px 5px #666;
             background-size: 13px;
             border-radius:   20px;
@@ -107,7 +107,9 @@
     <input type="range" min="100" max="1000" id="base" value="220"/>
     <span id="base-frequency-label"></span>
     <input type="range" min="0" max="100" id="volume-control" value="100"/>
+<!-- @todo Refactor those as hidden checkboxes with labels -->
     <a href="#" id="group-notes" class="grouped"></a>
+    <a href="#" id="reduce-to-octave" class="off"></a>
     <div id="sound-details">
         <div id="interval">
             <sup></sup><span>&#8260;</span><sub></sub>
