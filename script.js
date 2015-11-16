@@ -168,6 +168,12 @@ $(document).ready(function($){
       $('#base-frequency-label').text(val + "Hz");
   });
     
+  $('#volume-control').on('change', function(){
+      var val = $(this).val() / 100;
+      
+      tones.masterGain.gain.setValueAtTime(val, tones.context.currentTime);
+  });
+    
   $('#group-notes').on('click', function(){
       App.options.groupNotes = App.options.groupNotes ? false : true;
       $(this).toggleClass('grouped');

@@ -1,6 +1,7 @@
 var extend     = require('lodash.assign'),
     utils      = require('./utils.js'),
     ctx        = new (window.AudioContext || window.webkitAudioContext)(),
+    masterGain = ctx.createGain(),
     defaults   = {
         attack:  150,
         decay:   200,
@@ -14,6 +15,8 @@ var extend     = require('lodash.assign'),
      * A list of currently active sounds for manipulation
      */
     sounds = [];
+
+masterGain.connect(ctx.destination);
 
 /*
  * Creates the ADSR Envelope for the sound
@@ -196,6 +199,7 @@ function playFrequency(frequency, opts) {
 module.exports = {
     context:       ctx,
     createSound:   createSound,
+    masterGain:    masterGain,
     playFrequency: playFrequency,
     sounds:        sounds,
 }
