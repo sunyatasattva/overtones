@@ -1,7 +1,7 @@
-var extend   = require('lodash.assign'),
-    utils    = require('./utils.js'),
-    ctx      = new (window.AudioContext || window.webkitAudioContext)(),
-    defaults = {
+var extend     = require('lodash.assign'),
+    utils      = require('./utils.js'),
+    ctx        = new (window.AudioContext || window.webkitAudioContext)(),
+    defaults   = {
         attack:  150,
         decay:   200,
         sustain: 0,
@@ -60,18 +60,64 @@ function _createOscillator(frequency, detune, type) {
     return oscillatorNode;
 }
 
-function Sound(oscillator, envelope){
+function Sound(oscillator, envelope, opts){
    this.envelope = {
-        node:    envelope.node,
-        attack:  envelope.attack * 1000,
-        decay:   envelope.decay * 1000,
-        sustain: envelope.sustain * 1000,
-        release: envelope.release * 1000
+        node:      envelope.node,
+        attack:    envelope.attack,
+        decay:     envelope.decay,
+        sustain:   envelope.sustain,
+        release:   envelope.release,
+        volume:    opts.volume,
+        maxVolume: opts.maxVolume
    };
    this.oscillator = oscillator;
    this.frequency  = oscillator.frequency.value;
    this.detune     = oscillator.detune.value;
    this.waveType   = oscillator.type;
+    
+   this.duration = envelope.attack + envelope.decay + envelope.sustain + envelope.release;
+}
+
+Sound.prototype.play = function(){
+    var now = ctx.currentTime;
+    
+    this.oscillator.start();
+    
+    /*
+     * Using `setTargetAtTime` because `exponentialRampToValueAtTime` doesn't seem to work properly under
+     * the current build of Chrome I'm developing in. Not sure if a bug, or I didn't get something.
+     * `setTargetAtTime` gets the `timeCostant` as third argument, which is the amount of time it takes
+     * for the curve to reach 1 - 1/e * 100% of the target. The reason why the provided arguments are divided
+     * by 5 is because after 5 times worth of the Time Constant the value reaches 99.32% of the target, which
+     * is an acceptable approximation for me.
+     *
+     * @see {@link https://en.wikipedia.org/wiki/Time_constant}
+     *
+     * @todo put an if with opts.linear = true to use linearRampToValueAtTime instead
+     */
+    
+    // The note starts NOW from 0 and will get to `maxVolume` in approximately `attack` seconds 
+    this.envelope.node.gain.setTargetAtTime( this.envelope.maxVolume, now, this.envelope.attack / 5 )
+    // After `attack` seconds, start a transition to fade to sustain volume in `decay` seconds
+    this.envelope.node.gain.setTargetAtTime( this.envelope.volume, now + this.envelope.attack, this.envelope.decay / 5 )
+
+    // @todo if sustain is null, note has to be stopped manually. Also document this.
+    if( this.envelope.sustain !== null ) {
+        
+        
+        // Setting a "keyframe" for the volume to be kept until `sustain` seconds have passed (plus all the rest)
+        this.envelope.node.gain.setValueAtTime( this.envelope.volume, now + this.envelope.attack + this.envelope.decay + this.envelope.sustain );
+        // Fade out completely starting at the end of the `sustain` in `release` seconds
+        this.envelope.node.gain.setTargetAtTime( 0, now + this.envelope.attack + this.envelope.decay + this.envelope.sustain, this.envelope.release / 5 );
+
+        // Start the removal of the sound process after a little more than the sound duration to account for
+        // the approximation. (To make sure that the sound doesn't get cut off while still audible)
+        setTimeout( function() {
+            this.stop();
+        }, this.duration * 1250 );
+    }
+    
+    return this;
 }
 
 Sound.prototype.stop = function(){
@@ -104,6 +150,24 @@ Sound.prototype.reduceToSameOctaveAs = function(tone){
     return this;
 }
 
+function createSound(frequency, opts){
+    var opts       = extend( {}, defaults, opts ),
+        envelope   = _createEnvelope(opts.attack, opts.decay, opts.sustain, opts.release),
+        oscillator = _createOscillator(frequency, opts.detune, opts.type),
+        thisSound;
+    
+    opts.maxVolume = opts.maxVolume || opts.volume;
+    
+    thisSound = new Sound(oscillator, envelope, opts);
+    
+    oscillator.connect(envelope.node);
+    envelope.node.connect(masterGain);
+    
+    sounds.push(thisSound);
+    
+    return thisSound;
+}
+
 /*
  * Plays a given frequency
  *
@@ -124,61 +188,14 @@ Sound.prototype.reduceToSameOctaveAs = function(tone){
  * @return {obj}  The oscillator node
  */
 function playFrequency(frequency, opts) {
-    var opts       = extend( {}, defaults, opts ),
-        envelope   = _createEnvelope(opts.attack, opts.decay, opts.sustain, opts.release),
-        oscillator = _createOscillator(frequency, opts.detune, opts.type),
-        thisSound  = new Sound(oscillator, envelope),
-        now        = ctx.currentTime,
-        soundDuration;
+    var thisSound = createSound(frequency, opts);
     
-    opts.maxVolume = opts.maxVolume || opts.volume;
-    
-    oscillator.connect(envelope.node);
-    envelope.node.connect(ctx.destination);
-    
-    oscillator.start();
-    
-    /*
-     * Using `setTargetAtTime` because `exponentialRampToValueAtTime` doesn't seem to work properly under
-     * the current build of Chrome I'm developing in. Not sure if a bug, or I didn't get something.
-     * `setTargetAtTime` gets the `timeCostant` as third argument, which is the amount of time it takes
-     * for the curve to reach 1 - 1/e * 100% of the target. The reason why the provided arguments are divided
-     * by 5 is because after 5 times worth of the Time Constant the value reaches 99.32% of the target, which
-     * is an acceptable approximation for me.
-     *
-     * @see {@link https://en.wikipedia.org/wiki/Time_constant}
-     *
-     * @todo put an if with opts.linear = true to use linearRampToValueAtTime instead
-     */
-    
-    // The note starts NOW from 0 and will get to `maxVolume` in approximately `attack` seconds 
-    envelope.node.gain.setTargetAtTime( opts.maxVolume, now, envelope.attack / 5 )
-    // After `attack` seconds, start a transition to fade to sustain volume in `decay` seconds
-    envelope.node.gain.setTargetAtTime( opts.volume, now + envelope.attack, envelope.decay / 5 )
-
-    // @todo if sustain is null, note has to be stopped manually. Also document this.
-    if( envelope.sustain !== null ) {
-        // The whole approximate sound duration.
-        soundDuration = envelope.attack + envelope.decay + envelope.sustain + envelope.release;
-        
-        // Setting a "keyframe" for the volume to be kept until `sustain` seconds have passed (plus all the rest)
-        envelope.node.gain.setValueAtTime( opts.volume, now + envelope.attack + envelope.decay + envelope.sustain );
-        // Fade out completely starting at the end of the `sustain` in `release` seconds
-        envelope.node.gain.setTargetAtTime( 0, now + envelope.attack + envelope.decay + envelope.sustain, envelope.release / 5 );
-
-        // Start the removal of the sound process after a little more than the sound duration to account for
-        // the approximation. (To make sure that the sound doesn't get cut off while still audible)
-        setTimeout( function() {
-            thisSound.stop();
-        }, soundDuration * 1250 );
-    }
-    
-    this.sounds.push(thisSound);
-    return thisSound;
+    return thisSound.play();
 }
 
 module.exports = {
     context:       ctx,
+    createSound:   createSound,
     playFrequency: playFrequency,
     sounds:        sounds,
 }
