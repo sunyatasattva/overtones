@@ -82,7 +82,8 @@ function Sound(oscillator, envelope, opts){
 }
 
 Sound.prototype.play = function(){
-    var now = ctx.currentTime;
+    var now  = ctx.currentTime,
+        self = this;
     
     this.oscillator.start();
     
@@ -116,20 +117,25 @@ Sound.prototype.play = function(){
         // Start the removal of the sound process after a little more than the sound duration to account for
         // the approximation. (To make sure that the sound doesn't get cut off while still audible)
         setTimeout( function() {
-            this.stop();
+            self.stop();
         }, this.duration * 1250 );
     }
     
     return this;
 }
 
-Sound.prototype.stop = function(){
-    this.oscillator.stop();
+Sound.prototype.remove = function(){
     this.oscillator.disconnect(this.envelope.node);
     this.envelope.node.gain.cancelScheduledValues(ctx.currentTime);
-    this.envelope.node.disconnect(ctx.destination);
-    
+    this.envelope.node.disconnect(masterGain);
+
     return sounds.splice( sounds.indexOf(this), 1 );
+}
+
+Sound.prototype.stop = function(){
+    this.oscillator.stop();
+    
+    return this.remove();
 }
 
 Sound.prototype.intervalInCents = function(tone){
@@ -138,17 +144,35 @@ Sound.prototype.intervalInCents = function(tone){
     return Math.round( 1200 * utils.logBase(2, ratio) );
 }
 
-Sound.prototype.reduceToSameOctaveAs = function(tone){
+Sound.prototype.isOctaveOf = function(tone){
+    return utils.isPowerOfTwo( this.frequency / tone.frequency );
+}
+
+Sound.prototype.reduceToSameOctaveAs = function(tone, excludeOctave){
     var ratio = this.frequency / tone.frequency;
     
-    while( ratio <= 1 || ratio > 2 ){
-        if( ratio <= 1 )
-            this.frequency = this.frequency * 2;
-        else
-            this.frequency = this.frequency / 2;
-        
-        ratio = this.frequency / tone.frequency;
+    if( excludeOctave ) {
+        while( ratio < 1 || ratio >= 2 ){
+            if( ratio < 1 )
+                this.frequency = this.frequency * 2;
+            else
+                this.frequency = this.frequency / 2;
+
+            ratio = this.frequency / tone.frequency;
+        }
     }
+    else {
+        while( ratio <= 1 || ratio > 2 ){
+            if( ratio <= 1 )
+                this.frequency = this.frequency * 2;
+            else
+                this.frequency = this.frequency / 2;
+
+            ratio = this.frequency / tone.frequency;
+        }
+    }
+    
+    this.oscillator.frequency.setValueAtTime( this.frequency, ctx.currentTime );
 
     return this;
 }
