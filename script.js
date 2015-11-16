@@ -1,7 +1,7 @@
 window.tones = require("./tones.js");
 
-var utils    = require("./utils.js"),
-    Odometer = require("odometer");
+var utils     = require("./utils.js"),
+    intervals = require("./intervals.json");
 
 var tTET = require('./12-tet.json');
 
@@ -30,7 +30,7 @@ $(document).ready(function($){
           note             = utils.findKey( tTET, function(frequency){ return frequency === closestFrequency } ).split(/(\d)/),
           centsDifference  = tone.intervalInCents( { frequency: closestFrequency } );
       
-      $('#sound-details').addClass('visible');
+      $('#sound-details').addClass('visible show-note').removeClass('show-interval');
       hideElementWhenIdle( $('#sound-details') );
       
       $('#note-frequency')
@@ -47,9 +47,9 @@ $(document).ready(function($){
       
       $('#note-name').text(note[0]);
       $('#note sub').text(note[1]);
-      $('#cents-difference')
+      $('.cents-difference.tuning')
           .css('text-indent', centsDifference + "%")
-          .find('span').prop( 'number', $('#cents').text() ).animateNumber({
+          .find('.cents').prop( 'number', $('.tuning .cents').text() ).animateNumber({
                number: centsDifference,
                numberStep: function(now, tween){
                    var floored_number = Math.floor(now),
@@ -59,33 +59,88 @@ $(document).ready(function($){
                }
           }, 200);
 
-      $('#cent-bar').css('left', 50 + centsDifference / 2 + "%");
+      $('.tuning .cent-bar').css('left', 50 + centsDifference / 2 + "%");
       
       console.log(note[0], closestFrequency, centsDifference);
   });
     
   $('.spiral-piece').on('click', function(){
-      var baseFrequency = $('#base').val(),
-          idx           = $(this).index() + 1;
-      console.log(baseFrequency);
+      var baseFrequency   = $('#base').val(),
+          idx             = $(this).index() + 1,
+          firstFrequency  = idx * baseFrequency,
+          secondFrequency = (idx + 1)  * baseFrequency,
+          ratio           = utils.fraction( secondFrequency/firstFrequency, 999),
+          intervalName,
+          firstTone,
+          centsDifference;
+      
+      firstTone       = tones.playFrequency( firstFrequency );
+      centsDifference = Math.abs( firstTone.intervalInCents( { frequency: secondFrequency } ) );
+      
+      try {
+          intervalName = intervals[ ratio[1] + "/" + ratio[2] ].name;
+      }
+      catch(e) {
+          intervalName = "Unknown interval";
+      }
       
       if( App.options.groupNotes ) {
-          tones.playFrequency( idx * baseFrequency );
-          tones.playFrequency( (idx + 1)  * baseFrequency );
+          tones.playFrequency( secondFrequency );
       }
       else {
-          tones.playFrequency( idx * baseFrequency );
           setTimeout( function(){
-              tones.playFrequency( (idx + 1)  * baseFrequency );
+              tones.playFrequency( secondFrequency );
           }, 250)
       }
+      
+      $('#sound-details').addClass('visible show-interval').removeClass('show-note');;
+      hideElementWhenIdle( $('#sound-details') );
+      
+      $('#interval-name').text(intervalName);
+      
+      $('#interval sup').text( ratio[1] );
+      $('#interval sub').text( ratio[2] );
+      
+      $('.cents-difference.interval')
+          .css('text-indent', centsDifference / 12 + "%")
+          .find('.cents').prop( 'number', $('.interval .cents').text() ).animateNumber( {number: centsDifference }, 200 );
+      
+      $('.interval .cent-bar').css('left', centsDifference / 12 + "%");
   });
     
   $('.axis').on('click', function(){
       var baseFrequency = $('#base').val(),
-          interval      = parseInt( $(this).data('interval') );
-      console.log(baseFrequency);
-      tones.playFrequency( baseFrequency );
+          interval      = parseInt( $(this).data('interval') ),
+          octaveReducedTone,
+          centsDifference,
+          ratio,
+          intervalName;
+
+      octaveReducedTone = tones.playFrequency( baseFrequency ).reduceToSameOctaveAs( { frequency: interval * baseFrequency } );
+      centsDifference   = Math.abs( octaveReducedTone.intervalInCents( { frequency: interval * baseFrequency } ) );
+
+      ratio = utils.fraction( octaveReducedTone.frequency / (interval * baseFrequency), 999 );
+      
+      try {
+          intervalName = intervals[ ratio[1] + "/" + ratio[2] ].name;
+      }
+      catch(e) {
+          intervalName = "Unknown interval";
+      }
+
+      $('#sound-details').addClass('visible show-interval').removeClass('show-note');;
+      hideElementWhenIdle( $('#sound-details') );
+      
+      $('#interval-name').text(intervalName);
+      
+      $('#interval sup').text( ratio[1] );
+      $('#interval sub').text( ratio[2] );
+      
+      $('.cents-difference.interval')
+          .css('text-indent', centsDifference / 12 + "%")
+          .find('.cents').prop( 'number', $('.interval .cents').text() ).animateNumber( {number: centsDifference }, 200 );
+      
+      $('.interval .cent-bar').css('left', centsDifference / 12 + "%");
       
       if( App.options.groupNotes ){
           while( $('#overtone-' + interval).length ) {
@@ -94,12 +149,12 @@ $(document).ready(function($){
            }
       }
       else {
-          var intervals = [];
+          var axisIntervals = [];
           while( $('#overtone-' + interval).length ) {
-              intervals.push(interval);
+              axisIntervals.push(interval);
               interval = interval * 2;
           }
-          intervals.forEach(function(interval, idx){
+          axisIntervals.forEach(function(interval, idx){
               setTimeout(function(){
                   tones.playFrequency( interval * baseFrequency );
               }, 250 * (idx + 1));

@@ -36,19 +36,29 @@
             opacity: 1;
         }
 
-        div#note {
+        div#note,
+        div#interval {
             font-size:      128px;
             text-transform: uppercase;
         }
         
-        div#note-frequency {
+            .show-interval #note,
+            .show-interval #note-frequency { display: none; }
+        
+            .show-note #interval,
+            .show-note #interval-name { display: none; }
+        
+            #interval sup,
+            #interval sub { font-size: 0.7em; }
+        
+        div.note-detail {
             font-size: 14px;
             position:  absolute;
             top:       10px;
             right:     10px;
         }
 
-        div#cents-difference {
+        div.cents-difference {
             border-top:  1px solid white;
             opacity:     0.5;
             padding-top: 10px;
@@ -56,8 +66,15 @@
             
             transition: text-indent 0.2s ease-in-out;
         }
+        
+            .interval .cents { margin-left: -13px; }
+        
+            .show-note .interval.cents-difference   { display: none; }
+            .show-interval .tuning.cents-difference { display: none; }
+        
+            .show-interval .cents-difference { text-align:  left; }
 
-        div#cent-bar {
+        div.cent-bar {
             border-bottom: 5px solid white;
             border-left:   5px solid transparent;
             border-right:  5px solid transparent;
@@ -69,6 +86,8 @@
             
             transition: left 0.2s ease-in-out;
         }
+        
+        .interval div.cent-bar { left: 0; }
         
         a#group-notes {
             background:      url("ico-link-broken.svg") no-repeat 5px 5px #666;
@@ -89,11 +108,19 @@
     <a href="#" id="group-notes" class="grouped"></a>
     <span id="base-frequency-label"></span>
     <div id="sound-details">
+        <div id="interval">
+            <sup></sup><span>&#8260;</span><sub></sub>
+        </div>
         <div id="note"><span id="note-name"></span><sub></sub></div>
-        <div id="note-frequency">0 Hz</div>
-        <div id="cents-difference">
-            <span id="cents">0</span>
-            <div id="cent-bar"></div>
+        <div id="interval-name" class="note-detail"></div>
+        <div id="note-frequency" class="note-detail">0 Hz</div>
+        <div class="cents-difference tuning">
+            <span class="cents">0</span>
+            <div class="cent-bar"></div>
+        </div>
+        <div class="cents-difference interval">
+            <span class="cents">1200</span>
+            <div class="cent-bar"></div>
         </div>
     </div>
     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -155,7 +182,7 @@
 	<path class="axis" d="M500.7,501.3c3.7-1,7.6,1.3,8.5,5l114.1,437.4c1,3.7-1.3,7.6-5,8.5l0,0c-3.7,1-7.6-1.3-8.5-5L495.7,509.9
 		C494.8,506.1,497,502.3,500.7,501.3L500.7,501.3z" data-interval="11"/>
 	<path class="axis" d="M500.9,501.5c1.7-3.5,5.9-4.9,9.3-3.3l407,196.7c3.5,1.7,4.9,5.9,3.3,9.3l0,0c-1.7,3.5-5.9,4.9-9.3,3.3
-		l-407-196.7C500.7,509.1,499.2,505,500.9,501.5L500.9,501.5z" data-interval="6"/>
+		l-407-196.7C500.7,509.1,499.2,505,500.9,501.5L500.9,501.5z" data-interval="5"/>
 	<path class="axis" d="M501.4,500.6c-1.9-3.4-0.7-7.6,2.7-9.5l394.9-220c3.4-1.9,7.6-0.7,9.5,2.7l0,0c1.9,3.4,0.7,7.6-2.7,9.5
 		l-394.9,220C507.6,505.2,503.3,504,501.4,500.6L501.4,500.6z" data-interval="9"/>
 </g>
