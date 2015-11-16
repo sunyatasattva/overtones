@@ -26,5 +26,6 @@ module.exports = {
     
     debounce: require("lodash.debounce"),
     findKey:  require("lodash.findkey"),
+    fraction: require("frac"),
     values:   require("lodash.values")
 }
