@@ -89,6 +89,21 @@ Sound.prototype.intervalInCents = function(tone){
     return Math.round( 1200 * utils.logBase(2, ratio) );
 }
 
+Sound.prototype.reduceToSameOctaveAs = function(tone){
+    var ratio = this.frequency / tone.frequency;
+    
+    while( ratio <= 1 || ratio > 2 ){
+        if( ratio <= 1 )
+            this.frequency = this.frequency * 2;
+        else
+            this.frequency = this.frequency / 2;
+        
+        ratio = this.frequency / tone.frequency;
+    }
+
+    return this;
+}
+
 /*
  * Plays a given frequency
  *
