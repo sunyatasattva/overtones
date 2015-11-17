@@ -13,18 +13,118 @@
           cursor: pointer;
         }
         
-        body { background-color: #222; }
+        body { 
+            background-color: #222;
+            color:            #fff;
+            font-family:      "Helvetica Neue", sans-serif;
+        }
+        
+        svg {
+            display:   block;
+            margin:    0px auto;
+            max-width: 100%;
+            z-index:   2;
+            height:    100vh;
+            position:  relative;
+        }
+        
+        input[type=range] {
+          -webkit-appearance: none;
+            margin: 5px 0;
+            width:  170px;
+        }
+        input[type=range]:focus {
+          outline: none;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+          width: 100%;
+          height: 5px;
+          cursor: pointer;
+          box-shadow: 2.3px 2.3px 6.4px rgba(0, 0, 0, 0.15), 0px 0px 2.3px rgba(13, 13, 13, 0.15);
+          background: #e0e0e0;
+          border-radius: 25px;
+          border: 0px solid #010101;
+        }
+        input[type=range]::-webkit-slider-thumb {
+          box-shadow: 0.1px 0.1px 8.7px rgba(0, 0, 49, 0.14), 0px 0px 0.1px rgba(0, 0, 75, 0.14);
+          border: 2px solid #0080a3;
+          height: 15px;
+          width: 15px;
+          border-radius: 50px;
+          background: #ffffff;
+          cursor: pointer;
+          -webkit-appearance: none;
+          margin-top: -5px;
+        }
+        input[type=range]:focus::-webkit-slider-runnable-track {
+          background: #eaeaea;
+        }
+        input[type=range]::-moz-range-track {
+          width: 100%;
+          height: 5px;
+          cursor: pointer;
+          box-shadow: 2.3px 2.3px 6.4px rgba(0, 0, 0, 0.15), 0px 0px 2.3px rgba(13, 13, 13, 0.15);
+          background: #e0e0e0;
+          border-radius: 25px;
+          border: 0px solid #010101;
+        }
+        input[type=range]::-moz-range-thumb {
+          box-shadow: 0.1px 0.1px 8.7px rgba(0, 0, 49, 0.14), 0px 0px 0.1px rgba(0, 0, 75, 0.14);
+          border: 2px solid #0080a3;
+          height: 15px;
+          width: 15px;
+          border-radius: 50px;
+          background: #ffffff;
+          cursor: pointer;
+        }
+        input[type=range]::-ms-track {
+          width: 100%;
+          height: 5px;
+          cursor: pointer;
+          background: transparent;
+          border-color: transparent;
+          color: transparent;
+        }
+        input[type=range]::-ms-fill-lower {
+          background: #d0d0d0;
+          border: 0px solid #010101;
+          border-radius: 50px;
+          box-shadow: 2.3px 2.3px 6.4px rgba(0, 0, 0, 0.15), 0px 0px 2.3px rgba(13, 13, 13, 0.15);
+        }
+        input[type=range]::-ms-fill-upper {
+          background: #dddddd;
+          border: 0px solid #010101;
+          border-radius: 50px;
+          box-shadow: 2.3px 2.3px 6.4px rgba(0, 0, 0, 0.15), 0px 0px 2.3px rgba(13, 13, 13, 0.15);
+        }
+        input[type=range]::-ms-thumb {
+          box-shadow: 0.1px 0.1px 8.7px rgba(0, 0, 49, 0.14), 0px 0px 0.1px rgba(0, 0, 75, 0.14);
+          border: 2px solid #0080a3;
+          height: 15px;
+          width: 15px;
+          border-radius: 50px;
+          background: #ffffff;
+          cursor: pointer;
+          height: 5px;
+        }
+        input[type=range]:focus::-ms-fill-lower {
+          background: #dddddd;
+        }
+        input[type=range]:focus::-ms-fill-upper {
+          background: #eaeaea;
+        }
+
         
         div#sound-details {
             border:      1px solid rgb(51, 51, 51);
-            color:       #fff;
-            font-family: "Helvetica Neue", sans-serif;
+            box-sizing:  border-box;
             font-weight: 100;
-            min-width:   240px;
             opacity:     0;
             padding:     10px;
             text-align:  center;
-            width:       20%;
+            z-index:     1;
+            width:       240px;
+            height:      240px;
             position:    absolute;
             top:         20px;
             right:       20px;
@@ -89,27 +189,133 @@
         
         .interval div.cent-bar { left: 0; }
         
-        a#group-notes, a#reduce-to-octave {
-            background:      url("ico-link-broken.svg") no-repeat 5px 5px #666;
-            background-size: 13px;
+        a.option-button {
+            background:      no-repeat center center #666;
+            background-size: 60%;
             border-radius:   20px;
             display:         inline-block;
+            margin-right:    10px;
             text-decoration: none;
-            width:           22px;
-            height:          22px;
+            width:           35px;
+            height:          35px;
+            position:        relative;
         }
         
-        a#group-notes.grouped {
-            background-image: url("ico-link.svg");
+        a.option-button::after {
+            background:    rgba(80, 80, 80, 0.5);
+            border-radius: 5px;
+            box-shadow:    0 0 5px #1D1C1C;
+            color:         white;
+            display:       none;
+            font-size:     10px;
+            font-weight:   bold;
+            line-height:   10px;
+            padding:       5px;
+            white-space:   nowrap;
+            position:      absolute;
+            bottom:        -25px;
         }
+        
+        a.option-button:hover::after { display: inline-block; }
+        
+        a#group-notes {
+            background-image: url("ico-link-broken.svg");
+        }
+        
+            a#group-notes::after {
+                content: "Group notes";
+            }
+
+            a#group-notes.grouped {
+                background-color: #d4d4d4;
+                background-image: url("ico-link.svg");
+            }
+        
+                a#group-notes.grouped::after {
+                    content: "Ungroup notes";
+                }
+        
+        a#reduce-to-octave {
+            background-image: url("ico-octave-reduction.svg");
+        }
+        
+        a#reduce-to-octave:not(.off) {
+            background-color: #d4d4d4;
+        }
+        
+        a#reduce-to-octave::after {
+            content: "Reduce to octave";
+        }
+        
+        #base,
+        #volume-control {
+            display:  block;
+            margin:   30px 0 30px 30px;
+            position: relative;
+        }
+        
+        #base::before,
+        #volume-control::before {
+            background-position: center center;
+            background-repeat:   no-repeat;
+            content:             "";
+            width:               20px;
+            height:              20px;
+            position:            absolute;
+            top:                 -7px;
+            left:                -30px;
+        }
+        
+        input#base::after {
+            content:  attr(data-frequency);
+            position: absolute;
+            top:      -15px;
+            right:    0px;
+        }    
+        
+        #base::before {
+            background-image: url("ico-base.svg");
+        }
+        
+        #volume-control::before {
+            background-image: url("ico-sound.svg");
+        }
+        
+        div#options {
+            background-color: rgba(64, 64, 64, 0.1);
+            box-sizing:       border-box;
+            padding:          20px;
+            z-index:          3;
+            width:            240px;
+            height:           240px;
+            position:         absolute;
+        }
+
+        h2 {
+            font-weight: 100;
+            margin:      0;
+        }
+
+        .options-buttons {
+            border-top: 1px solid #4E4E4E;
+            margin-top: 20px;
+            padding:    20px 0;
+        }
+        
     </style>
 <body>
-    <input type="range" min="100" max="1000" id="base" value="220"/>
-    <span id="base-frequency-label"></span>
-    <input type="range" min="0" max="100" id="volume-control" value="100"/>
-<!-- @todo Refactor those as hidden checkboxes with labels -->
-    <a href="#" id="group-notes" class="grouped"></a>
-    <a href="#" id="reduce-to-octave" class="off"></a>
+    <div id="options">
+        <h2>Options</h2>
+        <div class="section-content">
+            <input type="range" min="100" max="1000" id="base" value="220" data-frequency="220Hz"/>
+            <input type="range" min="0" max="100" id="volume-control" value="100"/>
+            <!-- @todo Refactor those as hidden checkboxes with labels -->
+            <div class="options-buttons">
+                <a href="#" id="group-notes" class="option-button grouped"></a>
+                <a href="#" id="reduce-to-octave" class="option-button off"></a>
+            </div>
+        </div>
+    </div>
     <div id="sound-details">
         <div id="interval">
             <sup></sup><span>&#8260;</span><sub></sub>
@@ -168,6 +374,11 @@
     .overtone:hover {
         transform: scale(1.1);
         cursor:    pointer;
+    }
+    
+    .overtone:active {
+        transform:  scale(1.25);
+        transition: all 0.1s ease-out;
     }
 ]]>
 </style>

@@ -194,13 +194,14 @@ $(document).ready(function($){
   $('#base').on('change', function(){
       var val = Math.floor( $(this).val() );
       App.baseTone = tones.playFrequency(val);
-      $('#base-frequency-label').text(val + "Hz");
+      $('#base').attr('data-frequency', val + "Hz");
   });
     
   $('#volume-control').on('change', function(){
       var val = $(this).val() / 100;
       
       tones.masterGain.gain.setValueAtTime(val, tones.context.currentTime);
+      tones.playFrequency( App.baseTone.frequency );
   });
     
   $('#group-notes').on('click', function(){
