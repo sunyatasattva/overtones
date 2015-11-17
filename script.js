@@ -1,3 +1,5 @@
+require("velocity-animate");
+
 window.tones = require("./tones.js");
 
 var utils     = require("./utils.js"),
@@ -17,11 +19,51 @@ window.App = {
     }
 };
 
+function animateOvertone(el, duration){
+    var $el = $(el),
+        $spacesGroup = $el.find( '#' + $el.attr('id') + "-space" ),
+        $circles = $( $spacesGroup.find('g').get().reverse() ),
+        numbersOfCircles = $circles.length,
+        fillColor = "#FFE08D",
+        originalFill = "#FFFFFF";
+
+    if( $el.hasClass('velocity-animating') )
+        return;
+
+    el.classList.add('active');
+    
+    if( !numbersOfCircles ) {
+        $.Velocity( $spacesGroup, {
+            fill: fillColor
+        }, { duration: duration.attack * 1000 } )
+        .then( function(spaces){
+            $.Velocity( spaces, { fill: originalFill });
+            el.classList.remove('active');
+        }, { duration: duration.release * 1000 } );
+    }
+    else {
+        $circles.each(function(i){
+            $.Velocity( this, {
+                fill: fillColor
+            }, { 
+                delay:    i * (duration.attack * 1000 / numbersOfCircles),
+                duration: duration.attack * 1000, 
+            } )
+            .then( function(circle){
+                $.Velocity( circle, { fill: originalFill });
+                if( i === $circles.length - 1 )
+                    el.classList.remove('active');
+            }, { duration: duration.release * 1000 } );
+        });
+    }
+}
+
 $(document).ready(function($){
  
   $('.overtone').on('click', function(){
       var idx           = $(this).index() + 1,
-          noteFrequency = idx * App.baseTone.frequency;
+          noteFrequency = idx * App.baseTone.frequency,
+          self          = this;
 
       var tone = tones.createSound(noteFrequency);
       
@@ -35,6 +77,8 @@ $(document).ready(function($){
           closestFrequency = utils.binarySearch(tone.frequency, frequencies),
           note             = utils.findKey( tTET, function(frequency){ return frequency === closestFrequency } ).split(/(\d)/),
           centsDifference  = tone.intervalInCents( { frequency: closestFrequency } );
+      
+      animateOvertone( self, tone.envelope );
       
       $('#sound-details').addClass('visible show-note').removeClass('show-interval');
       hideElementWhenIdle( $('#sound-details') );
@@ -93,15 +137,21 @@ $(document).ready(function($){
       }
       
       firstTone.play();
+      animateOvertone( $('.overtone')[idx - 1], firstTone.envelope );
       
       if( App.options.groupNotes ) {
           secondTone.play();
+          animateOvertone( $('.overtone')[idx], secondTone.envelope );
       }
       else {
           setTimeout( function(){
               secondTone.play();
+              animateOvertone( $('.overtone')[idx], secondTone.envelope );
           }, 250)
       }
+      
+      
+      
       
       $('#sound-details').addClass('visible show-interval').removeClass('show-note');;
       hideElementWhenIdle( $('#sound-details') );
@@ -137,14 +187,17 @@ $(document).ready(function($){
       }
       
       tones.playFrequency( App.baseTone.frequency );
-      
+      animateOvertone( $('.overtone')[0], App.baseTone.envelope );
+
       if( App.options.groupNotes ){
           if( App.options.octaveReduction ) {
               tone.play();
+              animateOvertone( $('.overtone')[interval - 1], tone.envelope );
           }
           else {
               while( $('#overtone-' + interval).length ) {
                   tones.playFrequency( interval * App.baseTone.frequency );
+                  animateOvertone( $('.overtone')[interval - 1], tone.envelope );
                   interval = interval * 2;
                }
               
@@ -155,6 +208,7 @@ $(document).ready(function($){
           if( App.options.octaveReduction ){
               setTimeout(function(){
                   tone.play();
+                  animateOvertone( $('.overtone')[interval - 1], tone.envelope );
               }, 250);
           }
           else {
@@ -168,6 +222,7 @@ $(document).ready(function($){
               axisIntervals.forEach(function(interval, idx){
                   setTimeout(function(){
                       tones.playFrequency( interval * App.baseTone.frequency );
+                      animateOvertone( $('.overtone')[interval - 1], tone.envelope );
                   }, 250 * (idx + 1));
               });
               
