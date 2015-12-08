@@ -20,18 +20,22 @@ window.App = {
 };
 
 function animateOvertone(el, duration){
-    var $el = $(el),
-        $spacesGroup = $el.find( '#' + $el.attr('id') + "-space" ),
-        $circles = $( $spacesGroup.find('g').get().reverse() ),
+    var $el              = $(el),
+        $spacesGroup     = $el.find('.spaces'),
+        // We'll animate the circles from the inner to the outer, that's
+        // why we are reversing the array
+        $circles         = $( $spacesGroup.find('g').get().reverse() ),
         numbersOfCircles = $circles.length,
-        fillColor = "#FFE08D",
-        originalFill = "#FFFFFF";
+        originalFill     = utils.rgbToHex( $spacesGroup.css('fill') ),
+        fillColor        = "#FFE08D";
 
     if( $el.hasClass('velocity-animating') )
         return;
 
     el.classList.add('active');
     
+    // If there are no inner circles, the animation only fills the spaces
+    // with the fillColor
     if( !numbersOfCircles ) {
         $.Velocity( $spacesGroup, {
             fill: fillColor
@@ -41,6 +45,8 @@ function animateOvertone(el, duration){
             el.classList.remove('active');
         }, { duration: duration.release * 1000 } );
     }
+    // If there are inner circles, we iterate through the circles and fill
+    // them progressively
     else {
         $circles.each(function(i){
             $.Velocity( this, {
@@ -58,6 +64,82 @@ function animateOvertone(el, duration){
     }
 }
 
+function showIntervalDifferenceWithTuning(tone, tuning) {
+    var tuning = tuning || '12-TET', // @todo this doesn't do anything currently, placeholder
+        frequencies      = utils.values(tTET),
+        closestFrequency = utils.binarySearch(tone.frequency, frequencies),
+        note             = utils.findKey( tTET, function(frequency){ return frequency === closestFrequency } ).split(/(\d)/),
+        centsDifference  = tone.intervalInCents( { frequency: closestFrequency } );
+    
+    $('#note-frequency')
+    // Set the base number from which to animate to the current frequency
+    .prop( 'number', $('#note-frequency').text().match(/\d+/)[0] )
+    .animateNumber({
+        number:     tone.frequency,
+        numberStep: function(now, tween){
+           var floored_number = Math.floor(now),
+               $target        = $(tween.elem);
+    
+           $target.text(floored_number + " Hz");
+     }
+    }, 200);
+    
+    $('#note-name').text(note[0]);
+    $('#note sub').text(note[1]);
+    $('.cents-difference.tuning')
+    .css('text-indent', centsDifference + "%")
+    .find('.cents').prop( 'number', $('.tuning .cents').text() ).animateNumber({
+        number: centsDifference,
+        numberStep: function(now, tween){
+            var floored_number = Math.floor(now),
+                target = tween.elem
+            target.innerHTML = floored_number > 0 ? "+" + floored_number : floored_number;
+        }
+    }, 200);
+    
+    $('.tuning .cent-bar').css('left', 50 + centsDifference / 2 + "%");
+    
+    console.log(note[0], closestFrequency, centsDifference);
+}
+
+function showIntervalName(firstTone, secondTone) {
+    var ratio           = utils.fraction( secondTone.frequency/firstTone.frequency, 999),
+        centsDifference = Math.abs( firstTone.intervalInCents(secondTone) ),
+        intervalName;
+          
+    try {
+        intervalName = intervals[ ratio[1] + "/" + ratio[2] ].name;
+    }
+    catch(e) {
+        intervalName = "Unknown interval";
+    }
+    
+    $('#interval-name').text(intervalName);
+    
+    $('#interval sup').text( ratio[1] );
+    $('#interval sub').text( ratio[2] );
+    
+    $('.cents-difference.interval')
+        .css('text-indent', centsDifference / 12 + "%")
+        .find('.cents').prop( 'number', $('.interval .cents').text() ).animateNumber( {number: centsDifference }, 200 );
+    
+    $('.interval .cent-bar').css('left', centsDifference / 12 + "%");
+}
+
+function fillSoundDetails(tones) {
+    $('#sound-details').addClass('visible');
+    hideElementWhenIdle( $('#sound-details') );
+    
+    if( !tones.length ) {
+        $('#sound-details').addClass('show-note').removeClass('show-interval');
+        showIntervalDifferenceWithTuning(tones);
+    }
+    else {
+        $('#sound-details').addClass('show-interval').removeClass('show-note');
+        showIntervalName( tones[0], tones[1] );
+    }    
+}
+
 $(document).ready(function($){
  
   $('.overtone').on('click', function(){
@@ -72,65 +154,16 @@ $(document).ready(function($){
       
       tone.play();
       
-      // @todo obviously clean this up
-      var frequencies      = utils.values(tTET),
-          closestFrequency = utils.binarySearch(tone.frequency, frequencies),
-          note             = utils.findKey( tTET, function(frequency){ return frequency === closestFrequency } ).split(/(\d)/),
-          centsDifference  = tone.intervalInCents( { frequency: closestFrequency } );
-      
       animateOvertone( self, tone.envelope );
       
-      $('#sound-details').addClass('visible show-note').removeClass('show-interval');
-      hideElementWhenIdle( $('#sound-details') );
-      
-      $('#note-frequency')
-          .prop( 'number', $('#note-frequency').text().match(/\d+/)[0] )
-          .animateNumber({
-             number: tone.frequency,
-             numberStep: function(now, tween){
-                var floored_number = Math.floor(now),
-                    $target        = $(tween.elem);
-
-                $target.text(floored_number + " Hz");
-             }
-          }, 200)
-      
-      $('#note-name').text(note[0]);
-      $('#note sub').text(note[1]);
-      $('.cents-difference.tuning')
-          .css('text-indent', centsDifference + "%")
-          .find('.cents').prop( 'number', $('.tuning .cents').text() ).animateNumber({
-               number: centsDifference,
-               numberStep: function(now, tween){
-                   var floored_number = Math.floor(now),
-                       target = tween.elem;
-
-                  target.innerHTML = floored_number > 0 ? "+" + floored_number : floored_number;
-               }
-          }, 200);
-
-      $('.tuning .cent-bar').css('left', 50 + centsDifference / 2 + "%");
-      
-      console.log(note[0], closestFrequency, centsDifference);
+      fillSoundDetails( tone, 'difference' );
   });
     
   $('.spiral-piece').on('click', function(){
           var idx         = $(this).index() + 1,
           firstTone       = tones.createSound(idx * App.baseTone.frequency),
-          secondTone      = tones.createSound( (idx + 1)  * App.baseTone.frequency ),
-          ratio           = utils.fraction( secondTone.frequency/firstTone.frequency, 999),
-          intervalName,
-          centsDifference;
+          secondTone      = tones.createSound( (idx + 1)  * App.baseTone.frequency );
       
-      centsDifference = Math.abs( firstTone.intervalInCents(secondTone) );
-      
-      try {
-          intervalName = intervals[ ratio[1] + "/" + ratio[2] ].name;
-      }
-      catch(e) {
-          intervalName = "Unknown interval";
-      }
-      console.log( secondTone.isOctaveOf( App.baseTone ) );
       if( App.options.octaveReduction ){
           firstTone.reduceToSameOctaveAs(App.baseTone, true);
           secondTone.reduceToSameOctaveAs(App.baseTone);
@@ -150,41 +183,12 @@ $(document).ready(function($){
           }, 250)
       }
       
-      
-      
-      
-      $('#sound-details').addClass('visible show-interval').removeClass('show-note');;
-      hideElementWhenIdle( $('#sound-details') );
-      
-      $('#interval-name').text(intervalName);
-      
-      $('#interval sup').text( ratio[1] );
-      $('#interval sub').text( ratio[2] );
-      
-      $('.cents-difference.interval')
-          .css('text-indent', centsDifference / 12 + "%")
-          .find('.cents').prop( 'number', $('.interval .cents').text() ).animateNumber( {number: centsDifference }, 200 );
-      
-      $('.interval .cent-bar').css('left', centsDifference / 12 + "%");
+      fillSoundDetails( [firstTone, secondTone] );
   });
     
   $('.axis').on('click', function(){
       var interval      = parseInt( $(this).data('interval') ),
-          tone          = tones.createSound(interval * App.baseTone.frequency).reduceToSameOctaveAs(App.baseTone),
-          centsDifference,
-          ratio,
-          intervalName;
-
-      centsDifference   = Math.abs( tone.intervalInCents(App.baseTone) );
-
-      ratio = utils.fraction( tone.frequency / App.baseTone.frequency, 999 );
-      
-      try {
-          intervalName = intervals[ ratio[1] + "/" + ratio[2] ].name;
-      }
-      catch(e) {
-          intervalName = "Unknown interval";
-      }
+          tone          = tones.createSound(interval * App.baseTone.frequency).reduceToSameOctaveAs(App.baseTone);
       
       tones.playFrequency( App.baseTone.frequency );
       animateOvertone( $('.overtone')[0], App.baseTone.envelope );
@@ -230,20 +234,7 @@ $(document).ready(function($){
           }
       }
       
-      $('#sound-details').addClass('visible show-interval').removeClass('show-note');;
-      hideElementWhenIdle( $('#sound-details') );
-      
-      $('#interval-name').text(intervalName);
-      
-      $('#interval sup').text( ratio[1] );
-      $('#interval sub').text( ratio[2] );
-      
-      $('.cents-difference.interval')
-          .css('text-indent', centsDifference / 12 + "%")
-          .find('.cents').prop( 'number', $('.interval .cents').text() ).animateNumber( {number: centsDifference }, 200 );
-      
-      $('.interval .cent-bar').css('left', centsDifference / 12 + "%");
-      
+      fillSoundDetails( [App.baseTone, tone] );
   });
   
   $('#base').on('change', function(){
