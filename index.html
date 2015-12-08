@@ -226,12 +226,12 @@
                 content: "Group notes";
             }
 
-            a#group-notes.grouped {
+            a#group-notes:not(.off) {
                 background-color: #d4d4d4;
                 background-image: url("ico-link.svg");
             }
         
-                a#group-notes.grouped::after {
+                a#group-notes:not(.off)::after {
                     content: "Ungroup notes";
                 }
         
@@ -311,8 +311,8 @@
             <input type="range" min="0" max="100" id="volume-control" value="100"/>
             <!-- @todo Refactor those as hidden checkboxes with labels -->
             <div class="options-buttons">
-                <a href="#" id="group-notes" class="option-button grouped"></a>
-                <a href="#" id="reduce-to-octave" class="option-button off"></a>
+                <a href="#" id="group-notes" class="option-button grouped" data-option="groupNotes"></a>
+                <a href="#" id="reduce-to-octave" class="option-button off" data-option="octaveReduction"></a>
             </div>
         </div>
     </div>

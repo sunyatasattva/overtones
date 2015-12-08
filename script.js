@@ -233,6 +233,11 @@ function playIntervalOnAxis(interval, tone) {
       }
 }
 
+function toggleOption(option) {
+    App.options[option] = !App.options[option];
+    $('[data-option=' + option + ']').toggleClass('off');
+}
+
 $(document).ready(function($){
  
   $('.overtone').on('click', function(){
@@ -283,13 +288,7 @@ $(document).ready(function($){
       tones.playFrequency( App.baseTone.frequency );
   });
     
-  $('#group-notes').on('click', function(){
-      App.options.groupNotes = App.options.groupNotes ? false : true;
-      $(this).toggleClass('grouped');
-  });
-    
-  $('#reduce-to-octave').on('click', function(){
-      App.options.octaveReduction = App.options.octaveReduction ? false : true;
-      $(this).toggleClass('off');
+  $('[data-option]').on('click', function(){
+      toggleOption( $(this).data('option') );
   });
 });
