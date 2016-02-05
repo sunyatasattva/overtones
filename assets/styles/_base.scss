@@ -1,0 +1,27 @@
+body { 
+    background-color: #222;
+    color:            #fff;
+    font-family:      $baseFontFamily;
+}
+
+h2 {
+    font-weight: 100;
+    margin:      0;
+}
+
+img {
+    max-width: 100%;
+}
+
+area {
+  cursor: pointer;
+}
+
+svg {
+    display:   block;
+    margin:    0px auto;
+    max-width: 100%;
+    z-index:   2;
+    height:    100vh;
+    position:  relative;
+}

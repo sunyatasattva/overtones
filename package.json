@@ -2,7 +2,7 @@
   "name": "overtones",
   "version": "0.0.1",
   "description": "Visualization of the overtones spiral of a sound",
-  "main": "script.js",
+  "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,6 +18,7 @@
   "homepage": "https://github.com/sunyatasattva/overtones#readme",
   "dependencies": {
     "frac": "^1.0.2",
+    "jquery.animate-number": "0.0.12",
     "lodash.assign": "^3.2.0",
     "lodash.debounce": "^3.1.1",
     "lodash.findkey": "^3.0.1",
@@ -26,6 +27,7 @@
   },
   "devDependencies": {
     "browserify": "^12.0.1",
+    "gulp": "^3.9.0",
     "watchify": "^3.6.0"
   }
 }
