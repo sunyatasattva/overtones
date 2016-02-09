@@ -24,14 +24,14 @@
         right:    0px;
     }
     
-    ::before {
-        background-image: url("ico-base.svg");
+    &::before {
+        background-image: url("../images/ico-base.svg");
     }
 }
 
 #volume-control {
     &::before {
-        background-image: url("ico-sound.svg");
+        background-image: url("../images/ico-sound.svg");
     }
 }
 
@@ -81,20 +81,20 @@ a.option-button {
 }
 
 a#group-notes {
-    background-image: url("ico-link-broken.svg");
+    background-image: url("../images/ico-link-broken.svg");
     
     &::after { content: "Group notes"; }
     
     &:not(.off) {
         background-color: #d4d4d4;
-        background-image: url("ico-link.svg");
+        background-image: url("../images/ico-link.svg");
         
         &::after { content: "Ungroup notes"; }
     }
 }
 
 a#reduce-to-octave {
-    background-image: url("ico-octave-reduction.svg");
+    background-image: url("../images/ico-octave-reduction.svg");
     
     &::after { content: "Reduce to octave"; }
     
