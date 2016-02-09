@@ -1,10 +1,11 @@
 require("velocity-animate");
+require("jquery.animate-number");
 
-var utils     = require("./utils.js"),
-    intervals = require("./intervals.json"),
-    tones     = require("./tones.js");
+var utils     = require("./lib/utils.js"),
+    intervals = require("../data/intervals.json"),
+    tones     = require("./lib/tones.js");
 
-var tTET = require('./12-tet.json');
+var tTET = require('../data/12-tet.json');
 
 var hideElementWhenIdle = utils.debounce(function($element){
           $element.removeClass('visible');

@@ -1,0 +1,75 @@
+#sound-details {
+    border:      1px solid rgb(51, 51, 51);
+    box-sizing:  border-box;
+    font-weight: 100;
+    opacity:     0;
+    padding:     10px;
+    text-align:  center;
+    z-index:     1;
+    width:       240px;
+    height:      240px;
+    position:    absolute;
+    top:         20px;
+    right:       20px;
+
+    transition:  opacity 0.5s ease-in-out;
+    
+    &.visible {
+        opacity: 1;
+    }
+}
+
+#note,
+#interval {
+    font-size:      128px;
+    text-transform: uppercase;
+    
+    sup,
+    sub { font-size: 0.7em; }
+}
+
+    .show-interval #note,
+    .show-interval #note-frequency { display: none; }
+
+    .show-note #interval,
+    .show-note #interval-name { display: none; }
+
+.note-detail {
+    font-size: 14px;
+    position:  absolute;
+    top:       10px;
+    right:     10px;
+}
+
+.cents-difference {
+    border-top:  1px solid white;
+    opacity:     0.5;
+    padding-top: 10px;
+    position:    relative;
+
+    transition: text-indent 0.2s ease-in-out;
+}
+
+    .show-note .interval.cents-difference   { display: none; }
+    .show-interval .tuning.cents-difference { display: none; }
+
+    .show-interval .cents-difference { text-align:  left; }
+
+.cent-bar {
+    border-bottom: 5px solid white;
+    border-left:   5px solid transparent;
+    border-right:  5px solid transparent;
+    content:       "";
+    position:      absolute;
+    top:           0;
+    left:          50%;
+    margin-left:   -5px;
+
+    transition: left 0.2s ease-in-out;
+}
+
+.interval {
+    .cents { margin-left: -13px; }
+    
+    .cent-bar { left: 0; }
+}
