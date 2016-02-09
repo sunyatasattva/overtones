@@ -1,5 +1,5 @@
-window.tones     = require("./tones.js");
-window.Overtones = require("./overtones.js");
+window.tones     = require("./lib/tones");
+window.Overtones = require("./overtones");
 
 $(document).ready(function($){
     Overtones.init();

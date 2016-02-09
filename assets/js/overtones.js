@@ -1,9 +1,9 @@
 require("velocity-animate");
 require("jquery.animate-number");
 
-var utils     = require("./utils.js"),
+var utils     = require("./lib/utils.js"),
     intervals = require("../data/intervals.json"),
-    tones     = require("./tones.js");
+    tones     = require("./lib/tones.js");
 
 var tTET = require('../data/12-tet.json');
 
