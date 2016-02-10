@@ -221,9 +221,23 @@ function updateBaseFrequency(val) {
     var frequency = Math.floor( val );
     App.baseTone = tones.playFrequency(frequency);
     $('#base, #base-detail').val(frequency);
+    
+    return frequency;
+}
+
+function updateVolume(val, mute) {
+    val /= 100;
+
+    App.currentVolume = val;
+    tones.masterGain.gain.setValueAtTime(App.currentVolume, tones.context.currentTime);
+    if (!mute) tones.playFrequency( App.baseTone.frequency );
+    
+    return val;
 }
 
 function init() {
+    updateVolume( $('#volume-control').val(), true );
+    
     $('.overtone').on('click', function(){
         var idx           = $(this).index() + 1,
             self          = this,
@@ -271,10 +285,7 @@ function init() {
     });
 
     $('#volume-control').on('change', function(){
-      var val = $(this).val() / 100;
-
-      tones.masterGain.gain.setValueAtTime(val, tones.context.currentTime);
-      tones.playFrequency( App.baseTone.frequency );
+      updateVolume( $(this).val() );
     });
 
     $('[data-option]').on('click', function(){
