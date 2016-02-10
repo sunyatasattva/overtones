@@ -9,8 +9,12 @@
     <div id="options">
         <h2>Options</h2>
         <div class="section-content">
-            <input type="range" min="100" max="1000" id="base" value="220" data-frequency="220Hz"/>
-            <input type="range" min="0" max="100" id="volume-control" value="100"/>
+            <div class="input-wrapper" id="base-wrapper">
+                <input type="range" min="100" max="1000" id="base" value="220" data-frequency="220Hz"/>
+            </div>
+            <div class="input-wrapper" id="volume-control-wrapper">
+                <input type="range" min="0" max="100" id="volume-control" value="100"/>
+            </div>
             <!-- @todo Refactor those as hidden checkboxes with labels -->
             <div class="options-buttons">
                 <a href="#" id="group-notes" class="option-button grouped" data-option="groupNotes"></a>
