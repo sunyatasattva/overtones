@@ -48,6 +48,7 @@ gulp.task('javascript', function () {
 gulp.task('watch', function() {
     gulp.watch(['index.html', './assets/images/overtone-spiral.svg'], ['html']);
     gulp.watch('./assets/styles/**/*.scss', ['css']);
+    gulp.watch('./assets/js/**/*.js', ['javascript']);
 });
 
-gulp.task('build', ['css', 'html']);
+gulp.task('build', ['css', 'html', 'javascript']);
