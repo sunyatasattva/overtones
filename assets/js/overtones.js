@@ -217,6 +217,12 @@ function toggleOption(option) {
     $('[data-option=' + option + ']').toggleClass('off');
 }
 
+function updateBaseFrequency(val) {
+    var frequency = Math.floor( val );
+    App.baseTone = tones.playFrequency(frequency);
+    $('#base, #base-detail').val(frequency);
+}
+
 function init() {
     $('.overtone').on('click', function(){
         var idx           = $(this).index() + 1,
@@ -259,11 +265,9 @@ function init() {
 
       fillSoundDetails( [App.baseTone, tone] );
     });
-
-    $('#base').on('change', function(){
-      var val = Math.floor( $(this).val() );
-      App.baseTone = tones.playFrequency(val);
-      $('#base').attr('data-frequency', val + "Hz");
+    
+    $('#base, #base-detail').on('change', function(){
+      updateBaseFrequency( $(this).val() );
     });
 
     $('#volume-control').on('change', function(){
