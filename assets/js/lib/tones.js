@@ -7,7 +7,7 @@ var extend     = require('lodash.assign'),
         decay:   200,
         sustain: 0,
         release: 1250,
-        volume:  0.5,
+        volume:  1,
         detune:  0,
         type:    'sine'
     },
