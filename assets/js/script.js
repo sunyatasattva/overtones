@@ -1,6 +1,6 @@
 var browser = require('detect-browser');
 
-window.tones     = require("./lib/tones");
+window.Tones     = require("./lib/tones");
 window.Overtones = require("./overtones");
 
 $(document).ready(function($){
