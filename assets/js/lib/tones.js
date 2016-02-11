@@ -1,3 +1,9 @@
+/**
+ * Tones module
+ *
+ * @module
+ */
+
 var extend     = require('lodash.assign'),
     utils      = require('./utils.js'),
     ctx        = new (window.AudioContext || window.webkitAudioContext)(),
@@ -11,24 +17,33 @@ var extend     = require('lodash.assign'),
         detune:  0,
         type:    'sine'
     },
-    /*
-     * A list of currently active sounds for manipulation
-     */
     sounds = [];
 
 masterGain.connect(ctx.destination);
 
-/*
+/**
+ * @typedef Envelope
+ *
+ * @type Object
+ * @property  {GainNode} node    The Gain Node associated with the Envelope. Notice
+ *                               that this is not connected to a destination.
+ * @property  {number}   attack  The attack duration of the sound (in secs).
+ * @property  {number}   decay   The decay duration of the sound (in secs).
+ * @property  {number}   sustain The sustain duration of the sound (in secs).
+ * @property  {number}   release The release duration of the sound (in secs).
+ */
+
+/**
  * Creates the ADSR Envelope for the sound
  *
  * The parameters should be passed in milliseconds.
  *
- * @param  {int}  attack  The amount of time the sound will take to reach full amplitude
- * @param  {int}  decay   The amount of time for the sound to reach sustain amplitude after attack
- * @param  {int}  sustain The duration of the sound is kept being played
- * @param  {int}  release The amount of time for the sound to fade out
+ * @param  {number}  attack  The amount of time the sound will take to reach full amplitude
+ * @param  {number}  decay   The amount of time for the sound to reach sustain amplitude after attack
+ * @param  {number}  sustain The duration of the sound is kept being played
+ * @param  {number}  release The amount of time for the sound to fade out
  *
- * @return {obj}  The envelope object, containing the gain node.
+ * @return {Envelope}  The envelope object, containing the gain node.
  */
 function _createEnvelope(attack, decay, sustain, release) {
     var gainNode = ctx.createGain();
@@ -44,14 +59,14 @@ function _createEnvelope(attack, decay, sustain, release) {
     }
 }
 
-/*
+/**
  * Creates an Oscillator
  *
- * @param  {int}  frequency     The frequency of the wave
- * @param  {int}  [detune=0]    The number of cents to manipulate the frequency of the wave
- * @param  {str}  [type='sine'] The shape of the wave. Can be ['sine', 'square', 'sawtooth', 'triangle', 'custom']
+ * @param  {number}  frequency     The frequency of the wave
+ * @param  {number}  [detune=0]    The number of cents to manipulate the frequency of the wave
+ * @param  {string}  [type='sine'] The shape of the wave. Can be ['sine', 'square', 'sawtooth', 'triangle', 'custom']
  *
- * @return {obj}  The oscillator node
+ * @return {OscillatorNode}  The oscillator node
  */
 function _createOscillator(frequency, detune, type) {
     var oscillatorNode = ctx.createOscillator();
@@ -63,7 +78,24 @@ function _createOscillator(frequency, detune, type) {
     return oscillatorNode;
 }
 
+/**
+ * Sound Constructor
+ *
+ * @class
+ * @property  {number}  duration  The total duration of the sound.
+ */
 function Sound(oscillator, envelope, opts){
+   /**
+    * @type {object}
+    * @property  {number}   attack  The attack duration of the sound (in secs). See {@link _createEnvelope}
+    * @property  {number}   decay   The decay duration of the sound (in secs). See {@link _createEnvelope}
+    * @property  {GainNode} node    The Gain Node associated with the sound. It won't emit any sound unless
+    *                               connected to the `masterGain`. See {@link masterGain}.
+    * @property  {number}   sustain The sustain duration of the sound (in secs). See {@link _createEnvelope}
+    * @property  {number}   release The release duration of the sound (in secs). See {@link _createEnvelope}
+    * @property  {number}   volume  The amplitude of the sound, after the decay. 1 is full amplitude.
+    * @property  {number}   maxVolume The peak amplitude of the sound.
+    */
    this.envelope = {
         node:      envelope.node,
         attack:    envelope.attack,
@@ -73,21 +105,29 @@ function Sound(oscillator, envelope, opts){
         volume:    opts.volume,
         maxVolume: opts.maxVolume
    };
+   /** @type  {OscillatorNode} */
    this.oscillator = oscillator;
    this.frequency  = oscillator.frequency.value;
    this.detune     = oscillator.detune.value;
    this.waveType   = oscillator.type;
-    
+
    this.duration = envelope.attack + envelope.decay + envelope.sustain + envelope.release;
 }
 
+/**
+ * Plays the sound
+ *
+ * It also removes itself when done if not sustained.
+ *
+ * @return  {Sound}  The played Sound
+ */
 Sound.prototype.play = function(){
     var now  = ctx.currentTime,
         self = this;
     
     this.oscillator.start();
     
-    /*
+    /**
      * Using `setTargetAtTime` because `exponentialRampToValueAtTime` doesn't seem to work properly under
      * the current build of Chrome I'm developing in. Not sure if a bug, or I didn't get something.
      * `setTargetAtTime` gets the `timeCostant` as third argument, which is the amount of time it takes
@@ -124,30 +164,85 @@ Sound.prototype.play = function(){
     return this;
 }
 
+/**
+ * Disconnects a sound and removes it from the array of active sounds.
+ *
+ * @return {Sound}  The Sound object that was removed
+ */
 Sound.prototype.remove = function(){
     this.oscillator.disconnect(this.envelope.node);
     this.envelope.node.gain.cancelScheduledValues(ctx.currentTime);
     this.envelope.node.disconnect(masterGain);
 
-    return sounds.splice( sounds.indexOf(this), 1 );
+    return sounds.splice( sounds.indexOf(this), 1 )[0];
 }
 
+/**
+ * Stops a sound, removing it.
+ *
+ * @see {@link Sound.prototype.remove}
+ *
+ * @return  {Sound}  The stopped Sound
+ */
 Sound.prototype.stop = function(){
     this.oscillator.stop();
     
     return this.remove();
 }
 
+/**
+ * Calculates the interval in cents with another tone.
+ *
+ * @example
+ * // Assume `sound` has a frequency of 440Hz
+ * sound.intervalInCents( { frequency: 660 } ); // returns 702
+ *
+ * @param  {Sound|Object}  tone  A Sound object (or an object containing a `frequency` property)
+ *
+ * @return {int}  The interval between the two sounds rounded to the closest cent.
+ */
 Sound.prototype.intervalInCents = function(tone){
     var ratio = this.frequency / tone.frequency;
     
     return Math.round( 1200 * utils.logBase(2, ratio) );
 }
 
+/**
+ * Calculates if another tone is an octave of the sound.
+ *
+ * @example
+ * // Assume `sound` has a frequency of 440Hz
+ * sound.isOctaveOf( { frequency: 110 } ); // returns true
+ *
+ * @param  {Sound|Object}  tone  A Sound object (or an object containing a `frequency` property)
+ *
+ * @return {bool}  True if it is, False if it isn't.
+ */
 Sound.prototype.isOctaveOf = function(tone){
     return utils.isPowerOfTwo( this.frequency / tone.frequency );
 }
 
+/**
+ * Reduces the Sound pitch to a tone within an octave of the tone.
+ *
+ * @example
+ * // Assume `sound` has a frequency of 440Hz
+ * sound.reduceToSameOctaveAs( { frequency: 65.41 } ); // sets the sound frequency to 110Hz
+ *
+ * @example
+ * // Assume `sound` has a frequency of 440Hz
+ * sound.reduceToSameOctaveAs( { frequency: 220 }, true ); // sets the sound frequency to 220Hz
+ *
+ * @example  <caption>The function works upwards as well</caption>
+ * // Assume `sound` has a frequency of 440Hz
+ * sound.reduceToSameOctaveAs( { frequency: 523.25 } ); // sets the sound frequency to 880Hz
+ *
+ * @param  {Sound|Object} tone    A Sound object (or an object containing a `frequency` property)
+ * @param  {bool}  excludeOctave  If this option is `true`, the exact octave will be reduced
+ *                                to the unison of the original sound
+ *
+ * @return {Sound}  The original Sound object is returned
+ */
 Sound.prototype.reduceToSameOctaveAs = function(tone, excludeOctave){
     var ratio = this.frequency / tone.frequency;
     
@@ -177,6 +272,27 @@ Sound.prototype.reduceToSameOctaveAs = function(tone, excludeOctave){
     return this;
 }
 
+/**
+ * Creates and initializes a Sound object.
+ *
+ * The function accepts an optional `opts` argument.
+ *
+ * @alias module:tones.createSound
+ *
+ * @param  {number}  frequency  The frequency of the wave
+ * @param  {Object}  [opts]     Options for the playing frequency
+ * @param  {number}  [opts.attack]     The attack duration of the sound (in ms). See {@link _createEnvelope}
+ * @param  {number}  [opts.decay]      The decay duration of the sound (in ms). See {@link _createEnvelope}
+ * @param  {number}  [opts.detune]     The amount of cents to detune the frequency with. See {@link _createOscillator}
+ * @param  {float}   [opts.maxVolume]  The maximum amplitude of the sound, reached after the attack. 1 is full amplitude.
+ *                                  If not provided, will default to volume.
+ * @param  {number}  [opts.release]    The release duration of the sound (in ms). See {@link _createEnvelope}
+ * @param  {number}  [opts.sustain]    The sustain duration of the sound (in ms). See {@link _createEnvelope}
+ * @param  {string}  [opts.type]       The shape of the wave. See {@link _createOscillator}
+ * @param  {float}   [opts.volume]     The amplitude of the sound, after the decay. 1 is full amplitude.
+ *
+ * @return {Sound}  The Sound object.
+ */
 function createSound(frequency, opts){
     var opts       = extend( {}, defaults, opts ),
         envelope   = _createEnvelope(opts.attack, opts.decay, opts.sustain, opts.release),
@@ -195,24 +311,15 @@ function createSound(frequency, opts){
     return thisSound;
 }
 
-/*
- * Plays a given frequency
+/**
+ * Plays a given frequency.
  *
- * The function accepts an optional `opts` argument.
+ * Also accepts an optional `opts` argument.
  *
- * @param  {int}  frequency  The frequency of the wave
- * @param  {obj}  [opts]     Options for the playing frequency
- * @param  {int}  [opts.attack]     The attack duration of the sound (in ms). See {@link _createEnvelope}
- * @param  {int}  [opts.decay]      The decay duration of the sound (in ms). See {@link _createEnvelope}
- * @param  {int}  [opts.detune]     The amount of cents to detune the frequency with. See {@link _createOscillator}
- * @param  {flo}  [opts.maxVolume]  The maximum amplitude of the sound, reached after the attack. 1 is full amplitude.
- *                                  If not provided, will default to volume.
- * @param  {int}  [opts.release]    The release duration of the sound (in ms). See {@link _createEnvelope}
- * @param  {int}  [opts.sustain]    The sustain duration of the sound (in ms). See {@link _createEnvelope}
- * @param  {str}  [opts.type]       The shape of the wave. See {@link _createOscillator}
- * @param  {flo}  [opts.volume]     The amplitude of the sound, after the decay. 1 is full amplitude.
+ * @see {@link createSound}
+ * @alias module:tones.playFrequency
  *
- * @return {obj}  The oscillator node
+ * @return {Sound}  The Sound object.
  */
 function playFrequency(frequency, opts) {
     var thisSound = createSound(frequency, opts);
@@ -221,9 +328,21 @@ function playFrequency(frequency, opts) {
 }
 
 module.exports = {
+    /**
+     * The Audio Context where the module operates
+     * @type  {AudioContext}
+     */
     context:       ctx,
     createSound:   createSound,
+    /**
+     * The Master Gain node that is attached to the output device
+     * @type  {GainNode}
+     */
     masterGain:    masterGain,
     playFrequency: playFrequency,
+    /**
+     * A list of currently active sounds for manipulation
+     * @type  {array}
+     */
     sounds:        sounds,
 }
