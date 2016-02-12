@@ -4,6 +4,8 @@
  * @module
  */
 
+var $ = jQuery = require('jquery');
+
 require("velocity-animate");
 require("jquery.animate-number");
 

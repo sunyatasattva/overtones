@@ -1,4 +1,5 @@
-var browser = require('detect-browser');
+var $ = jQuery = require('jquery'),
+    browser = require('detect-browser');
 
 window.Tones     = require("./lib/tones");
 window.Overtones = require("./overtones");
