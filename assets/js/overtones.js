@@ -307,16 +307,19 @@ function toggleOption(option) {
  *
  * Makes sure that the controls are updated.
  *
- * @todo  Maybe implement `mute` here as well?
- *
- * @param  {number}  val  A frequency value
+ * @param  {number}  val    A frequency value
+ * @param  {bool}    [mute] Unless set to `true` a sound will play with the new frequency
+ *                          also animating the middle overtone circle
  *
  * @return {number}  The new frequency
  */
-function updateBaseFrequency(val) {
+function updateBaseFrequency(val, mute) {
     var frequency = Math.floor(val);
-    App.baseTone = tones.playFrequency(frequency);
+    App.baseTone = tones.createSound(frequency);
     $('#base, #base-detail').val(frequency);
+    
+    if( !mute )
+        $('#overtone-1').click();
     
     return frequency;
 }
