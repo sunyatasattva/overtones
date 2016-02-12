@@ -3,6 +3,8 @@
 <head>
     <meta charset="utf-8">
     <title>Overtone scale</title>
+    <link rel="stylesheet" href="assets/styles/chardinjs.css" type="text/css">
+    <link rel="stylesheet" href="assets/styles/shepherd.css" type="text/css">
     <link rel="stylesheet" href="assets/styles/style.css" type="text/css">
 </head>
 <body>
@@ -27,17 +29,29 @@
         </div>
     </div>
     <div id="sound-details">
-        <div id="interval">
+        <div id="interval"
+            data-intro="The ratio between the two frequencies"
+            data-position="left">
             <sup></sup><span>&#8260;</span><sub></sub>
         </div>
-        <div id="note"><span id="note-name"></span><sub></sub></div>
-        <div id="interval-name" class="note-detail"></div>
-        <div id="note-frequency" class="note-detail">0 Hz</div>
-        <div class="cents-difference tuning">
+        <div id="note"
+            data-intro="The note name in the traditional solfege system"
+            data-position="left"><span id="note-name"></span><sub></sub></div>
+        <div id="interval-name" class="note-detail"
+            data-intro="The name of the interval"
+            data-position="left"></div>
+        <div id="note-frequency" class="note-detail"
+            data-intro="The exact frequency"
+            data-position="left">0 Hz</div>
+        <div class="cents-difference tuning"
+            data-intro="The difference in <a href='https://en.wikipedia.org/wiki/Cent_(music)'>cents</a> between the sound played and the note in Equal Temperament"
+            data-position="left">
             <span class="cents">0</span>
             <div class="cent-bar"></div>
         </div>
-        <div class="cents-difference interval">
+        <div class="cents-difference interval"
+            data-intro="The interval measured in cents"
+            data-position="left">
             <span class="cents">1200</span>
             <div class="cent-bar"></div>
         </div>

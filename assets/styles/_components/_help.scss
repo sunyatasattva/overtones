@@ -1,0 +1,56 @@
+body.shepherd-active {
+    .chardinjs-overlay { display: none; }
+    
+    .chardinjs-tooltiptext {
+        background-color: #222;
+        border-radius:    5px;
+        font-size:        12px;
+        padding:          10px;
+    }
+    
+    #options,
+    .spiral-piece,
+    .axis,
+    .overtone {
+        opacity: 0.4;
+    }
+    
+    .shepherd-enabled { opacity: 1 !important; }
+    
+    &[data-shepherd-step=overtone-spiral] {
+        .spiral-piece,
+        .axis,
+        .overtone { opacity: 1; }
+    }
+    
+    &[data-shepherd-step=note-details] {
+        #overtone-1 { opacity: 1; }
+    }
+    
+    &[data-shepherd-step=spiral-pieces] {
+        #overtone-2,
+        #overtone-3 { opacity: 1; }
+    }
+    
+    &[data-shepherd-step=interval-details] {
+        .spiral-piece:nth-of-type(2),
+        #overtone-2,
+        #overtone-3 { opacity: 1; }
+    }
+    
+    &[data-shepherd-step^=options-] {
+        #options { 
+            opacity: 1; 
+            
+            h2,
+            .input-wrapper,
+            .option-button { opacity: 0.4; }
+        }
+    }
+    
+    &[data-shepherd-step=options-octave] {
+        #reduce-to-octave {
+            box-shadow: 0 0 10px #FF8A0B;
+        }
+    }
+}
