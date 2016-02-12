@@ -1,4 +1,9 @@
-var $ = jQuery = require('jquery'),
+/* globals Overtones */
+
+"use strict";
+
+var jQuery,
+    $ = jQuery = require('jquery'),
     browser = require('detect-browser');
 
 window.Tones     = require("./lib/tones");

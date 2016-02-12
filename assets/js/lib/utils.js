@@ -4,6 +4,8 @@
  * @module
  */
 
+"use strict";
+
 module.exports = {
     /**
      * Searches within an array the value closest to a target value.
@@ -44,7 +46,7 @@ module.exports = {
     isPowerOfTwo: function(n){
         // Another idea would be isInteger( logBase(2, n) )
         // @see http://www.graphics.stanford.edu/~seander/bithacks.html#DetermineIfPowerOf2
-        return ( n != 0 && ( n & (n - 1) ) === 0 );
+        return ( n !== 0 && ( n & (n - 1) ) === 0 );
     },
     /**
      * Calculates a logarithm of a number in an arbitrary base
@@ -90,4 +92,4 @@ module.exports = {
      * @see  {@link  https://lodash.com/docs#debounce|lodash.values}
      */
     values:   require("lodash.values")
-}
+};

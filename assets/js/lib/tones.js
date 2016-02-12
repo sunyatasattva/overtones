@@ -4,8 +4,12 @@
  * @module
  */
 
-var extend     = require('lodash.assign'),
-    utils      = require('./utils.js'),
+/* jshint maxlen:110 */
+
+"use strict";
+
+var extend     = require("lodash.assign"),
+    utils      = require("./utils.js"),
     ctx        = new (window.AudioContext || window.webkitAudioContext)(),
     masterGain = ctx.createGain(),
     defaults   = {
@@ -15,7 +19,7 @@ var extend     = require('lodash.assign'),
         release: 1250,
         volume:  1,
         detune:  0,
-        type:    'sine'
+        type:    "sine"
     },
     sounds = [];
 
@@ -56,7 +60,7 @@ function _createEnvelope(attack, decay, sustain, release) {
         decay:   decay / 1000,
         sustain: sustain / 1000,
         release: release / 1000
-    }
+    };
 }
 
 /**
@@ -64,7 +68,8 @@ function _createEnvelope(attack, decay, sustain, release) {
  *
  * @param  {number}  frequency     The frequency of the wave
  * @param  {number}  [detune=0]    The number of cents to manipulate the frequency of the wave
- * @param  {string}  [type='sine'] The shape of the wave. Can be ['sine', 'square', 'sawtooth', 'triangle', 'custom']
+ * @param  {string}  [type='sine'] The shape of the wave.
+ *                                 Can be ['sine', 'square', 'sawtooth', 'triangle', 'custom']
  *
  * @return {OscillatorNode}  The oscillator node
  */
@@ -73,7 +78,7 @@ function _createOscillator(frequency, detune, type) {
     
     oscillatorNode.frequency.value = frequency;
     oscillatorNode.detune.value    = detune || 0;
-    oscillatorNode.type            = type || 'sine';
+    oscillatorNode.type            = type || "sine";
     
     return oscillatorNode;
 }
@@ -141,18 +146,33 @@ Sound.prototype.play = function(){
      */
     
     // The note starts NOW from 0 and will get to `maxVolume` in approximately `attack` seconds 
-    this.envelope.node.gain.setTargetAtTime( this.envelope.maxVolume, now, this.envelope.attack / 5 )
+    this.envelope.node.gain.setTargetAtTime( this.envelope.maxVolume, now, this.envelope.attack / 5 );
     // After `attack` seconds, start a transition to fade to sustain volume in `decay` seconds
-    this.envelope.node.gain.setTargetAtTime( this.envelope.volume, now + this.envelope.attack, this.envelope.decay / 5 )
+    this.envelope.node.gain
+    .setTargetAtTime( this.envelope.volume, now + this.envelope.attack, this.envelope.decay / 5 );
 
     // @todo if sustain is null, note has to be stopped manually. Also document this.
     if( this.envelope.sustain !== null ) {
         
         
-        // Setting a "keyframe" for the volume to be kept until `sustain` seconds have passed (plus all the rest)
-        this.envelope.node.gain.setValueAtTime( this.envelope.volume, now + this.envelope.attack + this.envelope.decay + this.envelope.sustain );
+        // Setting a "keyframe" for the volume to be kept until `sustain` seconds have passed
+        // (plus all the rest)
+        this.envelope.node.gain
+        .setValueAtTime( this.envelope.volume, 
+            now + 
+            this.envelope.attack + 
+            this.envelope.decay +
+            this.envelope.sustain
+        );
         // Fade out completely starting at the end of the `sustain` in `release` seconds
-        this.envelope.node.gain.setTargetAtTime( 0, now + this.envelope.attack + this.envelope.decay + this.envelope.sustain, this.envelope.release / 5 );
+        this.envelope.node.gain
+        .setTargetAtTime( 0, 
+            now + 
+            this.envelope.attack + 
+            this.envelope.decay + 
+            this.envelope.sustain, 
+            this.envelope.release / 5
+        );
 
         // Start the removal of the sound process after a little more than the sound duration to account for
         // the approximation. (To make sure that the sound doesn't get cut off while still audible)
@@ -162,7 +182,7 @@ Sound.prototype.play = function(){
     }
     
     return this;
-}
+};
 
 /**
  * Disconnects a sound and removes it from the array of active sounds.
@@ -175,7 +195,7 @@ Sound.prototype.remove = function(){
     this.envelope.node.disconnect(masterGain);
 
     return sounds.splice( sounds.indexOf(this), 1 )[0];
-}
+};
 
 /**
  * Stops a sound, removing it.
@@ -188,7 +208,7 @@ Sound.prototype.stop = function(){
     this.oscillator.stop();
     
     return this.remove();
-}
+};
 
 /**
  * Calculates the interval in cents with another tone.
@@ -205,7 +225,7 @@ Sound.prototype.intervalInCents = function(tone){
     var ratio = this.frequency / tone.frequency;
     
     return Math.round( 1200 * utils.logBase(2, ratio) );
-}
+};
 
 /**
  * Calculates if another tone is an octave of the sound.
@@ -220,7 +240,7 @@ Sound.prototype.intervalInCents = function(tone){
  */
 Sound.prototype.isOctaveOf = function(tone){
     return utils.isPowerOfTwo( this.frequency / tone.frequency );
-}
+};
 
 /**
  * Reduces the Sound pitch to a tone within an octave of the tone.
@@ -270,7 +290,7 @@ Sound.prototype.reduceToSameOctaveAs = function(tone, excludeOctave){
     this.oscillator.frequency.setValueAtTime( this.frequency, ctx.currentTime );
 
     return this;
-}
+};
 
 /**
  * Creates and initializes a Sound object.
@@ -283,9 +303,10 @@ Sound.prototype.reduceToSameOctaveAs = function(tone, excludeOctave){
  * @param  {Object}  [opts]     Options for the playing frequency
  * @param  {number}  [opts.attack]     The attack duration of the sound (in ms). See {@link _createEnvelope}
  * @param  {number}  [opts.decay]      The decay duration of the sound (in ms). See {@link _createEnvelope}
- * @param  {number}  [opts.detune]     The amount of cents to detune the frequency with. See {@link _createOscillator}
- * @param  {float}   [opts.maxVolume]  The maximum amplitude of the sound, reached after the attack. 1 is full amplitude.
- *                                  If not provided, will default to volume.
+ * @param  {number}  [opts.detune]     The amount of cents to detune the frequency with.
+ *                                     See {@link _createOscillator}
+ * @param  {float}   [opts.maxVolume]  The maximum amplitude of the sound, reached after the attack.
+ *                                     1 is full amplitude. If not provided, will default to volume.
  * @param  {number}  [opts.release]    The release duration of the sound (in ms). See {@link _createEnvelope}
  * @param  {number}  [opts.sustain]    The sustain duration of the sound (in ms). See {@link _createEnvelope}
  * @param  {string}  [opts.type]       The shape of the wave. See {@link _createOscillator}
@@ -345,4 +366,4 @@ module.exports = {
      * @type  {array}
      */
     sounds:        sounds,
-}
+};
