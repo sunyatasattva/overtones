@@ -43,8 +43,8 @@ function animateOvertone(el, duration) {
         fillColor        = "#FFE08D";
 
     // If it's already animating, it won't animate again
-    if( $el.hasClass('velocity-animating') )
-        return;
+    if( $el.find('.velocity-animating').length )
+        return
 
     el.classList.add('active');
     
