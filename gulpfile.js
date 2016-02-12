@@ -30,6 +30,20 @@ gulp.task('html', function () {
     .pipe( gulp.dest('build/') );
 });
 
+gulp.task('javascript:dev', function () {
+  var b = browserify({
+    entries: './assets/js/script.js',
+    debug: true
+  });
+
+  return b.bundle()
+    .pipe( source('./assets/js/script.js') )
+    .pipe( buffer() )
+    .pipe( sourcemaps.init({loadMaps: true}) )
+    .pipe( sourcemaps.write('./') )
+    .pipe( gulp.dest('./build/') );
+});
+
 gulp.task('javascript', function () {
   var b = browserify({
     entries: './assets/js/script.js',
@@ -48,7 +62,7 @@ gulp.task('javascript', function () {
 gulp.task('watch', function() {
     gulp.watch(['index.html', './assets/images/overtone-spiral.svg'], ['html']);
     gulp.watch(['./assets/styles/*.scss', './assets/styles/**/*.scss'], ['css']);
-    gulp.watch('./assets/js/**/*.js', ['javascript']);
+    gulp.watch('./assets/js/**/*.js', ['javascript:dev']);
 });
 
 gulp.task('build', ['css', 'html', 'javascript']);
