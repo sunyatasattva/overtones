@@ -53,7 +53,6 @@
     padding:          20px;
     z-index:          3;
     width:            240px;
-    height:           240px;
     position:         absolute;
 }
 
@@ -64,6 +63,8 @@
 }
 
 a.option-button {
+    @include has-tooltip();
+    
     background:      no-repeat center center #666;
     background-size: 60%;
     border-radius:   20px;
@@ -73,23 +74,6 @@ a.option-button {
     width:           35px;
     height:          35px;
     position:        relative;
-    
-    &::after {
-        background:    rgba(80, 80, 80, 0.5);
-        border-radius: 5px;
-        box-shadow:    0 0 5px #1D1C1C;
-        color:         #fff;
-        display:       none;
-        font-size:     10px;
-        font-weight:   bold;
-        line-height:   10px;
-        padding:       5px;
-        white-space:   nowrap;
-        position:      absolute;
-        bottom:        -25px;
-    }
-    
-    &:hover::after { display: inline-block; }
 }
 
 a#group-notes {

@@ -1,3 +1,36 @@
+#help {
+    @include has-tooltip("Explain me what I'm seeing", top);
+    
+    background-color: #666;
+    border:           0;
+    border-radius:    100%;
+    color:            #222;
+    cursor:           pointer;
+    font-family:      $serifFontFamily;
+    font-size:        28px;
+    line-height:      35px;
+    padding:          0;
+    text-align:       center;
+    z-index:          3;
+    width:            35px;
+    height:           35px;
+    position:         absolute;
+    bottom:           10px;
+    left:             10px;
+    
+    &:hover {
+        background-color: #d4d4d4;
+    }
+    
+    &:focus {
+        outline: 0;
+    }
+}
+
+button.cancel {
+    background-color: #ccc;
+}
+
 body.shepherd-active {
     .chardinjs-overlay { display: none; }
     
@@ -48,8 +81,9 @@ body.shepherd-active {
         }
     }
     
-    &[data-shepherd-step=options-octave] {
-        #reduce-to-octave {
+    &[data-shepherd-step=options-octave],
+    &[data-shepherd-step=newbie-help]{
+        .shepherd-target.shepherd-enabled {
             box-shadow: 0 0 10px #FF8A0B;
         }
     }
@@ -64,6 +98,10 @@ body.shepherd-active {
     }
 }
 
+.shepherd-title {
+    color: rgba(255, 255, 255, 0.5);
+}
+
 .shepherd-element.shepherd-theme-dark .shepherd-content,
 .chardinjs-tooltiptext {
     box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
@@ -74,4 +112,29 @@ body.shepherd-active {
     display: block;
     font-size: 12px;
     line-height: 16px;
+}
+
+.shepherd-element.newbie-tour {
+    max-width: none;
+    
+    h3 {
+        color: #fff;
+        
+        &::before {
+            @extend #help;
+            content: "?";
+            display: inline-block;
+            position: static;
+            margin-right: 10px;
+        }
+        
+        &:hover::before {
+            background-color: #666;
+            cursor:           auto;
+        }
+    }
+    
+    &.shepherd-element-attached-left.shepherd-element-attached-middle .shepherd-content:before {
+        display: none;
+    }
 }

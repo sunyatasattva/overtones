@@ -24,6 +24,7 @@
 #interval {
     font-size:      128px;
     text-transform: uppercase;
+    height:         185px;
     
     sup,
     sub { font-size: 0.7em; }
@@ -34,6 +35,13 @@
 
     .show-note #interval,
     .show-note #interval-name { display: none; }
+
+#note-frequency,
+#interval-name {
+    display: block;
+    text-align: right;
+    width: 218px;
+}
 
 .note-detail {
     font-size: 14px;
