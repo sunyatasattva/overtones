@@ -16,7 +16,8 @@ require("jquery.animate-number");
 
 var utils     = require("./lib/utils.js"),
     intervals = require("../data/intervals.json"),
-    tones     = require("./lib/tones.js");
+    tones     = require("./lib/tones.js"),
+    $         = require("jquery");
 
 var tTET = require("../data/12-tet.json");
 
