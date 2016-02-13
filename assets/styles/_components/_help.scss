@@ -54,3 +54,24 @@ body.shepherd-active {
         }
     }
 }
+
+.shepherd-element.shepherd-theme-dark .shepherd-content header a.shepherd-cancel-link {
+    opacity: 1;
+    color: rgba(255, 255, 255, 0.5);
+    
+    &:hover {
+        color: #fff;
+    }
+}
+
+.shepherd-element.shepherd-theme-dark .shepherd-content,
+.chardinjs-tooltiptext {
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
+    line-height: 16px;
+}
+
+.shepherd-element.shepherd-theme-dark .shepherd-content small {
+    display: block;
+    font-size: 12px;
+    line-height: 16px;
+}
