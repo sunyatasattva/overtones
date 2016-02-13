@@ -12,6 +12,10 @@ h2 {
 a {
     color: #3288e6;
     text-decoration: none;
+    
+    &:hover {
+        color: #007EA1;
+    }
 }
 
 img {
