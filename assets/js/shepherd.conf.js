@@ -120,7 +120,13 @@ mainTour
 })
 .addStep('end-tour', {
     text: ['That is all! Enjoy!'],
-    title: '10/10'
+    title: '10/10',
+    buttons: [
+        {
+            text: 'Thank you!',
+            action: mainTour.next
+        }
+    ] 
 });
 
 newbieTour = new Shepherd.Tour({
@@ -158,7 +164,9 @@ newbieTour
 module.exports = {
     mainTour: mainTour,
     init: function(){
-        once(function(){ newbieTour.start(); }, 'newbieTour');
+        setTimeout(function(){
+            once(function(){ newbieTour.start(); }, 'newbieTour');
+        }, 2000);
         
         $('#help').on('click', function(e){
             e.preventDefault();

@@ -1,3 +1,29 @@
+#help {
+    @include has-tooltip("Explain me what I'm seeing", top);
+    
+    background-color: #666;
+    border:           0;
+    border-radius:    100%;
+    color:            #222;
+    cursor:           pointer;
+    font-family:      $serifFontFamily;
+    font-size:        28px;
+    line-height:      35px;
+    padding:          0;
+    text-align:       center;
+    z-index:          3;
+    width:            35px;
+    height:           35px;
+    
+    &:hover {
+        background-color: #d4d4d4;
+    }
+    
+    &:focus {
+        outline: 0;
+    }
+}
+
 .chardinjs-overlay {
     background-color: #000;
     opacity:          0;
@@ -377,34 +403,30 @@
     &.shepherd-element-attached-top.shepherd-element-attached-left.shepherd-target-attached-bottom.shepherd-has-title {
         .shepherd-content::before { border-bottom-color: #303030; }
     }
-}
+    
+    &.newbie-tour {
+        max-width: none;
 
-#help {
-    @include has-tooltip("Explain me what I'm seeing", top);
-    
-    background-color: #666;
-    border:           0;
-    border-radius:    100%;
-    color:            #222;
-    cursor:           pointer;
-    font-family:      $serifFontFamily;
-    font-size:        28px;
-    line-height:      35px;
-    padding:          0;
-    text-align:       center;
-    z-index:          3;
-    width:            35px;
-    height:           35px;
-    position:         absolute;
-    bottom:           10px;
-    left:             10px;
-    
-    &:hover {
-        background-color: #d4d4d4;
-    }
-    
-    &:focus {
-        outline: 0;
+        .shepherd-content h3 {
+            color: #fff;
+
+            &::before {
+                @extend #help;
+                content:      "?";
+                display:      inline-block;
+                margin-right: 10px;
+                position:     static;
+            }
+
+            &:hover::before {
+                background-color: #666;
+                cursor:           auto;
+            }
+        }
+
+        &.shepherd-element-attached-left.shepherd-element-attached-middle .shepherd-content:before {
+            display: none;
+        }
     }
 }
 
@@ -422,7 +444,7 @@ body.shepherd-active {
     .spiral-piece,
     .axis,
     .overtone {
-        opacity: 0.4;
+        opacity: 0.2;
     }
     
     .shepherd-enabled { opacity: 1 !important; }
@@ -463,30 +485,5 @@ body.shepherd-active {
         .shepherd-target.shepherd-enabled {
             box-shadow: 0 0 10px #FF8A0B;
         }
-    }
-}
-
-.shepherd-element.newbie-tour {
-    max-width: none;
-    
-    h3 {
-        color: #fff;
-        
-        &::before {
-            @extend #help;
-            content:      "?";
-            display:      inline-block;
-            margin-right: 10px;
-            position:     static;
-        }
-        
-        &:hover::before {
-            background-color: #666;
-            cursor:           auto;
-        }
-    }
-    
-    &.shepherd-element-attached-left.shepherd-element-attached-middle .shepherd-content:before {
-        display: none;
     }
 }
