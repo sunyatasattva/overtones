@@ -447,16 +447,23 @@ body.shepherd-active {
         opacity: 0.2;
     }
     
+    .overtone:not(.shepherd-enabled),
+    .spiral-piece:not(.shepherd-enabled) {
+        &:active,
+        &:hover {
+            cursor: auto;
+            opacity: 0.2;
+            stroke: inherit;
+            transform: scale(1);
+        }
+    }
+    
     .shepherd-enabled { opacity: 1 !important; }
     
     &[data-shepherd-step=overtone-spiral] {
         .spiral-piece,
         .axis,
-        .overtone { opacity: 1; }
-    }
-    
-    &[data-shepherd-step=note-details] {
-        #overtone-1 { opacity: 1; }
+        .overtone { opacity: 1 !important; }
     }
     
     &[data-shepherd-step=spiral-pieces] {
@@ -465,7 +472,6 @@ body.shepherd-active {
     }
     
     &[data-shepherd-step=interval-details] {
-        .spiral-piece:nth-of-type(2),
         #overtone-2,
         #overtone-3 { opacity: 1; }
     }

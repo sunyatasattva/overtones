@@ -12,6 +12,6 @@ window.Overtones = require("./overtones");
 jQuery(document).ready(function($){
     $("body").addClass(browser.name); // This makes me sad, it's 2016 Firefox!
     
-    Overtones.init();
     tour.init();
+    Overtones.init();
 });

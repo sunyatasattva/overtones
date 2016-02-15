@@ -44,9 +44,11 @@ mainTour
     when: {
         show: function() {
             $('body').chardinJs('start');
+            $('#overtone-1').addClass('shepherd-enabled');
         },
         hide: function() {
             $('body').chardinJs('stop');
+            $('#overtone-1').removeClass('shepherd-enabled');
         }
     },
     tetherOptions: {
@@ -70,9 +72,11 @@ mainTour
     when: {
         show: function() {
             $('body').chardinJs('start');
+            $('.spiral-piece').eq(1).addClass('shepherd-enabled');
         },
         hide: function() {
             $('body').chardinJs('stop');
+            $('.spiral-piece').eq(1).removeClass('shepherd-enabled');
         }
     },
     tetherOptions: {
@@ -171,6 +175,13 @@ module.exports = {
         $('#help').on('click', function(e){
             e.preventDefault();
             mainTour.start();
+        });
+        
+        $(".spiral-piece, .overtone, .axis").on("click", function(e){
+            var $body = $("body");
+
+            if( $body.hasClass("shepherd-active") && !$(e.delegateTarget).hasClass("shepherd-enabled") )
+                e.stopImmediatePropagation();
         });
     },
 };
