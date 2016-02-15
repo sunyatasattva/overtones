@@ -34,3 +34,37 @@ svg {
     height:    97vh;
     position:  relative;
 }
+
+body > footer {
+    box-sizing: border-box;
+    padding:    10px 20px;
+    z-index:    3;
+    width:      100%;
+    position:   absolute;
+    bottom:     0;
+    left:       0;
+    
+    .social {
+        line-height: 35px;
+        margin-top:  20px;
+        height:      35px;
+        position:    absolute;
+        top:         0;
+        right:       10px;
+        
+        > * {
+            line-height:    20px;
+            margin-right:   10px;
+            vertical-align: middle;
+        }
+    }
+}
+
+p.credits {
+    display:     inline-block;
+    font-size:   12px;
+    line-height: 35px;
+    margin-left: 50px;
+}
+
+.github-button { color: transparent; }
