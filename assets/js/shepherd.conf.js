@@ -1,3 +1,5 @@
+"use strict";
+
 var $        = require('jquery');
 var Shepherd = require('tether-shepherd');
 var once     = require("./lib/once");
@@ -212,10 +214,19 @@ module.exports = {
         });
         
         $(".spiral-piece, .overtone, .axis").on("click", function(e){
-            var $body = $("body");
+            var $body       = $("body"),
+				currentStep = mainTour.currentStep,
+				idx         = currentStep ? currentStep.tour.steps.indexOf(currentStep) + 1 : 0;
 
-            if( $body.hasClass("shepherd-active") && !$(e.delegateTarget).hasClass("shepherd-enabled") )
+			if( $body.hasClass("shepherd-active") && !$(e.delegateTarget).hasClass("shepherd-enabled") ){
                 e.stopImmediatePropagation();
+
+				$(document).trigger({ 
+					type: "overtones:help:denied", 
+					target: e.target, 
+					idx: idx
+				});
+			}
         });
     },
 };

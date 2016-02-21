@@ -448,7 +448,8 @@ body.shepherd-active {
     }
     
     .overtone:not(.shepherd-enabled),
-    .spiral-piece:not(.shepherd-enabled) {
+    .spiral-piece:not(.shepherd-enabled),
+	.axis:not(.shepherd-enabled) {
         &:active,
         &:hover {
             cursor: auto;
