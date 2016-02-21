@@ -117,7 +117,7 @@ gulp.task('ftp', function () {
     } );
 
     return gulp.src( 'build/**', { buffer: false } )
-        .pipe( conn.newer( '/asmi/overtones/deploy' ) ) // only upload newer files
-        .pipe( conn.dest( '/asmi/overtones/deploy' ) );
+        .pipe( conn.newer( '/asmi/overtones/' ) ) // only upload newer files
+        .pipe( conn.dest( '/asmi/overtones/' ) );
 
 });
