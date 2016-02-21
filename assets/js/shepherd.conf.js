@@ -9,6 +9,28 @@ window.jQuery = $;
 
 require('chardin.js');
 
+// `Sheperd.on` is sadly not chainable
+Shepherd.on('show', function(tour){
+	var step      = tour.step,
+		stepIndex = tour.tour.steps.indexOf(step) + 1;
+
+	$(document).trigger({ type: "overtones:help:show", idx:  stepIndex });
+});
+
+Shepherd.on('cancel', function(tour){
+	var step      = tour.tour.currentStep,
+		stepIndex = tour.tour.steps.indexOf(step) + 1;
+	
+	$(document).trigger({ type: "overtones:help:close", idx:  stepIndex });
+});
+
+Shepherd.on('complete', function(tour){
+	var step      = tour.step,
+		stepIndex = tour.tour.steps.indexOf(step) + 1;
+
+	$(document).trigger({ type: "overtones:help:complete" });
+});
+
 mainTour = new Shepherd.Tour({
   defaults: {
     classes: 'shepherd-theme-dark',
@@ -152,7 +174,14 @@ newbieTour
     buttons: [
         {
             text: 'No, thanks, I\'m good',
-            action: newbieTour.next,
+            action: function(){
+				newbieTour.next();
+				
+				$(document).trigger({
+					type: "overtones:help:close",
+					idx: 0
+				});
+			},
             classes: "button-cancel"
         },
         {
@@ -160,6 +189,11 @@ newbieTour
             action: function() {
                 newbieTour.next();
                 mainTour.start();
+				
+				$(document).trigger({
+					type: "overtones:help:next",
+					idx: 0
+				});
             }
         }
     ] 

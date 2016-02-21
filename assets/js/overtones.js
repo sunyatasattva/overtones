@@ -145,6 +145,33 @@ function showIntervalDifferenceWithTuning(tone, tuning) {
 }
 
 /**
+ * Gets the interval name between two frequencies or a ratio.
+ *
+ * @param  {Array|Sound}  a   An Array containing the ratio or a Sound object.
+ * @param  {Sound}        [b] The second Sound object to compare with.
+ *
+ * @return {string}  The interval name;
+ */
+function getIntervalName(a, b) {
+	var ratio,
+		intervalName;
+
+	if(arguments.length === 2 && a.frequency && b.frequency)
+		ratio = utils.fraction(b.frequency/a.frequency, 999);
+	else
+		ratio = a;
+	
+	try {
+        intervalName = intervals[ ratio[1] + "/" + ratio[2] ].name;
+    }
+    catch(e) {
+        intervalName = "Unknown interval";
+    }
+	
+	return intervalName;
+}
+
+/**
  * Shows the interval name between two tones
  *
  * @param  {Sound}  firstTone
@@ -153,17 +180,10 @@ function showIntervalDifferenceWithTuning(tone, tuning) {
  * @return  {string}  The interval name;
  */
 function showIntervalName(firstTone, secondTone) {
-    var ratio           = utils.fraction( secondTone.frequency/firstTone.frequency, 999),
-        centsDifference = Math.abs( firstTone.intervalInCents(secondTone) ),
-        intervalName;
-          
-    try {
-        intervalName = intervals[ ratio[1] + "/" + ratio[2] ].name;
-    }
-    catch(e) {
-        intervalName = "Unknown interval";
-    }
-    
+	var ratio = utils.fraction(secondTone.frequency/firstTone.frequency, 999),
+		intervalName = getIntervalName(ratio),
+        centsDifference = Math.abs( firstTone.intervalInCents(secondTone) );
+
     $("#interval-name").text(intervalName);
     
     $("#interval sup").text( ratio[1] );
@@ -312,6 +332,10 @@ function playIntervalOnAxis(interval, tone) {
 function toggleOption(option) {
     App.options[option] = !App.options[option];
     $("[data-option=" + option + "]").toggleClass("off");
+	$(document).trigger({
+		type: "overtones:options:change",
+		details: { optionName: option, optionValue: App.options[option] }
+	});
     
     return App.options[option];
 }
@@ -334,6 +358,11 @@ function updateBaseFrequency(val, mute) {
     
     if( !mute )
         $("#overtone-1").click();
+	
+	$(document).trigger({
+		type: "overtones:options:change",
+		details: { optionName: "baseFrequency", optionValue: val }
+	});
     
     return frequency;
 }
@@ -351,7 +380,14 @@ function updateVolume(val, mute) {
 
     App.currentVolume = val;
     tones.masterGain.gain.setValueAtTime(App.currentVolume, tones.context.currentTime);
-    if (!mute) tones.playFrequency( App.baseTone.frequency );
+    if (!mute) {
+		tones.playFrequency( App.baseTone.frequency );
+		
+		$(document).trigger({
+			type: "overtones:options:change",
+			details: { optionName: "mainVolume", optionValue: val }
+		});
+	}
     
     return val;
 }
@@ -380,6 +416,11 @@ function overtoneClickHandler() {
     animateOvertone( self, tone.envelope );
 
     fillSoundDetails(tone);
+	
+	$(document).trigger({
+		type: "overtones:play",
+		details: { element: "overtone", idx: idx, frequency: tone.frequency, options: App.options }
+	});
 }
 
 /**
@@ -405,6 +446,16 @@ function spiralPieceClickHandler() {
     playIntervalOnSpiral( [firstTone, secondTone], idx );
 
     fillSoundDetails( [firstTone, secondTone] );
+	
+	$(document).trigger({
+		type: "overtones:play",
+		details: { 
+			element: "spiral", 
+			idx: idx, 
+			interval: getIntervalName(firstTone, secondTone),
+			options: App.options
+		}
+	});
 }
 
 /**
@@ -426,6 +477,16 @@ function axisClickHandler() {
     playIntervalOnAxis(interval, tone);
 
     fillSoundDetails( [App.baseTone, tone] );
+	
+	$(document).trigger({
+		type: "overtones:play",
+		details: { 
+			element: "axis", 
+			idx: interval, 
+			interval: getIntervalName(App.baseTone, tone),
+			options: App.options
+		}
+	});
 }
 
 /**
