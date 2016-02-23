@@ -26,6 +26,11 @@ gulp.task('assets', function() {
         .pipe( decompress() )
         .pipe( gulp.dest('build/') )
 });
+gulp.task('default', function () {
+    return gulp.src('logo.svg')
+        .pipe(svgmin())
+        .pipe(gulp.dest('./out'));
+});
  
 gulp.task('css', function () {
   return gulp.src('./assets/styles/*.scss')
@@ -84,14 +89,14 @@ gulp.task('javascript', function () {
   webfont.bundle()
     .pipe( source('./assets/js/webfont.js') )
     .pipe( buffer() )
-        .pipe( uglify() )
+    .pipe( uglify() )
   	.pipe( cachebust.resources() )
     .pipe( gulp.dest('./build/') );
 
   return b.bundle()
     .pipe( source('./assets/js/script.js') )
     .pipe( buffer() )
-        .pipe( uglify() )
+    .pipe( uglify() )
   	.pipe( cachebust.resources() )
     .pipe( gulp.dest('./build/') );
 });
@@ -111,16 +116,26 @@ gulp.task('build', ['css', 'javascript'], function(){
 });
 
 gulp.task('deploy', ['build', 'clean'], function(){
-    var conn = ftp.create( {
+	var conn = ftp.create( {
         host:     process.env.FTP_HOST,
         user:     process.env.FTP_USER,
         password: process.env.FTP_PASS,
         parallel: 10,
         log:      gutil.log
     } );
-
+	
     return gulp.src( 'build/**', { buffer: false } )
-        .pipe( conn.newer( '/asmi/overtones/' ) ) // only upload newer files
-        .pipe( conn.dest( '/asmi/overtones/' ) );
+           .pipe( conn.dest( '/asmi/overtones/.' ) );
+});
 
+gulp.task('clean', function(cb) {
+	var conn = ftp.create( {
+        host:     process.env.FTP_HOST,
+        user:     process.env.FTP_USER,
+        password: process.env.FTP_PASS,
+        parallel: 10,
+        log:      gutil.log
+    } );
+	
+	conn.rmdir('/asmi/overtones/', cb)
 });
