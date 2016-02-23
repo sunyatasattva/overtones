@@ -4,6 +4,9 @@ var gulp = require('gulp');
 var gutil = require('gutil');
 var sass = require('gulp-sass');
 var autoprefixer = require('gulp-autoprefixer');
+var CacheBuster = require('gulp-cachebust');
+ 
+var cachebust = new CacheBuster();
 
 var include = require('gulp-include');
 var minifyHTML = require('gulp-htmlmin');
@@ -28,6 +31,7 @@ gulp.task('css', function () {
   return gulp.src('./assets/styles/*.scss')
     .pipe( sass({ outputStyle: 'compressed'}).on('error', sass.logError) )
     .pipe( autoprefixer('> 0.4%') )
+  	.pipe( cachebust.resources() )
     .pipe( gulp.dest('build/assets/styles/') );
 });
  
@@ -70,29 +74,25 @@ gulp.task('javascript:dev', function () {
 
 gulp.task('javascript', function () {
   var b = browserify({
-    entries: './assets/js/script.js',
-    debug: true
+    entries: './assets/js/script.js'
   });
     
   var webfont = browserify({
     entries: './assets/js/webfont.js',
-    debug: true
   });
     
   webfont.bundle()
     .pipe( source('./assets/js/webfont.js') )
     .pipe( buffer() )
-    .pipe( sourcemaps.init({loadMaps: true}) )
         .pipe( uglify() )
-    .pipe( sourcemaps.write('./') )
+  	.pipe( cachebust.resources() )
     .pipe( gulp.dest('./build/') );
 
   return b.bundle()
     .pipe( source('./assets/js/script.js') )
     .pipe( buffer() )
-    .pipe( sourcemaps.init({loadMaps: true}) )
         .pipe( uglify() )
-    .pipe( sourcemaps.write('./') )
+  	.pipe( cachebust.resources() )
     .pipe( gulp.dest('./build/') );
 });
 
@@ -102,12 +102,15 @@ gulp.task('watch', function() {
     gulp.watch('./assets/js/**/*.js', ['javascript:dev']);
 });
 
-gulp.task('build', ['css', 'html', 'javascript']);
+gulp.task('build', ['css', 'javascript'], function(){
+	return gulp.src('index.html')
+    .pipe( include() )
+    .pipe( minifyHTML({collapseWhitespace: true}) )
+  	.pipe( cachebust.references() )
+    .pipe( gulp.dest('build/') );
+});
 
-gulp.task('deploy', ['build', 'ftp']);
-
-gulp.task('ftp', function () {
-
+gulp.task('deploy', ['build', 'clean'], function(){
     var conn = ftp.create( {
         host:     process.env.FTP_HOST,
         user:     process.env.FTP_USER,
