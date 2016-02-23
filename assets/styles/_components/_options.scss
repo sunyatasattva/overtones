@@ -1,0 +1,100 @@
+#base-wrapper,
+#volume-control-wrapper {
+    display:  block;
+    margin:   30px 0 30px 30px;
+    position: relative;
+    
+    &::before {
+        background-position: center center;
+        background-repeat:   no-repeat;
+        content:             "";
+        width:               20px;
+        height:              20px;
+        position:            absolute;
+        top:                 2px;
+        left:                -30px;
+    }
+}
+
+#base-wrapper {
+    &::before {
+        background-image: url("../images/ico-base.svg");
+    }
+}
+
+#base-detail {
+    background: transparent;
+    border:     0;
+    color:      #909090;
+    text-align: right;
+    
+    -moz-appearance: textfield;
+    
+    &::-webkit-inner-spin-button { display: none; }
+}
+
+#base-detail-wrapper {
+    color:     #909090;
+    font-size: 11px;
+    position:  absolute;
+    top:       -10px;
+    right:     0;
+}
+
+#volume-control-wrapper {
+    &::before {
+        background-image: url("../images/ico-sound.svg");
+    }
+}
+
+#options {
+    background-color: rgba(64, 64, 64, 0.1);
+    box-sizing:       border-box;
+    padding:          20px;
+    z-index:          3;
+    width:            240px;
+    position:         absolute;
+}
+
+.options-buttons {
+    border-top: 1px solid #4E4E4E;
+    margin-top: 20px;
+    padding:    20px 0;
+}
+
+a.option-button {
+    @include has-tooltip();
+    
+    background:      no-repeat center center #666;
+    background-size: 60%;
+    border-radius:   20px;
+    display:         inline-block;
+    margin-right:    10px;
+    text-decoration: none;
+    width:           35px;
+    height:          35px;
+    position:        relative;
+}
+
+a#group-notes {
+    background-image: url("../images/ico-link-broken.svg");
+    
+    &::after { content: "Group notes"; }
+    
+    &:not(.off) {
+        background-color: #d4d4d4;
+        background-image: url("../images/ico-link.svg");
+        
+        &::after { content: "Ungroup notes"; }
+    }
+}
+
+a#reduce-to-octave {
+    background-image: url("../images/ico-octave-reduction.svg");
+    
+    &::after { content: "Reduce to octave"; }
+    
+    &:not(.off) {
+        background-color: #d4d4d4;
+    }
+}

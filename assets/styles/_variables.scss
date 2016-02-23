@@ -1,0 +1,23 @@
+$baseFontFamily: Sintony, Roboto, Helvetica, Arial, sans-serif;
+$serifFontFamily: Judson, Georgia, serif;
+
+@mixin has-tooltip($text: "", $position: bottom) {
+    &::after {
+        background:    rgba(80, 80, 80, 0.5);
+        border-radius: 5px;
+        box-shadow:    0 0 5px #1D1C1C;
+        color:         #fff;
+        content:       $text;
+        display:       none;
+        font-family:   $baseFontFamily;
+        font-size:     10px;
+        font-weight:   bold;
+        line-height:   10px;
+        padding:       5px;
+        white-space:   nowrap;
+        position:      absolute;
+        #{$position}:     -25px;
+    }
+    
+    &:hover::after { display: inline-block; }
+}

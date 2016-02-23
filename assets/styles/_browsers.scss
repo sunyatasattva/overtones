@@ -1,0 +1,21 @@
+/*
+ * Slightly degrading Firefox users experience.
+ *
+ * Firefox defaults the `transform-box` property of SVGs to the viewport
+ * instead of `fill-box`. The CSS cannot be modified in the release without
+ * setting a pref. So, for the time being, we are changing the experience of
+ * the user in this case.
+ *
+ * @see https://bugzilla.mozilla.org/show_bug.cgi?id=1208550
+ */
+
+.firefox {
+    .overtone { opacity: 0.9; }
+    
+    .overtone:hover,
+    .overtone:active,
+    .overtone.active { 
+        opacity:   1;
+        transform: scale(1);
+    }
+}
