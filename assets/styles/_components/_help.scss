@@ -488,9 +488,15 @@ body.shepherd-active {
     }
     
     &[data-shepherd-step=options-octave],
-    &[data-shepherd-step=newbie-help]{
+    &[data-shepherd-step=newbie-help] {
         .shepherd-target.shepherd-enabled {
             box-shadow: 0 0 10px #FF8A0B;
+        }
+    }
+	
+	&[data-shepherd-step=newbie-help] {
+        #help {
+            background-color: #d4d4d4;
         }
     }
 }

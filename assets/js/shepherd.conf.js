@@ -43,16 +43,18 @@ mainTour = new Shepherd.Tour({
 mainTour
 .addStep('overtone-spiral', {
     text: ['This is a visual representation of a fundamental sound and its overtones.',
-          'Each complete spiral revolution is a full circle, and represents an octave.'],
+          'Each complete spiral revolution represents an octave.'],
     attachTo: '#Overtone-Spiral right',
     title: '1/10',
     tetherOptions: {
         offset: '0 -220px'
-    }
+	}
 })
 .addStep('fundamental-overtone', {
-    text: ['The circle at the center of the spiral represents the fundamental tone.',
-         'Click on the circle to hear the sound.'],
+    text: ['The circle at the center of the spiral represents the fundamental tone, ' +
+		   'first partial of the harmonic series.',
+		   'Each other circle represents the following partials, up to the 16th.',
+           'Click on the circle to hear the sound.'],
     attachTo: '#overtone-1 bottom',
     title: '2/10',
     buttons: {},
@@ -90,7 +92,8 @@ mainTour
     }
 })
 .addStep('interval-details', {
-    text: ['In this case you see the information about the relationship between the notes you just heard.'],
+    text: ['In this case you see the information about the relationship between the notes you just heard.',
+		   '<small>The spiral pieces are thus representations of intervals in the harmonic series.</small>'],
     attachTo: '#sound-details bottom',
     title: '5/10',
     when: {
