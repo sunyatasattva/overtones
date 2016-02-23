@@ -48,6 +48,15 @@ mainTour
     title: '1/10',
     tetherOptions: {
         offset: '0 -220px'
+    },
+	when: {
+		'before-show': function() {
+			if( $('body').data('shepherd-step') === 'newbie-help' ){
+				newbieTour.next(); // Close the newbie tour if open
+				// This fixes a bug happening if the two tours would overlap
+				$('body').addClass('shepherd-active');
+			}
+		}
 	}
 })
 .addStep('fundamental-overtone', {
