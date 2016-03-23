@@ -504,6 +504,46 @@ function axisClickHandler() {
 }
 
 /**
+ * Base Input handler
+ *
+ * Allows usage of <kbd>arrow up</kbd> and <kbd>arrow down</kbd> keys
+ * to easy modify the value of the input. Using <kbd>SHIFT</kbd> allows
+ * for increments of 10, while <kbd>ALT</kbd> for increments of 0.1.
+ *
+ * @return  void
+ */
+function baseInputHandler(e){
+	const ARROW_UP    = 38,
+		  ARROW_DOWN  = 40,
+		  $this       = $(this);
+	
+	let currentValue = +$this.get(0).value;
+	
+	switch(e.keyCode){
+		case ARROW_UP:
+			e.preventDefault();
+			
+			if     (e.altKey)   $this.val(currentValue + 0.1);
+			else if(e.shiftKey) $this.val(currentValue + 10);
+			else                $this.val(currentValue + 1);
+			
+			$this.change();
+			
+			break;
+		case ARROW_DOWN:
+			e.preventDefault();
+			
+			if     (e.altKey)   $this.val(currentValue - 0.1);
+			else if(e.shiftKey) $this.val(currentValue - 10);
+			else                $this.val(currentValue - 1);
+			
+			$this.change();
+			
+			break;
+	}
+}
+
+/**
  * Initializes the application
  *
  * Sets the master gain volume to the slider bar, attaches the event handlers to the
@@ -518,6 +558,8 @@ function init() {
     $(".overtone").on("click", overtoneClickHandler);
     $(".spiral-piece").on("click", spiralPieceClickHandler);
     $(".axis").on("click", axisClickHandler);
+	
+	$("#base-detail").on("keydown", baseInputHandler);
     
     $("#base, #base-detail").on("change", function(){
       updateBaseFrequency( $(this).val() );
