@@ -426,9 +426,23 @@ function updateVolume(val, mute) {
  */
 function overtoneClickHandler() {
     var idx           = $(this).index() + 1,
+		soundPlaying  = $(this).data("isPlaying"),
         self          = this,
         noteFrequency = idx * App.baseTone.frequency,
-        tone          = tones.createSound(noteFrequency);
+        tone;
+	
+	if(soundPlaying){
+		soundPlaying.fadeOut();
+		$(this).removeData("isPlaying");
+		return;
+	}
+	
+	tone = tones.createSound(noteFrequency);
+	
+	if( App.options.sustain ){
+		tone.envelope.sustain = -1;
+		$(this).data("isPlaying", tone);
+	}
 
     if( App.options.octaveReduction )
         tone.reduceToSameOctaveAs(App.baseTone);
