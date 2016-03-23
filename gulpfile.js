@@ -39,6 +39,13 @@ gulp.task('css', function () {
   	.pipe( cachebust.resources() )
     .pipe( gulp.dest('build/assets/styles/') );
 });
+
+gulp.task('css:dev', function () {
+  return gulp.src('./assets/styles/*.scss')
+    .pipe( sass().on('error', sass.logError) )
+    .pipe( autoprefixer('> 0.4%') )
+    .pipe( gulp.dest('build/assets/styles/') );
+});
  
 gulp.task('css:watch', function () {
   gulp.watch('./sass/**/*.scss', ['sass']);
@@ -55,7 +62,8 @@ gulp.task('javascript:dev', function () {
   var b = browserify({
     entries: './assets/js/script.js',
     debug: true
-  });
+  })
+  .transform("babelify", { presets: ["es2015"] });
 
   var webfont = browserify({
     entries: './assets/js/webfont.js',
@@ -80,7 +88,8 @@ gulp.task('javascript:dev', function () {
 gulp.task('javascript', function () {
   var b = browserify({
     entries: './assets/js/script.js'
-  });
+  })
+  .transform("babelify", { presets: ["es2015"] });
     
   var webfont = browserify({
     entries: './assets/js/webfont.js',
@@ -103,7 +112,7 @@ gulp.task('javascript', function () {
 
 gulp.task('watch', function() {
     gulp.watch(['index.html', './assets/images/overtone-spiral.svg'], ['html']);
-    gulp.watch(['./assets/styles/*.scss', './assets/styles/**/*.scss'], ['css']);
+    gulp.watch(['./assets/styles/*.scss', './assets/styles/**/*.scss'], ['css:dev']);
     gulp.watch('./assets/js/**/*.js', ['javascript:dev']);
 });
 
