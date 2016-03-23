@@ -91,6 +91,14 @@ module.exports = {
 		return decimals > 0.5 ? -Math.round( (1 - decimals) * 100 ) :
 		                        Math.round(decimals * 100);
 	},
+	encodeAccidentals: function(str){
+		if( str.match(/#/g) )
+			return "&sharp;";
+		else if( str.match(/b/g) )
+			return "&flat;";
+		else
+			return "";
+	},
     /**
      * Transforms an rgb value into an hex value
      *
