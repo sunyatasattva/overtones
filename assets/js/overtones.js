@@ -365,12 +365,10 @@ function toggleOption(option) {
  * @return {number}  The new frequency
  */
 function updateBaseFrequency(val, mute) {
-    var frequency = Math.floor(val);
+    App.baseTone      = tones.createSound(val);
+	App.baseTone.name = frequencyToNoteDetails(val).name;
 	
-    App.baseTone      = tones.createSound(frequency);
-	App.baseTone.name = frequencyToNoteDetails(frequency).name;
-	
-    $("#base, #base-detail").val(frequency);
+    $("#base, #base-detail").val(val);
     
     if( !mute )
         $("#overtone-1").click();
@@ -380,7 +378,7 @@ function updateBaseFrequency(val, mute) {
 		details: { optionName: "baseFrequency", optionValue: val }
 	});
     
-    return frequency;
+    return val;
 }
 
 /**
