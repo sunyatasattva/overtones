@@ -72,6 +72,25 @@ module.exports = {
 		return round ? Math.round(n) : n;
 	},
 	/* jshint ignore:end */
+	MIDIToName: function(n, pitchSet){
+		let name,
+			octave;
+
+		n        = Math.round(n);
+		pitchSet = pitchSet ? this.pitchSort(pitchSet) :
+			       this.pitchSet("P1 m2 M2 m3 M3 P4 4A P5 m6 M6 m7 M7", "C");
+		
+		name     = pitchSet[n % 12];
+		octave   = Math.floor(n / 12) - 1;
+
+		return { name: name, octave: octave };
+	},
+	decimalsToCents: function(n){
+		let decimals = n % 1;
+		
+		return decimals > 0.5 ? -Math.round( (1 - decimals) * 100 ) :
+		                        Math.round(decimals * 100);
+	},
     /**
      * Transforms an rgb value into an hex value
      *
