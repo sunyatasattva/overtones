@@ -151,9 +151,8 @@ Sound.prototype.play = function(){
     this.envelope.node.gain
     .setTargetAtTime( this.envelope.volume, now + this.envelope.attack, this.envelope.decay / 5 );
 
-    // @todo if sustain is null, note has to be stopped manually. Also document this.
-    if( this.envelope.sustain !== null ) {
-        
+    // @todo if sustain is < 0, note has to be stopped manually. Also document this.
+    if( this.envelope.sustain >= 0 ) {
         
         // Setting a "keyframe" for the volume to be kept until `sustain` seconds have passed
         // (plus all the rest)
@@ -208,6 +207,17 @@ Sound.prototype.stop = function(){
     this.oscillator.stop();
     
     return this.remove();
+};
+
+Sound.prototype.fadeOut = function(){
+	var now  = ctx.currentTime,
+        self = this;
+	
+	this.envelope.node.gain.setTargetAtTime( 0, now, this.envelope.release / 5);
+	
+	setTimeout( function() {
+		self.stop();
+	}, this.envelope.release * 1250 );
 };
 
 /**
