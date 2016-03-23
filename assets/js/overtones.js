@@ -14,12 +14,18 @@ var $ = jQuery = require("jquery");
 require("velocity-animate");
 require("jquery.animate-number");
 
-var utils     = require("./lib/utils.js"),
-    intervals = require("../data/intervals.json"),
-    tones     = require("./lib/tones.js"),
-    $         = require("jquery");
+var utils      = require("./lib/utils.js"),
+    intervals  = require("../data/intervals.json"),
+    tones      = require("./lib/tones.js"),
+    $          = require("jquery");
 
 var tTET = require("../data/12-tet.json");
+
+// Partially applied function to get the names of pitches
+// @see {@link https://github.com/sunyatasattva/overtones/issues/30}
+const PITCH_SET = utils.pitchSet("P1 m2 M2 m3 M3 P4 4A P5 m6 M6 m7 M7");
+
+const MIDI_A4 = 69;
 
 /**
  * Will hide the elements if this function is not called again for 5 seconds
@@ -31,6 +37,17 @@ var tTET = require("../data/12-tet.json");
 var hideElementWhenIdle = utils.debounce(function($element){
           $element.removeClass("visible");
     }, 5000);
+
+function frequencyToNoteDetails(frequency, tonic = "C") {
+	let noteNumber = utils.getEqualTemperedNoteNumber( frequency,
+					{ referencePoint: MIDI_A4, round: false } ),
+		noteName   = utils.MIDIToName( noteNumber, PITCH_SET(tonic) );
+	
+	noteName.centsDifference = utils.decimalsToCents(noteNumber);
+	noteName.accidentals     = utils.encodeAccidentals(noteName.name);
+
+	return noteName;
+}
 
 /**
  * Animates an overtone for a given duration
@@ -98,15 +115,9 @@ function animateOvertone(el, duration) {
  */
 function showIntervalDifferenceWithTuning(tone, tuning) {
     var tuning = tuning || "12-TET", // @todo this doesn't do anything currently, placeholder
-        frequencies      = utils.values(tTET),
-        closestFrequency = utils.binarySearch(tone.frequency, frequencies),
-        centsDifference  = tone.intervalInCents( { frequency: closestFrequency } ),
-        note;
-    
-    note = utils.findKey( tTET, 
-        function(frequency){ 
-            return frequency === closestFrequency;
-        } ).split(/(\d)/);
+		
+		note            = frequencyToNoteDetails(tone.frequency, App.baseTone.name),
+		centsDifference = note.centsDifference;
     
     $("#note-frequency")
     // Set the base number from which to animate to the current frequency
@@ -120,11 +131,13 @@ function showIntervalDifferenceWithTuning(tone, tuning) {
            $target.text(flooredNumber + " Hz");
      }
     }, 200);
-    
-    // Fills up the note name
-    $("#note-name").text( note[0] );
+
+	// Fills up the note name (disregarding the accidental)
+    $("#note-name").text( note.name[0] );
+	// Fills up the note accidentals
+    $("#note-accidentals").html( note.accidentals );
     // Fills up the note octave
-    $("#note sub").text( note[1] );
+    $("#note sub").text( note.octave );
     
     // Fills up the bar indicating the cents difference: a difference of 0
     // would have the pointer at the center, with the extremes being 50
@@ -141,7 +154,7 @@ function showIntervalDifferenceWithTuning(tone, tuning) {
     
     $(".tuning .cent-bar").css("left", 50 + centsDifference / 2 + "%");
     
-    console.log(note[0], closestFrequency, centsDifference);
+    console.log(note.name, centsDifference);
 }
 
 /**
@@ -353,7 +366,10 @@ function toggleOption(option) {
  */
 function updateBaseFrequency(val, mute) {
     var frequency = Math.floor(val);
-    App.baseTone = tones.createSound(frequency);
+	
+    App.baseTone      = tones.createSound(frequency);
+	App.baseTone.name = frequencyToNoteDetails(frequency).name;
+	
     $("#base, #base-detail").val(frequency);
     
     if( !mute )
@@ -499,6 +515,7 @@ function axisClickHandler() {
  */
 function init() {
     updateVolume( $("#volume-control").val(), true );
+	App.baseTone.name = frequencyToNoteDetails(App.baseTone.frequency).name;
     
     $(".overtone").on("click", overtoneClickHandler);
     $(".spiral-piece").on("click", spiralPieceClickHandler);
