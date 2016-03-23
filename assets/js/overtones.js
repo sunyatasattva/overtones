@@ -365,6 +365,14 @@ function toggleOption(option) {
  * @return {number}  The new frequency
  */
 function updateBaseFrequency(val, mute) {
+	const $base = $("#base");
+	
+	// Enforce minimum and maximums
+	if( val > +$base.attr('max') )
+		val = +$base.attr('max');
+	else if( val < +$base.attr('min') )
+		val = +$base.attr('min');
+	
     App.baseTone      = tones.createSound(val);
 	App.baseTone.name = frequencyToNoteDetails(val).name;
 	
