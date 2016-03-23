@@ -59,6 +59,19 @@ module.exports = {
     logBase: function(base,n) {
         return Math.log(n) / Math.log(base);
     },
+	/* jshint ignore:start */ // JsHint can't deal with this pro destructuring syntax
+	getEqualTemperedNoteNumber: function(frequency,
+										 { referenceFrequency = 440,
+										   referencePoint     = 0,
+										   semitones          = 12,
+										   round              = true } = {}
+										){
+		let n = semitones * this.logBase(2, frequency / referenceFrequency) +
+			    referencePoint;
+		
+		return round ? Math.round(n) : n;
+	},
+	/* jshint ignore:end */
     /**
      * Transforms an rgb value into an hex value
      *
