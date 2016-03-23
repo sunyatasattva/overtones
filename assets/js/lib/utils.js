@@ -91,5 +91,13 @@ module.exports = {
     /**
      * @see  {@link  https://lodash.com/docs#debounce|lodash.values}
      */
-    values:   require("lodash.values")
+    values:   require("lodash.values"),
+	/**
+     * @see  {@link  https://github.com/danigb/tonal/tree/master/packages/pitch-set|pitch-set}
+     */
+    pitchSet: require("pitch-set"),
+	/**
+     * @see  {@link  https://github.com/danigb/tonal/tree/master/packages/music-gamut|music-gamut.sort}
+     */
+    pitchSort: require("music-gamut").sort
 };

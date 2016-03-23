@@ -26,6 +26,8 @@
     "lodash.debounce": "^3.1.1",
     "lodash.findkey": "^3.0.1",
     "lodash.values": "^3.0.0",
+    "music-gamut": "0.7.7",
+    "pitch-set": "^1.0.2",
     "tether-shepherd": "^1.7.0",
     "velocity-animate": "^1.2.3",
     "webfontloader": "^1.6.21"
