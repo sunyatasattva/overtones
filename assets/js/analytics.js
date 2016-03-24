@@ -15,5 +15,8 @@ module.exports = function($){
 		e.idx = e.idx || null;
 
 		window.dataLayer.push({ event: e.type, idx: e.idx, action: action, target: target });
-  	});
+  	})
+	.on('overtones:play:all overtones:easteregg:share', function(e){
+		window.dataLayer.push({ event: e.type });
+	});
 };

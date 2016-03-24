@@ -176,9 +176,15 @@ Sound.prototype.play = function(){
 
         // Start the removal of the sound process after a little more than the sound duration to account for
         // the approximation. (To make sure that the sound doesn't get cut off while still audible)
-        setTimeout( function() {
-            if( !self.isStopping ) self.stop();
-        }, this.duration * 1250 );
+        return new Promise(function(resolve, reject){
+			let effectiveSoundDuration = self.envelope.attack + self.envelope.decay + self.envelope.sustain;
+			
+			setTimeout( ()=>resolve(self), effectiveSoundDuration * 1000 );
+			
+			setTimeout( function() {
+				if( !self.isStopping ) self.stop();
+			}, self.duration * 1250 );
+		});
     }
     
     return this;
@@ -229,9 +235,12 @@ Sound.prototype.fadeOut = function(){
 	this.isPlaying = false;
 	this.isStopping = true;
 	
-	setTimeout( function() {
-		self.stop();
-	}, this.envelope.release * 1250 );
+	return new Promise(function(resolve, reject){
+		setTimeout( function() {
+			self.stop();
+			resolve(self);
+		}, self.envelope.release * 1250 );
+	});
 };
 
 /**

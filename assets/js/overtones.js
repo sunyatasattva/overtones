@@ -72,6 +72,9 @@ function stopAllPlayingSounds() {
 	$(".overtone")
 	.removeData("isPlaying")
 	.removeClass("is-playing");
+	
+	if( $("body").hasClass("easter-egg") )
+		$("body").removeClass("easter-egg") // @todo decouple this from here
 }
 
 /**
@@ -472,6 +475,9 @@ function overtoneClickHandler() {
 		$(this)
 		.removeData("isPlaying")
 		.removeClass("is-playing");
+		
+		if( $("body").hasClass("easter-egg") )
+			$("body").removeClass("easter-egg") // @todo decouple this from here
 		return;
 	}
 	
@@ -496,6 +502,9 @@ function overtoneClickHandler() {
 			]);
 		}
 		else fillSoundDetails(tone);
+		
+		if( $(".overtone.is-playing").length === $(".overtone").length )
+			$(document).trigger("overtones:play:all");
 	}
 	else fillSoundDetails(tone);
 
