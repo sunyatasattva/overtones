@@ -216,6 +216,7 @@ Sound.prototype.fadeOut = function(){
         self = this;
 	
 	this.envelope.node.gain.setTargetAtTime( 0, now, this.envelope.release / 5);
+	this.isPlaying = false;
 	
 	setTimeout( function() {
 		self.stop();
@@ -276,28 +277,7 @@ Sound.prototype.isOctaveOf = function(tone){
  * @return {Sound}  The original Sound object is returned
  */
 Sound.prototype.reduceToSameOctaveAs = function(tone, excludeOctave){
-    var ratio = this.frequency / tone.frequency;
-    
-    if( excludeOctave ) {
-        while( ratio < 1 || ratio >= 2 ){
-            if( ratio < 1 )
-                this.frequency = this.frequency * 2;
-            else
-                this.frequency = this.frequency / 2;
-
-            ratio = this.frequency / tone.frequency;
-        }
-    }
-    else {
-        while( ratio <= 1 || ratio > 2 ){
-            if( ratio <= 1 )
-                this.frequency = this.frequency * 2;
-            else
-                this.frequency = this.frequency / 2;
-
-            ratio = this.frequency / tone.frequency;
-        }
-    }
+	this.frequency = reduceToSameOctave(this, tone, excludeOctave);
     
     this.oscillator.frequency.setValueAtTime( this.frequency, ctx.currentTime );
 
@@ -360,6 +340,48 @@ function playFrequency(frequency, opts) {
     return thisSound.play();
 }
 
+/**
+ * Reduces the Sound pitch to a tone within an octave of the tone.
+ *
+ * @see  {@link Sound.prototype.reduceToSameOctaveAs}
+ * @alias module:tones.reduceToSameOctave
+ *
+ * @param  {Sound|Object} firstTone      A Sound object (or an object containing a `frequency` property)
+ * @param  {Sound|Object} referenceTone  The first sound will adjust its frequency
+ *                                       to the same octave as this tone
+ * @param  {bool}  excludeOctave  If this option is `true`, the exact octave will be reduced
+ *                                to the unison of the original sound
+ *
+ * @return {Number}  The frequency of the first sound within the same octave as the reference tone.
+ */
+function reduceToSameOctave(firstTone, referenceTone, excludeOctave){
+    var targetFrequency = firstTone.frequency,
+		ratio           = targetFrequency / referenceTone.frequency;
+    
+    if( excludeOctave ) {
+        while( ratio <= 0.5 || ratio >= 2 ){
+            if( ratio <= 0.5 )
+                targetFrequency = targetFrequency * 2;
+            else
+                targetFrequency = targetFrequency / 2;
+
+            ratio = targetFrequency / referenceTone.frequency;
+        }
+    }
+    else {
+        while( ratio < 0.5 || ratio > 2 ){
+            if( ratio < 0.5 )
+               targetFrequency = targetFrequency * 2;
+            else
+               targetFrequency = targetFrequency / 2;
+
+            ratio = targetFrequency / referenceTone.frequency;
+        }
+    }
+    
+    return targetFrequency;
+};
+
 module.exports = {
     /**
      * The Audio Context where the module operates
@@ -373,6 +395,7 @@ module.exports = {
      */
     masterGain:    masterGain,
     playFrequency: playFrequency,
+	reduceToSameOctave: reduceToSameOctave,
     /**
      * A list of currently active sounds for manipulation
      * @type  {array}
