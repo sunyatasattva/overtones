@@ -49,6 +49,7 @@
             <div class="options-buttons">
                 <a href="#" id="group-notes" class="option-button grouped" data-option="groupNotes"></a>
                 <a href="#" id="reduce-to-octave" class="option-button off" data-option="octaveReduction"></a>
+                <a href="#" id="sustain" class="option-button off" data-option="sustain"></a>
             </div>
         </div>
     </div>
@@ -60,7 +61,9 @@
         </div>
         <div id="note"
             data-intro="The note name in the <a href='https://en.wikipedia.org/wiki/Scientific_pitch_notation' target='_blank'>modern scientific pitch notation</a>"
-            data-position="left"><span id="note-name"></span><sub></sub></div>
+            data-position="left">
+            <span id="note-name"></span><span id="note-accidentals" class="accidental"></span><sub></sub>
+        </div>
         <div id="interval-name" class="note-detail"
             data-intro="The name of the interval"
             data-position="left"></div>
@@ -85,12 +88,14 @@
     
     <footer>
         <button href="#" id="help">?</button>
-        <p class="credits">Designed and crafted with joy by <a href="https://facebook.com/sunyatasattva">Marco Lucio Giannotta</a> and <a href="https://www.facebook.com/skye.lofvander">Skye Løfvander</a></p>
+        <p class="credits">Designed and crafted with joy by <a href="https://facebook.com/sunyatasattva">Marco Lucio Giannotta</a> and <a href="https://www.facebook.com/skye.lofvander">Skye Løfvander</a>. <span class="version">Version <a href="https://github.com/sunyatasattva/overtones/releases/tag/1.1.0">1.1.0</a></span></p>
         <div class="social">
             <!--=include components/_facebook.html -->
             <!--=include components/_twitter.html -->
             <!--=include components/_github.html -->
         </div>
+        
+        <!--=include components/_easter-egg.html -->
     </footer>
     
     <script src="assets/js/script.js"></script>

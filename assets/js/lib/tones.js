@@ -44,7 +44,8 @@ masterGain.connect(ctx.destination);
  *
  * @param  {number}  attack  The amount of time the sound will take to reach full amplitude
  * @param  {number}  decay   The amount of time for the sound to reach sustain amplitude after attack
- * @param  {number}  sustain The duration of the sound is kept being played
+ * @param  {number}  sustain The duration of the sound is kept being played. If `sustain` is < 0, the
+ *                           sound will be played until manually stopped
  * @param  {number}  release The amount of time for the sound to fade out
  *
  * @return {Envelope}  The envelope object, containing the gain node.
@@ -131,6 +132,8 @@ Sound.prototype.play = function(){
         self = this;
     
     this.oscillator.start();
+	
+	this.isPlaying = true;
     
     /**
      * Using `setTargetAtTime` because `exponentialRampToValueAtTime` doesn't seem to work properly under
@@ -151,10 +154,7 @@ Sound.prototype.play = function(){
     this.envelope.node.gain
     .setTargetAtTime( this.envelope.volume, now + this.envelope.attack, this.envelope.decay / 5 );
 
-    // @todo if sustain is null, note has to be stopped manually. Also document this.
-    if( this.envelope.sustain !== null ) {
-        
-        
+    if( this.envelope.sustain >= 0 ) {
         // Setting a "keyframe" for the volume to be kept until `sustain` seconds have passed
         // (plus all the rest)
         this.envelope.node.gain
@@ -176,9 +176,15 @@ Sound.prototype.play = function(){
 
         // Start the removal of the sound process after a little more than the sound duration to account for
         // the approximation. (To make sure that the sound doesn't get cut off while still audible)
-        setTimeout( function() {
-            self.stop();
-        }, this.duration * 1250 );
+        return new Promise(function(resolve, reject){
+			let effectiveSoundDuration = self.envelope.attack + self.envelope.decay + self.envelope.sustain;
+			
+			setTimeout( ()=>resolve(self), effectiveSoundDuration * 1000 );
+			
+			setTimeout( function() {
+				if( !self.isStopping ) self.stop();
+			}, self.duration * 1250 );
+		});
     }
     
     return this;
@@ -190,11 +196,17 @@ Sound.prototype.play = function(){
  * @return {Sound}  The Sound object that was removed
  */
 Sound.prototype.remove = function(){
-    this.oscillator.disconnect(this.envelope.node);
-    this.envelope.node.gain.cancelScheduledValues(ctx.currentTime);
-    this.envelope.node.disconnect(masterGain);
+    try { 
+		this.oscillator.disconnect(this.envelope.node);
+		this.envelope.node.gain.cancelScheduledValues(ctx.currentTime);
+		this.envelope.node.disconnect(masterGain);
+	}
+	catch (e) {
+		console.trace();
+	}
 
-    return sounds.splice( sounds.indexOf(this), 1 )[0];
+    if( sounds.indexOf(this) !== -1 )
+		return sounds.splice( sounds.indexOf(this), 1 )[0];
 };
 
 /**
@@ -208,6 +220,27 @@ Sound.prototype.stop = function(){
     this.oscillator.stop();
     
     return this.remove();
+};
+
+/**
+ * Fades out a sound according to its release value. Useful for sustained sounds.
+ *
+ * @return  void
+ */
+Sound.prototype.fadeOut = function(){
+	var now  = ctx.currentTime,
+        self = this;
+	
+	this.envelope.node.gain.setTargetAtTime( 0, now, this.envelope.release / 5 );
+	this.isPlaying = false;
+	this.isStopping = true;
+	
+	return new Promise(function(resolve, reject){
+		setTimeout( function() {
+			self.stop();
+			resolve(self);
+		}, self.envelope.release * 1250 );
+	});
 };
 
 /**
@@ -264,28 +297,7 @@ Sound.prototype.isOctaveOf = function(tone){
  * @return {Sound}  The original Sound object is returned
  */
 Sound.prototype.reduceToSameOctaveAs = function(tone, excludeOctave){
-    var ratio = this.frequency / tone.frequency;
-    
-    if( excludeOctave ) {
-        while( ratio < 1 || ratio >= 2 ){
-            if( ratio < 1 )
-                this.frequency = this.frequency * 2;
-            else
-                this.frequency = this.frequency / 2;
-
-            ratio = this.frequency / tone.frequency;
-        }
-    }
-    else {
-        while( ratio <= 1 || ratio > 2 ){
-            if( ratio <= 1 )
-                this.frequency = this.frequency * 2;
-            else
-                this.frequency = this.frequency / 2;
-
-            ratio = this.frequency / tone.frequency;
-        }
-    }
+	this.frequency = reduceToSameOctave(this, tone, excludeOctave);
     
     this.oscillator.frequency.setValueAtTime( this.frequency, ctx.currentTime );
 
@@ -348,6 +360,48 @@ function playFrequency(frequency, opts) {
     return thisSound.play();
 }
 
+/**
+ * Reduces the Sound pitch to a tone within an octave of the tone.
+ *
+ * @see  {@link Sound.prototype.reduceToSameOctaveAs}
+ * @alias module:tones.reduceToSameOctave
+ *
+ * @param  {Sound|Object} firstTone      A Sound object (or an object containing a `frequency` property)
+ * @param  {Sound|Object} referenceTone  The first sound will adjust its frequency
+ *                                       to the same octave as this tone
+ * @param  {bool}  excludeOctave  If this option is `true`, the exact octave will be reduced
+ *                                to the unison of the original sound
+ *
+ * @return {Number}  The frequency of the first sound within the same octave as the reference tone.
+ */
+function reduceToSameOctave(firstTone, referenceTone, excludeOctave){
+    var targetFrequency = firstTone.frequency,
+		ratio           = targetFrequency / referenceTone.frequency;
+    
+    if( excludeOctave ) {
+        while( ratio <= 0.5 || ratio >= 2 ){
+            if( ratio <= 0.5 )
+                targetFrequency = targetFrequency * 2;
+            else
+                targetFrequency = targetFrequency / 2;
+
+            ratio = targetFrequency / referenceTone.frequency;
+        }
+    }
+    else {
+        while( ratio < 0.5 || ratio > 2 ){
+            if( ratio < 0.5 )
+               targetFrequency = targetFrequency * 2;
+            else
+               targetFrequency = targetFrequency / 2;
+
+            ratio = targetFrequency / referenceTone.frequency;
+        }
+    }
+    
+    return targetFrequency;
+};
+
 module.exports = {
     /**
      * The Audio Context where the module operates
@@ -361,6 +415,7 @@ module.exports = {
      */
     masterGain:    masterGain,
     playFrequency: playFrequency,
+	reduceToSameOctave: reduceToSameOctave,
     /**
      * A list of currently active sounds for manipulation
      * @type  {array}

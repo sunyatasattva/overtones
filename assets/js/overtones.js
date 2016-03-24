@@ -14,12 +14,15 @@ var $ = jQuery = require("jquery");
 require("velocity-animate");
 require("jquery.animate-number");
 
-var utils     = require("./lib/utils.js"),
-    intervals = require("../data/intervals.json"),
-    tones     = require("./lib/tones.js"),
-    $         = require("jquery");
+var utils      = require("./lib/utils.js"),
+    intervals  = require("../data/intervals.json"),
+    tones      = require("./lib/tones.js"),
+    $          = require("jquery");
 
-var tTET = require("../data/12-tet.json");
+// Partially applied function to get the names of pitches
+// @see {@link https://github.com/sunyatasattva/overtones/issues/30}
+const PITCH_SET = utils.pitchSet("P1 m2 M2 m3 M3 P4 4A P5 m6 M6 m7 M7"),
+      MIDI_A4   = 69;
 
 /**
  * Will hide the elements if this function is not called again for 5 seconds
@@ -31,6 +34,48 @@ var tTET = require("../data/12-tet.json");
 var hideElementWhenIdle = utils.debounce(function($element){
           $element.removeClass("visible");
     }, 5000);
+
+/**
+ * Given a frequency, it gets the closest A440 12T Equal tempered note.
+ *
+ * It outputs the name according to a specific pitch set (@see {@link PITCH_SET}).
+ *
+ * @param  {Number}  frequency    The frequency to check
+ * @param  {String}  [tonic="C"]  The tonic to calculate the scale
+ *
+ * @return {Object}  The details containing the note name, octave, accidentals,
+ *                   encoded accidentals, and the cents difference to the closest
+ *                   equal tempered note
+ */
+function frequencyToNoteDetails(frequency, tonic = "C") {
+	let noteNumber = utils.getEqualTemperedNoteNumber( frequency,
+					{ referencePoint: MIDI_A4, round: false } ),
+		noteName   = utils.MIDIToName( noteNumber, PITCH_SET(tonic) );
+	
+	noteName.centsDifference = utils.decimalsToCents(noteNumber);
+	noteName.accidentals     = utils.encodeAccidentals(noteName.name);
+
+	return noteName;
+}
+
+/**
+ * Fades out all playing sounds
+ *
+ * @return  void
+ */
+function stopAllPlayingSounds() {
+	tones.sounds.forEach(function(sound){
+		if(sound.isPlaying)
+			sound.fadeOut();
+	});
+	
+	$(".overtone")
+	.removeData("isPlaying")
+	.removeClass("is-playing");
+	
+	if( $("body").hasClass("easter-egg") )
+		$("body").removeClass("easter-egg") // @todo decouple this from here
+}
 
 /**
  * Animates an overtone for a given duration
@@ -47,7 +92,7 @@ function animateOvertone(el, duration) {
         // why we are reversing the array
         $circles         = $( $spacesGroup.find("g").get().reverse() ),
         numbersOfCircles = $circles.length,
-        originalFill     = utils.rgbToHex( $spacesGroup.css("fill") ),
+        originalFill     = "#FFFFFF",
         fillColor        = "#FFE08D";
 
     // If it's already animating, it won't animate again
@@ -98,15 +143,9 @@ function animateOvertone(el, duration) {
  */
 function showIntervalDifferenceWithTuning(tone, tuning) {
     var tuning = tuning || "12-TET", // @todo this doesn't do anything currently, placeholder
-        frequencies      = utils.values(tTET),
-        closestFrequency = utils.binarySearch(tone.frequency, frequencies),
-        centsDifference  = tone.intervalInCents( { frequency: closestFrequency } ),
-        note;
-    
-    note = utils.findKey( tTET, 
-        function(frequency){ 
-            return frequency === closestFrequency;
-        } ).split(/(\d)/);
+		
+		note            = frequencyToNoteDetails(tone.frequency, App.baseTone.name),
+		centsDifference = note.centsDifference;
     
     $("#note-frequency")
     // Set the base number from which to animate to the current frequency
@@ -120,11 +159,13 @@ function showIntervalDifferenceWithTuning(tone, tuning) {
            $target.text(flooredNumber + " Hz");
      }
     }, 200);
-    
-    // Fills up the note name
-    $("#note-name").text( note[0] );
+
+	// Fills up the note name (disregarding the accidental)
+    $("#note-name").text( note.name[0] );
+	// Fills up the note accidentals
+    $("#note-accidentals").html( note.accidentals );
     // Fills up the note octave
-    $("#note sub").text( note[1] );
+    $("#note sub").text( note.octave );
     
     // Fills up the bar indicating the cents difference: a difference of 0
     // would have the pointer at the center, with the extremes being 50
@@ -141,7 +182,7 @@ function showIntervalDifferenceWithTuning(tone, tuning) {
     
     $(".tuning .cent-bar").css("left", 50 + centsDifference / 2 + "%");
     
-    console.log(note[0], closestFrequency, centsDifference);
+    console.log(note.name, centsDifference);
 }
 
 /**
@@ -165,7 +206,12 @@ function getIntervalName(a, b) {
         intervalName = intervals[ ratio[1] + "/" + ratio[2] ].name;
     }
     catch(e) {
-        intervalName = "Unknown interval";
+        try {
+        	intervalName = intervals[ ratio[2] + "/" + ratio[1] ].name;
+		}
+		catch(e) {
+			intervalName = "Unknown interval";
+		}
     }
 	
 	return intervalName;
@@ -180,9 +226,12 @@ function getIntervalName(a, b) {
  * @return  {string}  The interval name;
  */
 function showIntervalName(firstTone, secondTone) {
-	var ratio = utils.fraction(secondTone.frequency/firstTone.frequency, 999),
+	var octaveReducedFrequency = tones.reduceToSameOctave(secondTone, firstTone),
+		ratio = utils.fraction(octaveReducedFrequency/firstTone.frequency, 999),
 		intervalName = getIntervalName(ratio),
-        centsDifference = Math.abs( firstTone.intervalInCents(secondTone) );
+        centsDifference = Math.abs( firstTone.intervalInCents( 
+										{ frequency: octaveReducedFrequency }
+								  ) );
 
     $("#interval-name").text(intervalName);
     
@@ -352,11 +401,23 @@ function toggleOption(option) {
  * @return {number}  The new frequency
  */
 function updateBaseFrequency(val, mute) {
-    var frequency = Math.floor(val);
-    App.baseTone = tones.createSound(frequency);
-    $("#base, #base-detail").val(frequency);
+	const $base = $("#base");
+	
+	// Enforce minimum and maximums
+	if( val > +$base.attr("max") )
+		val = +$base.attr("max");
+	else if( val < +$base.attr("min") )
+		val = +$base.attr("min");
+
+	tones.sounds[ tones.sounds.indexOf(App.baseTone) ].remove(); // Remove the base tone
+	stopAllPlayingSounds();
+	
+    App.baseTone      = tones.createSound(val);
+	App.baseTone.name = frequencyToNoteDetails(val).name;
+	
+    $("#base, #base-detail").val(val);
     
-    if( !mute )
+    if( !mute && !App.options.sustain )
         $("#overtone-1").click();
 	
 	$(document).trigger({
@@ -364,7 +425,7 @@ function updateBaseFrequency(val, mute) {
 		details: { optionName: "baseFrequency", optionValue: val }
 	});
     
-    return frequency;
+    return val;
 }
 
 /**
@@ -404,18 +465,52 @@ function updateVolume(val, mute) {
  */
 function overtoneClickHandler() {
     var idx           = $(this).index() + 1,
+		soundPlaying  = $(this).data("isPlaying"),
         self          = this,
         noteFrequency = idx * App.baseTone.frequency,
-        tone          = tones.createSound(noteFrequency);
-
-    if( App.options.octaveReduction )
+        tone;
+	
+	if(soundPlaying){
+		soundPlaying.fadeOut();
+		$(this)
+		.removeData("isPlaying")
+		.removeClass("is-playing");
+		
+		if( $("body").hasClass("easter-egg") )
+			$("body").removeClass("easter-egg") // @todo decouple this from here
+		return;
+	}
+	
+	tone = tones.createSound(noteFrequency);
+	tone.fromClick = true;
+	
+    if( App.options.octaveReduction && tone.frequency !== App.baseTone.frequency )
         tone.reduceToSameOctaveAs(App.baseTone);
+	
+	if( App.options.sustain ){
+		let lastSoundPlaying = utils.findLast(tones.sounds, function(){ return this.isPlaying; }, 1);
+		tone.envelope.sustain = -1;
+		$(this).data("isPlaying", tone);
+		$(this).addClass("is-playing"); // For styling purposes
+		
+		// Show the interval between this sound and the sound before it which
+		// is still playing.
+		if( lastSoundPlaying ) {
+			fillSoundDetails([
+				lastSoundPlaying,
+				tone
+			]);
+		}
+		else fillSoundDetails(tone);
+		
+		if( $(".overtone.is-playing").length === $(".overtone").length )
+			$(document).trigger("overtones:play:all");
+	}
+	else fillSoundDetails(tone);
 
     tone.play();
 
     animateOvertone( self, tone.envelope );
-
-    fillSoundDetails(tone);
 	
 	$(document).trigger({
 		type: "overtones:play",
@@ -490,6 +585,46 @@ function axisClickHandler() {
 }
 
 /**
+ * Base Input handler
+ *
+ * Allows usage of <kbd>arrow up</kbd> and <kbd>arrow down</kbd> keys
+ * to easy modify the value of the input. Using <kbd>SHIFT</kbd> allows
+ * for increments of 10, while <kbd>ALT</kbd> for increments of 0.1.
+ *
+ * @return  void
+ */
+function baseInputHandler(e){
+	const ARROW_UP    = 38,
+		  ARROW_DOWN  = 40,
+		  $this       = $(this);
+	
+	let currentValue = +$this.get(0).value;
+	
+	switch(e.keyCode){
+		case ARROW_UP:
+			e.preventDefault();
+			
+			if     (e.altKey)   $this.val(currentValue + 0.1);
+			else if(e.shiftKey) $this.val(currentValue + 10);
+			else                $this.val(currentValue + 1);
+			
+			$this.change();
+			
+			break;
+		case ARROW_DOWN:
+			e.preventDefault();
+			
+			if     (e.altKey)   $this.val(currentValue - 0.1);
+			else if(e.shiftKey) $this.val(currentValue - 10);
+			else                $this.val(currentValue - 1);
+			
+			$this.change();
+			
+			break;
+	}
+}
+
+/**
  * Initializes the application
  *
  * Sets the master gain volume to the slider bar, attaches the event handlers to the
@@ -499,10 +634,13 @@ function axisClickHandler() {
  */
 function init() {
     updateVolume( $("#volume-control").val(), true );
+	App.baseTone.name = frequencyToNoteDetails(App.baseTone.frequency).name;
     
     $(".overtone").on("click", overtoneClickHandler);
     $(".spiral-piece").on("click", spiralPieceClickHandler);
     $(".axis").on("click", axisClickHandler);
+	
+	$("#base-detail").on("keydown", baseInputHandler);
     
     $("#base, #base-detail").on("change", function(){
       updateBaseFrequency( $(this).val() );
@@ -515,6 +653,12 @@ function init() {
     $("[data-option]").on("click", function(){
       toggleOption( $(this).data("option") );
     });
+	
+	$(document).on("overtones:options:change", function(e){
+		if( e.details.optionName === "sustain" && e.details.optionValue === false )
+			stopAllPlayingSounds();
+	});
+	
 }
 
 var App = {
@@ -547,10 +691,8 @@ var App = {
      * @alias module:overtones.tunings
      *
      * @type {object}
-     * @property  {Object}  _12TET  12-TET frequency data
      */
     tunings: {
-        _12TET: tTET
     }
 };
 
