@@ -406,8 +406,8 @@ function updateBaseFrequency(val, mute) {
 	else if( val < +$base.attr("min") )
 		val = +$base.attr("min");
 
+	tones.sounds[ tones.sounds.indexOf(App.baseTone) ].remove(); // Remove the base tone
 	stopAllPlayingSounds();
-	tones.sounds[0].remove(); // Remove the base tone
 	
     App.baseTone      = tones.createSound(val);
 	App.baseTone.name = frequencyToNoteDetails(val).name;
@@ -476,6 +476,7 @@ function overtoneClickHandler() {
 	}
 	
 	tone = tones.createSound(noteFrequency);
+	tone.fromClick = true;
 	
     if( App.options.octaveReduction && tone.frequency !== App.baseTone.frequency )
         tone.reduceToSameOctaveAs(App.baseTone);

@@ -177,7 +177,7 @@ Sound.prototype.play = function(){
         // Start the removal of the sound process after a little more than the sound duration to account for
         // the approximation. (To make sure that the sound doesn't get cut off while still audible)
         setTimeout( function() {
-            self.stop();
+            if( !self.isStopping ) self.stop();
         }, this.duration * 1250 );
     }
     
@@ -190,11 +190,17 @@ Sound.prototype.play = function(){
  * @return {Sound}  The Sound object that was removed
  */
 Sound.prototype.remove = function(){
-    this.oscillator.disconnect(this.envelope.node);
-    this.envelope.node.gain.cancelScheduledValues(ctx.currentTime);
-    this.envelope.node.disconnect(masterGain);
+    try { 
+		this.oscillator.disconnect(this.envelope.node);
+		this.envelope.node.gain.cancelScheduledValues(ctx.currentTime);
+		this.envelope.node.disconnect(masterGain);
+	}
+	catch (e) {
+		console.trace();
+	}
 
-    return sounds.splice( sounds.indexOf(this), 1 )[0];
+    if( sounds.indexOf(this) !== -1 )
+		return sounds.splice( sounds.indexOf(this), 1 )[0];
 };
 
 /**
@@ -219,8 +225,9 @@ Sound.prototype.fadeOut = function(){
 	var now  = ctx.currentTime,
         self = this;
 	
-	this.envelope.node.gain.setTargetAtTime( 0, now, this.envelope.release / 5);
+	this.envelope.node.gain.setTargetAtTime( 0, now, this.envelope.release / 5 );
 	this.isPlaying = false;
+	this.isStopping = true;
 	
 	setTimeout( function() {
 		self.stop();
