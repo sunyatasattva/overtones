@@ -1,0 +1,20 @@
+.easter-egg {
+	.spiral-piece,
+	.share-easter-egg {
+		animation: 2s ease-in-out 0s infinite alternate rainbow;
+	}
+}
+
+.easter-egg-announcement {
+	position: fixed;
+	top:      10px;
+	right:    10px;
+}
+
+@keyframes rainbow {
+	0%   { fill: hsl(240, 34%, 55%); background-color: hsl(240, 34%, 55%); }
+	25%  { fill: hsl(168, 34%, 55%); background-color: hsl(168, 34%, 55%); }
+	50%  { fill: hsl(96, 34%, 55%);  background-color: hsl(96, 34%, 55%);  }
+	75%  { fill: hsl(24, 34%, 55%);  background-color: hsl(24, 34%, 55%);  }
+	100% { fill: hsl(326, 34%, 55%); background-color: hsl(326, 34%, 55%); }
+}
