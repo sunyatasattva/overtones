@@ -192,7 +192,12 @@ function getIntervalName(a, b) {
         intervalName = intervals[ ratio[1] + "/" + ratio[2] ].name;
     }
     catch(e) {
+        try {
+        	intervalName = intervals[ ratio[2] + "/" + ratio[1] ].name;
+		}
+		catch(e) {
         intervalName = "Unknown interval";
+    }
     }
 	
 	return intervalName;
@@ -207,9 +212,12 @@ function getIntervalName(a, b) {
  * @return  {string}  The interval name;
  */
 function showIntervalName(firstTone, secondTone) {
-	var ratio = utils.fraction(secondTone.frequency/firstTone.frequency, 999),
+	var octaveReducedFrequency = tones.reduceToSameOctave(secondTone, firstTone),
+		ratio = utils.fraction(octaveReducedFrequency/firstTone.frequency, 999),
 		intervalName = getIntervalName(ratio),
-        centsDifference = Math.abs( firstTone.intervalInCents(secondTone) );
+        centsDifference = Math.abs( firstTone.intervalInCents( 
+										{ frequency: octaveReducedFrequency }
+								  ) );
 
     $("#interval-name").text(intervalName);
     
