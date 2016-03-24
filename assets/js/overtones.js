@@ -21,9 +21,8 @@ var utils      = require("./lib/utils.js"),
 
 // Partially applied function to get the names of pitches
 // @see {@link https://github.com/sunyatasattva/overtones/issues/30}
-const PITCH_SET = utils.pitchSet("P1 m2 M2 m3 M3 P4 4A P5 m6 M6 m7 M7");
-
-const MIDI_A4 = 69;
+const PITCH_SET = utils.pitchSet("P1 m2 M2 m3 M3 P4 4A P5 m6 M6 m7 M7"),
+      MIDI_A4   = 69;
 
 /**
  * Will hide the elements if this function is not called again for 5 seconds
@@ -36,6 +35,18 @@ var hideElementWhenIdle = utils.debounce(function($element){
           $element.removeClass("visible");
     }, 5000);
 
+/**
+ * Given a frequency, it gets the closest A440 12T Equal tempered note.
+ *
+ * It outputs the name according to a specific pitch set (@see {@link PITCH_SET}).
+ *
+ * @param  {Number}  frequency    The frequency to check
+ * @param  {String}  [tonic="C"]  The tonic to calculate the scale
+ *
+ * @return {Object}  The details containing the note name, octave, accidentals,
+ *                   encoded accidentals, and the cents difference to the closest
+ *                   equal tempered note
+ */
 function frequencyToNoteDetails(frequency, tonic = "C") {
 	let noteNumber = utils.getEqualTemperedNoteNumber( frequency,
 					{ referencePoint: MIDI_A4, round: false } ),

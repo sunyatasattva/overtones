@@ -44,7 +44,8 @@ masterGain.connect(ctx.destination);
  *
  * @param  {number}  attack  The amount of time the sound will take to reach full amplitude
  * @param  {number}  decay   The amount of time for the sound to reach sustain amplitude after attack
- * @param  {number}  sustain The duration of the sound is kept being played
+ * @param  {number}  sustain The duration of the sound is kept being played. If `sustain` is < 0, the
+ *                           sound will be played until manually stopped
  * @param  {number}  release The amount of time for the sound to fade out
  *
  * @return {Envelope}  The envelope object, containing the gain node.
@@ -153,9 +154,7 @@ Sound.prototype.play = function(){
     this.envelope.node.gain
     .setTargetAtTime( this.envelope.volume, now + this.envelope.attack, this.envelope.decay / 5 );
 
-    // @todo if sustain is < 0, note has to be stopped manually. Also document this.
     if( this.envelope.sustain >= 0 ) {
-        
         // Setting a "keyframe" for the volume to be kept until `sustain` seconds have passed
         // (plus all the rest)
         this.envelope.node.gain
@@ -211,6 +210,11 @@ Sound.prototype.stop = function(){
     return this.remove();
 };
 
+/**
+ * Fades out a sound according to its release value. Useful for sustained sounds.
+ *
+ * @return  void
+ */
 Sound.prototype.fadeOut = function(){
 	var now  = ctx.currentTime,
         self = this;
