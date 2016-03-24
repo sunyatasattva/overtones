@@ -99,6 +99,24 @@ module.exports = {
 		else
 			return "";
 	},
+	/**
+	 * Finds the last element of an array which satisfies a given condition.
+	 *
+	 * @param  {Array}     arr      The array to transverse
+	 * @param  {Function}  matches  A function that will be called to check
+	 *                              if the current element satisfies a condition
+	 * @param  {Number}    [pad=0]  Skips this amount of elements from the right
+	 *
+	 * @return {mixed}  The element which satisfies the given condition
+	 */
+	findLast: function(arr, matches, pad = 0){
+		for( let i = arr.length - 1 - pad; i >= 0; i-- ) {
+			if( matches.call(arr[i]) )
+				return arr[i];
+		}
+		
+		return null;
+	},
     /**
      * Transforms an rgb value into an hex value
      *
