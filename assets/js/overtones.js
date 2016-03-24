@@ -50,6 +50,20 @@ function frequencyToNoteDetails(frequency, tonic = "C") {
 }
 
 /**
+ * Fades out all playing sounds
+ *
+ * @return  void
+ */
+function stopAllPlayingSounds() {
+	tones.sounds.forEach(function(sound){
+		if(sound.isPlaying)
+			sound.fadeOut();
+	});
+	
+	$(".overtone").removeData("isPlaying");
+}
+
+/**
  * Animates an overtone for a given duration
  *
  * @param  {string}  el        Element selector
@@ -372,13 +386,16 @@ function updateBaseFrequency(val, mute) {
 		val = +$base.attr('max');
 	else if( val < +$base.attr('min') )
 		val = +$base.attr('min');
+
+	stopAllPlayingSounds();
+	tones.sounds[0].remove(); // Remove the base tone
 	
     App.baseTone      = tones.createSound(val);
 	App.baseTone.name = frequencyToNoteDetails(val).name;
 	
     $("#base, #base-detail").val(val);
     
-    if( !mute )
+    if( !mute && !App.options.sustain )
         $("#overtone-1").click();
 	
 	$(document).trigger({
@@ -594,6 +611,12 @@ function init() {
     $("[data-option]").on("click", function(){
       toggleOption( $(this).data("option") );
     });
+	
+	$(document).on("overtones:options:change", function(e){
+		if( e.details.optionName === "sustain" )
+			stopAllPlayingSounds();
+	});
+	
 }
 
 var App = {

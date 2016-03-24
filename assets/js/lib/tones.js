@@ -131,6 +131,8 @@ Sound.prototype.play = function(){
         self = this;
     
     this.oscillator.start();
+	
+	this.isPlaying = true;
     
     /**
      * Using `setTargetAtTime` because `exponentialRampToValueAtTime` doesn't seem to work properly under
