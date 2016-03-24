@@ -19,8 +19,6 @@ var utils      = require("./lib/utils.js"),
     tones      = require("./lib/tones.js"),
     $          = require("jquery");
 
-var tTET = require("../data/12-tet.json");
-
 // Partially applied function to get the names of pitches
 // @see {@link https://github.com/sunyatasattva/overtones/issues/30}
 const PITCH_SET = utils.pitchSet("P1 m2 M2 m3 M3 P4 4A P5 m6 M6 m7 M7");
@@ -672,10 +670,8 @@ var App = {
      * @alias module:overtones.tunings
      *
      * @type {object}
-     * @property  {Object}  _12TET  12-TET frequency data
      */
     tunings: {
-        _12TET: tTET
     }
 };
 
