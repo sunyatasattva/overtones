@@ -47,9 +47,8 @@ module.exports = {
 				e.preventDefault();
 				try {
 					FB.ui({
-					  method:  "feed",
-					  link:    "http://www.suonoterapia.org/overtones",
-					  caption: "I've found the secret overtone rainbow, can you also find it?",
+					  method:  "share",
+					  href:    "http://www.suonoterapia.org/overtones"
 					}, function(response){
 						console.log(response);
 						$(".easter-egg-announcement").removeClass("shepherd-open");
