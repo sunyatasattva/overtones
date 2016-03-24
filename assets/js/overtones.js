@@ -50,6 +50,22 @@ function frequencyToNoteDetails(frequency, tonic = "C") {
 }
 
 /**
+ * Fades out all playing sounds
+ *
+ * @return  void
+ */
+function stopAllPlayingSounds() {
+	tones.sounds.forEach(function(sound){
+		if(sound.isPlaying)
+			sound.fadeOut();
+	});
+	
+	$(".overtone")
+	.removeData("isPlaying")
+	.removeClass("is-playing");
+}
+
+/**
  * Animates an overtone for a given duration
  *
  * @param  {string}  el        Element selector
@@ -64,7 +80,7 @@ function animateOvertone(el, duration) {
         // why we are reversing the array
         $circles         = $( $spacesGroup.find("g").get().reverse() ),
         numbersOfCircles = $circles.length,
-        originalFill     = utils.rgbToHex( $spacesGroup.css("fill") ),
+        originalFill     = "#FFFFFF",
         fillColor        = "#FFE08D";
 
     // If it's already animating, it won't animate again
@@ -178,7 +194,12 @@ function getIntervalName(a, b) {
         intervalName = intervals[ ratio[1] + "/" + ratio[2] ].name;
     }
     catch(e) {
-        intervalName = "Unknown interval";
+        try {
+        	intervalName = intervals[ ratio[2] + "/" + ratio[1] ].name;
+		}
+		catch(e) {
+			intervalName = "Unknown interval";
+		}
     }
 	
 	return intervalName;
@@ -193,9 +214,12 @@ function getIntervalName(a, b) {
  * @return  {string}  The interval name;
  */
 function showIntervalName(firstTone, secondTone) {
-	var ratio = utils.fraction(secondTone.frequency/firstTone.frequency, 999),
+	var octaveReducedFrequency = tones.reduceToSameOctave(secondTone, firstTone),
+		ratio = utils.fraction(octaveReducedFrequency/firstTone.frequency, 999),
 		intervalName = getIntervalName(ratio),
-        centsDifference = Math.abs( firstTone.intervalInCents(secondTone) );
+        centsDifference = Math.abs( firstTone.intervalInCents( 
+										{ frequency: octaveReducedFrequency }
+								  ) );
 
     $("#interval-name").text(intervalName);
     
@@ -372,13 +396,16 @@ function updateBaseFrequency(val, mute) {
 		val = +$base.attr("max");
 	else if( val < +$base.attr("min") )
 		val = +$base.attr("min");
+
+	stopAllPlayingSounds();
+	tones.sounds[0].remove(); // Remove the base tone
 	
     App.baseTone      = tones.createSound(val);
 	App.baseTone.name = frequencyToNoteDetails(val).name;
 	
     $("#base, #base-detail").val(val);
     
-    if( !mute )
+    if( !mute && !App.options.sustain )
         $("#overtone-1").click();
 	
 	$(document).trigger({
@@ -426,18 +453,45 @@ function updateVolume(val, mute) {
  */
 function overtoneClickHandler() {
     var idx           = $(this).index() + 1,
+		soundPlaying  = $(this).data("isPlaying"),
         self          = this,
         noteFrequency = idx * App.baseTone.frequency,
-        tone          = tones.createSound(noteFrequency);
-
-    if( App.options.octaveReduction )
+        tone;
+	
+	if(soundPlaying){
+		soundPlaying.fadeOut();
+		$(this)
+		.removeData("isPlaying")
+		.removeClass("is-playing");
+		return;
+	}
+	
+	tone = tones.createSound(noteFrequency);
+	
+    if( App.options.octaveReduction && tone.frequency !== App.baseTone.frequency )
         tone.reduceToSameOctaveAs(App.baseTone);
+	
+	if( App.options.sustain ){
+		let lastSoundPlaying = utils.findLast(tones.sounds, function(){ return this.isPlaying; }, 1);
+		tone.envelope.sustain = -1;
+		$(this).data("isPlaying", tone);
+		$(this).addClass("is-playing"); // For styling purposes
+		
+		// Show the interval between this sound and the sound before it which
+		// is still playing.
+		if( lastSoundPlaying ) {
+			fillSoundDetails([
+				lastSoundPlaying,
+				tone
+			]);
+		}
+		else fillSoundDetails(tone);
+	}
+	else fillSoundDetails(tone);
 
     tone.play();
 
     animateOvertone( self, tone.envelope );
-
-    fillSoundDetails(tone);
 	
 	$(document).trigger({
 		type: "overtones:play",
@@ -580,6 +634,12 @@ function init() {
     $("[data-option]").on("click", function(){
       toggleOption( $(this).data("option") );
     });
+	
+	$(document).on("overtones:options:change", function(e){
+		if( e.details.optionName === "sustain" && e.details.optionValue === false )
+			stopAllPlayingSounds();
+	});
+	
 }
 
 var App = {

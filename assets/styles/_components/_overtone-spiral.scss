@@ -28,17 +28,37 @@
 }
 
 .overtone {
+	transform:        scale(1);
     transform-origin: 50% 50%;
     transition:       all 0.2s ease-in-out;
+	
+	&:hover {
+		transform: scale(1.1);
+		cursor:    pointer;
+	}
+	
+	&:active,
+	&.active {
+		transform:  scale(1.25);
+		transition: all 0.1s ease-out;
+	}
+	
+	&.is-playing {
+		animation:  1s ease-in-out 0s infinite alternate is-playing-scale;
+		
+		.spaces,
+		.spaces g {
+			animation: 1s ease-in-out 0s infinite alternate is-playing-color;
+		}
+	}
 }
 
-.overtone:hover {
-    transform: scale(1.1);
-    cursor:    pointer;
+@keyframes is-playing-scale {
+	from { transform: scale(1.25); }
+	to   { transform: scale(1.15); }
 }
 
-.overtone:active,
-.overtone.active {
-    transform:  scale(1.25);
-    transition: all 0.1s ease-out;
+@keyframes is-playing-color {
+	from { fill: #FFE08D; }
+	to   { fill: #FFFFFF; }
 }
