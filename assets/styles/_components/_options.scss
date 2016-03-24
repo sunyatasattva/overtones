@@ -74,6 +74,8 @@ a.option-button {
     width:           35px;
     height:          35px;
     position:        relative;
+	
+	&:not(.off) { background-color: #d4d4d4; }
 }
 
 a#group-notes {
@@ -82,7 +84,6 @@ a#group-notes {
     &::after { content: "Group notes"; }
     
     &:not(.off) {
-        background-color: #d4d4d4;
         background-image: url("../images/ico-link.svg");
         
         &::after { content: "Ungroup notes"; }
@@ -93,8 +94,10 @@ a#reduce-to-octave {
     background-image: url("../images/ico-octave-reduction.svg");
     
     &::after { content: "Reduce to octave"; }
+}
+
+a#sustain {
+    background-image: url("../images/ico-sustain.svg");
     
-    &:not(.off) {
-        background-color: #d4d4d4;
-    }
+    &::after { content: "Sustain notes"; }
 }
