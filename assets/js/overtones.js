@@ -72,6 +72,9 @@ function stopAllPlayingSounds() {
 	$(".overtone")
 	.removeData("isPlaying")
 	.removeClass("is-playing");
+	
+	if( $("body").hasClass("easter-egg") )
+		$("body").removeClass("easter-egg") // @todo decouple this from here
 }
 
 /**
