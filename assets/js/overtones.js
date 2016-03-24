@@ -613,7 +613,7 @@ function init() {
     });
 	
 	$(document).on("overtones:options:change", function(e){
-		if( e.details.optionName === "sustain" )
+		if( e.details.optionName === "sustain" && e.details.optionValue === false )
 			stopAllPlayingSounds();
 	});
 	
