@@ -45,7 +45,7 @@ mainTour
     text: ['This is a visual representation of a fundamental sound and its overtones.',
           'Each complete spiral revolution represents an octave.'],
     attachTo: '#Overtone-Spiral right',
-    title: '1/10',
+    title: '1/11',
     tetherOptions: {
         offset: '0 -220px'
     },
@@ -65,7 +65,7 @@ mainTour
 		   'Each other circle represents the following partials, up to the 16th.',
            'Click on the circle to hear the sound.'],
     attachTo: '#overtone-1 bottom',
-    title: '2/10',
+    title: '2/11',
     buttons: {},
     advanceOn: {
         selector: '.overtone, .space',
@@ -75,7 +75,7 @@ mainTour
 .addStep('note-details', {
     text: ['Here you can see information about the sound you just heard'],
     attachTo: '#sound-details bottom',
-    title: '3/10',
+    title: '3/11',
     when: {
         show: function() {
             $('body').chardinJs('start');
@@ -93,7 +93,7 @@ mainTour
 .addStep('spiral-pieces', {
     text: ['You can also click on other places of the spiral, such as the purple pieces connecting two circles.'],
     attachTo: '.spiral-piece:nth-of-type(2) bottom',
-    title: '4/10',
+    title: '4/11',
     buttons: {},
     advanceOn: {
         selector: '.spiral-piece',
@@ -104,7 +104,7 @@ mainTour
     text: ['In this case you see the information about the relationship between the notes you just heard.',
 		   '<small>The spiral pieces are thus representations of intervals in the harmonic series.</small>'],
     attachTo: '#sound-details bottom',
-    title: '5/10',
+    title: '5/11',
     when: {
         show: function() {
             $('body').chardinJs('start');
@@ -123,7 +123,7 @@ mainTour
     text: ['You can change the frequency of the fundamental note by using this slider.',
           '<small>You can also directly change the number if you want finer tuning!</small>'],
     attachTo: '#base-wrapper right',
-    title: '6/10',
+    title: '6/11',
     advanceOn: {
         selector: '#base',
         event: 'change'
@@ -140,12 +140,12 @@ mainTour
         selector: '#volume-control',
         event: 'change'
     },
-    title: '7/10'
+    title: '7/11'
 })
 .addStep('options-group', {
     text: ['If you turn this option off, you will hear notes separately when playing intervals.'],
     attachTo: '#group-notes bottom',
-    title: '8/10',
+    title: '8/11',
     tetherOptions: {
         offset: '-20px 0'
     }
@@ -153,14 +153,24 @@ mainTour
 .addStep('options-octave', {
     text: ['If you turn this option on, all the sounds will be played on frequencies within one octave of the fundamental tone.'],
     attachTo: '#reduce-to-octave bottom',
-    title: '9/10',
+    title: '9/11',
+    tetherOptions: {
+        offset: '-20px 0'
+    }
+})
+.addStep('options-sustain', {
+    text: ['If you turn this option on, the sounds will play continuously until manually stopped.',
+		  'You can manually stop the sounds by clicking again on the circle, turning this option off, or changing the base tone',
+		  '<small>When this option is on, the information displayed is the interval between the sound you play and the last active sound. This allows you to explore all the intervals within the spiral.</small>'],
+    attachTo: '#sustain bottom',
+    title: '10/11',
     tetherOptions: {
         offset: '-20px 0'
     }
 })
 .addStep('end-tour', {
     text: ['That is all! Enjoy!'],
-    title: '10/10',
+    title: '11/11',
     buttons: [
         {
             text: 'Thank you!',
