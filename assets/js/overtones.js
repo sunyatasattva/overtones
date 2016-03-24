@@ -60,7 +60,9 @@ function stopAllPlayingSounds() {
 			sound.fadeOut();
 	});
 	
-	$(".overtone").removeData("isPlaying");
+	$(".overtone")
+	.removeData("isPlaying")
+	.removeClass("is-playing");
 }
 
 /**
@@ -78,7 +80,7 @@ function animateOvertone(el, duration) {
         // why we are reversing the array
         $circles         = $( $spacesGroup.find("g").get().reverse() ),
         numbersOfCircles = $circles.length,
-        originalFill     = utils.rgbToHex( $spacesGroup.css("fill") ),
+        originalFill     = "#FFFFFF",
         fillColor        = "#FFE08D";
 
     // If it's already animating, it won't animate again
@@ -196,8 +198,8 @@ function getIntervalName(a, b) {
         	intervalName = intervals[ ratio[2] + "/" + ratio[1] ].name;
 		}
 		catch(e) {
-        intervalName = "Unknown interval";
-    }
+			intervalName = "Unknown interval";
+		}
     }
 	
 	return intervalName;
@@ -458,25 +460,38 @@ function overtoneClickHandler() {
 	
 	if(soundPlaying){
 		soundPlaying.fadeOut();
-		$(this).removeData("isPlaying");
+		$(this)
+		.removeData("isPlaying")
+		.removeClass("is-playing");
 		return;
 	}
 	
 	tone = tones.createSound(noteFrequency);
 	
+    if( App.options.octaveReduction && tone.frequency !== App.baseTone.frequency )
+        tone.reduceToSameOctaveAs(App.baseTone);
+	
 	if( App.options.sustain ){
+		let lastSoundPlaying = utils.findLast(tones.sounds, function(){ return this.isPlaying; }, 1);
 		tone.envelope.sustain = -1;
 		$(this).data("isPlaying", tone);
+		$(this).addClass("is-playing"); // For styling purposes
+		
+		// Show the interval between this sound and the sound before it which
+		// is still playing.
+		if( lastSoundPlaying ) {
+			fillSoundDetails([
+				lastSoundPlaying,
+				tone
+			]);
+		}
+		else fillSoundDetails(tone);
 	}
-
-    if( App.options.octaveReduction )
-        tone.reduceToSameOctaveAs(App.baseTone);
+	else fillSoundDetails(tone);
 
     tone.play();
 
     animateOvertone( self, tone.envelope );
-
-    fillSoundDetails(tone);
 	
 	$(document).trigger({
 		type: "overtones:play",
