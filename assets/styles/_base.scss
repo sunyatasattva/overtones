@@ -1,70 +1,70 @@
-body { 
-    background-color: #222;
-    color:            #fff;
-    font-family:      $baseFontFamily;
+body {
+	background-color: #222;
+	color:            #fff;
+	font-family:      $baseFontFamily;
 }
 
 h2 {
-    font-weight: 100;
-    margin:      0;
+	font-weight: 100;
+	margin:      0;
 }
 
 a {
-    color: #3288e6;
-    text-decoration: none;
-    
-    &:hover {
-        color: #007EA1;
-    }
+	color: #3288e6;
+	text-decoration: none;
+	
+	&:hover {
+		color: #007EA1;
+	}
 }
 
 img {
-    max-width: 100%;
+	max-width: 100%;
 }
 
 area {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 svg {
-    display:   block;
-    margin:    0px auto;
-    max-width: 100%;
-    z-index:   2;
-    height:    97vh;
-    position:  relative;
+	display:   block;
+	margin:    0px auto;
+	max-width: 100%;
+	z-index:   2;
+	height:    97vh;
+	position:  relative;
 }
 
 body > footer {
-    box-sizing: border-box;
-    padding:    10px 20px;
-    z-index:    3;
-    width:      100%;
-    position:   absolute;
-    bottom:     0;
-    left:       0;
-    
-    .social {
-        line-height: 35px;
-        margin-top:  20px;
-        height:      35px;
-        position:    absolute;
-        top:         0;
-        right:       10px;
-        
-        > * {
-            line-height:    20px;
-            margin-right:   10px;
-            vertical-align: middle;
-        }
-    }
+	box-sizing: border-box;
+	padding:    10px 20px;
+	z-index:    3;
+	width:      100%;
+	position:   absolute;
+	bottom:     0;
+	left:       0;
+	
+	.social {
+		line-height: 35px;
+		margin-top:  20px;
+		height:      35px;
+		position:    absolute;
+		top:         0;
+		right:       10px;
+		
+		> * {
+			line-height:    20px;
+			margin-right:   10px;
+			vertical-align: middle;
+		}
+	}
 }
 
 p.credits {
-    display:     inline-block;
-    font-size:   12px;
-    line-height: 35px;
-    margin-left: 50px;
+	display:     inline-block;
+	font-size:   12px;
+	line-height: 35px;
+	margin-left: 50px;
 }
 
 .version { margin-left: 1em; }
