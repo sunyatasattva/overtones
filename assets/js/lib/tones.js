@@ -8,9 +8,11 @@
 
 "use strict";
 
+require("./webkit-audiocontext-patch")();
+
 var extend     = require("lodash.assign"),
     utils      = require("./utils.js"),
-    ctx        = new (window.AudioContext || window.webkitAudioContext)(),
+    ctx        = new window.AudioContext(),
     masterGain = ctx.createGain(),
     defaults   = {
     	attack:  150,
@@ -24,6 +26,48 @@ var extend     = require("lodash.assign"),
     sounds = [];
 
 masterGain.connect(ctx.destination);
+
+/**
+ * Reduces the Sound pitch to a tone within an octave of the tone.
+ *
+ * @see  {@link Sound.prototype.reduceToSameOctaveAs}
+ * @alias module:tones.reduceToSameOctave
+ *
+ * @param  {Sound|Object} firstTone      A Sound object (or an object containing a `frequency` property)
+ * @param  {Sound|Object} referenceTone  The first sound will adjust its frequency
+ *                                       to the same octave as this tone
+ * @param  {bool}  excludeOctave  If this option is `true`, the exact octave will be reduced
+ *                                to the unison of the original sound
+ *
+ * @return {Number}  The frequency of the first sound within the same octave as the reference tone.
+ */
+function reduceToSameOctave(firstTone, referenceTone, excludeOctave){
+	var targetFrequency = firstTone.frequency,
+	    ratio           = targetFrequency / referenceTone.frequency;
+
+	if( excludeOctave ) {
+		while( ratio <= 0.5 || ratio >= 2 ){
+			if( ratio <= 0.5 )
+				targetFrequency = targetFrequency * 2;
+			else
+				targetFrequency = targetFrequency / 2;
+
+			ratio = targetFrequency / referenceTone.frequency;
+		}
+	}
+	else {
+		while( ratio < 0.5 || ratio > 2 ){
+			if( ratio < 0.5 )
+				targetFrequency = targetFrequency * 2;
+			else
+				targetFrequency = targetFrequency / 2;
+
+			ratio = targetFrequency / referenceTone.frequency;
+		}
+	}
+
+return targetFrequency;
+}
 
 /**
  * @typedef Envelope
@@ -360,48 +404,6 @@ function playFrequency(frequency, opts) {
 	return thisSound.play();
 }
 
-/**
- * Reduces the Sound pitch to a tone within an octave of the tone.
- *
- * @see  {@link Sound.prototype.reduceToSameOctaveAs}
- * @alias module:tones.reduceToSameOctave
- *
- * @param  {Sound|Object} firstTone      A Sound object (or an object containing a `frequency` property)
- * @param  {Sound|Object} referenceTone  The first sound will adjust its frequency
- *                                       to the same octave as this tone
- * @param  {bool}  excludeOctave  If this option is `true`, the exact octave will be reduced
- *                                to the unison of the original sound
- *
- * @return {Number}  The frequency of the first sound within the same octave as the reference tone.
- */
-function reduceToSameOctave(firstTone, referenceTone, excludeOctave){
-	var targetFrequency = firstTone.frequency,
-	    ratio           = targetFrequency / referenceTone.frequency;
-
-	if( excludeOctave ) {
-		while( ratio <= 0.5 || ratio >= 2 ){
-			if( ratio <= 0.5 )
-				targetFrequency = targetFrequency * 2;
-			else
-				targetFrequency = targetFrequency / 2;
-
-			ratio = targetFrequency / referenceTone.frequency;
-		}
-	}
-	else {
-		while( ratio < 0.5 || ratio > 2 ){
-			if( ratio < 0.5 )
-				targetFrequency = targetFrequency * 2;
-			else
-				targetFrequency = targetFrequency / 2;
-
-			ratio = targetFrequency / referenceTone.frequency;
-		}
-	}
-
-return targetFrequency;
-};
-
 module.exports = {
 	/**
 	 * The Audio Context where the module operates
@@ -413,12 +415,12 @@ module.exports = {
 	 * The Master Gain node that is attached to the output device
 	 * @type  {GainNode}
 	 */
-	masterGain:    masterGain,
-	playFrequency: playFrequency,
+	masterGain:         masterGain,
+	playFrequency:      playFrequency,
 	reduceToSameOctave: reduceToSameOctave,
 	/**
 	 * A list of currently active sounds for manipulation
 	 * @type  {array}
 	 */
-	sounds:        sounds,
+	sounds:             sounds,
 };
