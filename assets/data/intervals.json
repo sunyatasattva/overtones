@@ -74,8 +74,9 @@
 		"name": "Septimal diatonic semitone"
 	},
 	"14/13": {
-		"name": "Trienthird",
+		"name": "Supraminor second",
 		"alternateNames": [
+			"Trienthird",
 			"Tridecimal supraminor second"
 		]
 	},
@@ -83,19 +84,24 @@
 		"name": "Large limma"
 	},
 	"13/12": {
-		"name": "Tridecimal subtone",
+		"name": "Small neutral second",
 		"alternateNames": [
+			"Tridecimal subtone",
 			"Three-quarters tone"
 		]
 	},
 	"12/11": {
-		"name": "Undecimal neutral second",
-		"short": "n2"
-	},
-	"11/10": {
-		"name": "Greater undecimal neutral second",
+		"name": "Neutral second",
 		"short": "n2",
 		"alternateNames": [
+			"Undecimal neutral second"
+		]
+	},
+	"11/10": {
+		"name": "Submajor second",
+		"short": "n2",
+		"alternateNames": [
+			"Greater undecimal neutral second",
 			"Ptolemy's second"
 		]
 	},
@@ -112,17 +118,17 @@
 		]
 	},
 	"8/7": {
-		"name": "Septimal major second",
+		"name": "Supermajor second",
 		"short": "SM2",
 		"alternateNames": [
-			"Supermajor second"
+			"Septimal major second"
 		]
 	},
 	"7/6": {
-		"name": "Septimal minor third",
+		"name": "Subminor third",
 		"short": "sm2",
 		"alternateNames": [
-			"Subminor third"
+			"Septimal minor third",
 		]
 	},
 	"6/5": {
