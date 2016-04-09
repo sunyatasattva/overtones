@@ -10,12 +10,12 @@
  */
 
 .firefox {
-    .overtone { opacity: 0.9; }
-    
-    .overtone:hover,
-    .overtone:active,
-    .overtone.active { 
-        opacity:   1;
-        transform: scale(1);
-    }
+	.overtone { opacity: 0.9; }
+	
+	.overtone:hover,
+	.overtone:active,
+	.overtone.active {
+		opacity:   1;
+		transform: scale(1);
+	}
 }

@@ -32,8 +32,8 @@ const PITCH_SET = utils.pitchSet("P1 m2 M2 m3 M3 P4 4A P5 m6 M6 m7 M7"),
  * @param  {jQuery}  $element  The jQuery object of the element
  */
 var hideElementWhenIdle = utils.debounce(function($element){
-          $element.removeClass("visible");
-    }, 5000);
+	$element.removeClass("visible");
+}, 5000);
 
 /**
  * Given a frequency, it gets the closest A440 12T Equal tempered note.
@@ -86,49 +86,49 @@ function stopAllPlayingSounds() {
  * @return  void
  */
 function animateOvertone(el, duration) {
-    var $el              = $(el),
-        $spacesGroup     = $el.find(".spaces"),
-        // We'll animate the circles from the inner to the outer, that's
-        // why we are reversing the array
-        $circles         = $( $spacesGroup.find("g").get().reverse() ),
-        numbersOfCircles = $circles.length,
-        originalFill     = "#FFFFFF",
-        fillColor        = "#FFE08D";
+	var $el              = $(el),
+	    $spacesGroup     = $el.find(".spaces"),
+	    // We'll animate the circles from the inner to the outer, that's
+	    // why we are reversing the array
+	    $circles         = $( $spacesGroup.find("g").get().reverse() ),
+	    numbersOfCircles = $circles.length,
+	    originalFill     = "#FFFFFF",
+	    fillColor        = "#FFE08D";
 
-    // If it's already animating, it won't animate again
-    if( $el.find(".velocity-animating").length )
-        return;
+	// If it's already animating, it won't animate again
+	if( $el.find(".velocity-animating").length )
+		return;
 
-    el.classList.add("active");
-    
-    // If there are no inner circles, the animation only fills the spaces
-    // with the fillColor
-    if( !numbersOfCircles ) {
-        $.Velocity( $spacesGroup, {
-            fill: fillColor
-        }, { duration: duration.attack * 1000 } )
-        .then( function(spaces){
-            $.Velocity( spaces, { fill: originalFill });
-            el.classList.remove("active");
-        }, { duration: duration.release * 1000 } );
-    }
-    // If there are inner circles, we iterate through the circles and fill
-    // them progressively
-    else {
-        $circles.each(function(i){
-            $.Velocity( this, {
-                fill: fillColor
-            }, { 
-                delay:    i * (duration.attack * 1000 / numbersOfCircles),
-                duration: duration.attack * 1000, 
-            } )
-            .then( function(circle){
-                $.Velocity( circle, { fill: originalFill });
-                if( i === $circles.length - 1 )
-                    el.classList.remove("active");
-            }, { duration: duration.release * 1000 } );
-        });
-    }
+	el.classList.add("active");
+	
+	// If there are no inner circles, the animation only fills the spaces
+	// with the fillColor
+	if( !numbersOfCircles ) {
+		$.Velocity( $spacesGroup, {
+			fill: fillColor
+		}, { duration: duration.attack * 1000 } )
+			.then( function(spaces){
+			$.Velocity( spaces, { fill: originalFill });
+			el.classList.remove("active");
+		}, { duration: duration.release * 1000 } );
+	}
+	// If there are inner circles, we iterate through the circles and fill
+	// them progressively
+	else {
+		$circles.each(function(i){
+			$.Velocity( this, {
+				fill: fillColor
+			}, {
+				delay:    i * (duration.attack * 1000 / numbersOfCircles),
+				duration: duration.attack * 1000,
+			} )
+				.then( function(circle){
+				$.Velocity( circle, { fill: originalFill });
+				if( i === $circles.length - 1 )
+					el.classList.remove("active");
+			}, { duration: duration.release * 1000 } );
+		});
+	}
 }
 
 /**
@@ -142,47 +142,47 @@ function animateOvertone(el, duration) {
  * @return  void
  */
 function showIntervalDifferenceWithTuning(tone, tuning) {
-    var tuning = tuning || "12-TET", // @todo this doesn't do anything currently, placeholder
-		
-		note            = frequencyToNoteDetails(tone.frequency, App.baseTone.name),
-		centsDifference = note.centsDifference;
-    
-    $("#note-frequency")
-    // Set the base number from which to animate to the current frequency
-    .prop( "number", $("#note-frequency").text().match(/\d+/)[0] )
-    .animateNumber({
-        number:     tone.frequency,
-        numberStep: function(now, tween){
-           var flooredNumber = Math.floor(now),
-               $target        = $(tween.elem);
-    
-           $target.text(flooredNumber + " Hz");
-     }
-    }, 200);
+	var tuning = tuning || "12-TET", // @todo this doesn't do anything currently, placeholder
 
-	// Fills up the note name (disregarding the accidental)
-    $("#note-name").text( note.name[0] );
-	// Fills up the note accidentals
-    $("#note-accidentals").html( note.accidentals );
-    // Fills up the note octave
-    $("#note sub").text( note.octave );
-    
-    // Fills up the bar indicating the cents difference: a difference of 0
-    // would have the pointer at the center, with the extremes being 50
-    $(".cents-difference.tuning")
-    .css("text-indent", centsDifference + "%")
-    .find(".cents").prop( "number", $(".tuning .cents").text() ).animateNumber({
-        number: centsDifference,
-        numberStep: function(now, tween){
-            var flooredNumber = Math.floor(now),
-                target = tween.elem;
-            target.innerHTML = flooredNumber > 0 ? "+" + flooredNumber : flooredNumber;
-        }
-    }, 200);
-    
-    $(".tuning .cent-bar").css("left", 50 + centsDifference / 2 + "%");
-    
-    console.log(note.name, centsDifference);
+	    note            = frequencyToNoteDetails(tone.frequency, App.baseTone.name),
+	    centsDifference = note.centsDifference;
+	
+	$("#note-frequency")
+	// Set the base number from which to animate to the current frequency
+		.prop( "number", $("#note-frequency").text().match(/\d+/)[0] )
+		.animateNumber({
+		number:     tone.frequency,
+		numberStep: function(now, tween){
+			var flooredNumber = Math.floor(now),
+			    $target        = $(tween.elem);
+			
+			$target.text(flooredNumber + " Hz");
+		}
+	}, 200);
+
+		// Fills up the note name (disregarding the accidental)
+		$("#note-name").text( note.name[0] );
+		// Fills up the note accidentals
+		$("#note-accidentals").html( note.accidentals );
+		// Fills up the note octave
+		$("#note sub").text( note.octave );
+		
+		// Fills up the bar indicating the cents difference: a difference of 0
+		// would have the pointer at the center, with the extremes being 50
+		$(".cents-difference.tuning")
+				.css("text-indent", centsDifference + "%")
+				.find(".cents").prop( "number", $(".tuning .cents").text() ).animateNumber({
+				number: centsDifference,
+				numberStep: function(now, tween){
+						var flooredNumber = Math.floor(now),
+						    target = tween.elem;
+						target.innerHTML = flooredNumber > 0 ? "+" + flooredNumber : flooredNumber;
+				}
+		}, 200);
+		
+		$(".tuning .cent-bar").css("left", 50 + centsDifference / 2 + "%");
+		
+		console.log(note.name, centsDifference);
 }
 
 /**
@@ -203,16 +203,16 @@ function getIntervalName(a, b) {
 		ratio = a;
 	
 	try {
-        intervalName = intervals[ ratio[1] + "/" + ratio[2] ].name;
-    }
-    catch(e) {
-        try {
-        	intervalName = intervals[ ratio[2] + "/" + ratio[1] ].name;
+		intervalName = intervals[ ratio[1] + "/" + ratio[2] ].name;
+	}
+	catch(e) {
+		try {
+			intervalName = intervals[ ratio[2] + "/" + ratio[1] ].name;
 		}
 		catch(e) {
 			intervalName = "Unknown interval";
 		}
-    }
+	}
 	
 	return intervalName;
 }
@@ -227,25 +227,25 @@ function getIntervalName(a, b) {
  */
 function showIntervalName(firstTone, secondTone) {
 	var octaveReducedFrequency = tones.reduceToSameOctave(secondTone, firstTone),
-		ratio = utils.fraction(octaveReducedFrequency/firstTone.frequency, 999),
-		intervalName = getIntervalName(ratio),
-        centsDifference = Math.abs( firstTone.intervalInCents( 
-										{ frequency: octaveReducedFrequency }
-								  ) );
+	    ratio = utils.fraction(octaveReducedFrequency/firstTone.frequency, 999),
+	    intervalName = getIntervalName(ratio),
+	    centsDifference = Math.abs( firstTone.intervalInCents(
+	                               	{ frequency: octaveReducedFrequency }
+	                                ) );
 
-    $("#interval-name").text(intervalName);
-    
-    $("#interval sup").text( ratio[1] );
-    $("#interval sub").text( ratio[2] );
-    
-    $(".cents-difference.interval")
-        .css("text-indent", centsDifference / 12 + "%")
-        .find(".cents").prop( "number", $(".interval .cents").text() )
-        .animateNumber( {number: centsDifference }, 200 );
-    
-    $(".interval .cent-bar").css("left", centsDifference / 12 + "%");
-    
-    return intervalName;
+	$("#interval-name").text(intervalName);
+	
+	$("#interval sup").text( ratio[1] );
+	$("#interval sub").text( ratio[2] );
+	
+	$(".cents-difference.interval")
+		.css("text-indent", centsDifference / 12 + "%")
+		.find(".cents").prop( "number", $(".interval .cents").text() )
+		.animateNumber( {number: centsDifference }, 200 );
+	
+	$(".interval .cent-bar").css("left", centsDifference / 12 + "%");
+	
+	return intervalName;
 }
 
 /**
@@ -260,17 +260,17 @@ function showIntervalName(firstTone, secondTone) {
  * @return  void
  */
 function fillSoundDetails(tones) {
-    $("#sound-details").addClass("visible");
-    hideElementWhenIdle( $("#sound-details") );
-    
-    if( !tones.length ) {
-        $("#sound-details").addClass("show-note").removeClass("show-interval");
-        showIntervalDifferenceWithTuning(tones);
-    }
-    else {
-        $("#sound-details").addClass("show-interval").removeClass("show-note");
-        showIntervalName( tones[0], tones[1] );
-    }    
+	$("#sound-details").addClass("visible");
+	hideElementWhenIdle( $("#sound-details") );
+	
+	if( !tones.length ) {
+		$("#sound-details").addClass("show-note").removeClass("show-interval");
+		showIntervalDifferenceWithTuning(tones);
+	}
+	else {
+		$("#sound-details").addClass("show-interval").removeClass("show-note");
+		showIntervalName( tones[0], tones[1] );
+	}
 }
 
 /**
@@ -285,22 +285,22 @@ function fillSoundDetails(tones) {
  * @return  void
  */
 function playIntervalOnSpiral(tones, idx) {
-    if ( !tones.length )
-        return;
-        
-    tones[0].play();
-    animateOvertone( $(".overtone")[idx - 1], tones[0].envelope );
+	if ( !tones.length )
+		return;
+	
+	tones[0].play();
+	animateOvertone( $(".overtone")[idx - 1], tones[0].envelope );
 
-    if( App.options.groupNotes ) {
-        tones[1].play();
-        animateOvertone( $(".overtone")[idx], tones[1].envelope );
-    }
-    else {
-        setTimeout( function(){
-            tones[1].play();
-            animateOvertone( $(".overtone")[idx], tones[1].envelope );
-        }, 250);
-    }
+	if( App.options.groupNotes ) {
+		tones[1].play();
+		animateOvertone( $(".overtone")[idx], tones[1].envelope );
+	}
+	else {
+		setTimeout( function(){
+			tones[1].play();
+			animateOvertone( $(".overtone")[idx], tones[1].envelope );
+		}, 250);
+	}
 }
 
 /**
@@ -316,59 +316,59 @@ function playIntervalOnSpiral(tones, idx) {
  * @return  void
  */
 function playIntervalOnAxis(interval, tone) {
-      tones.playFrequency( App.baseTone.frequency );
-      animateOvertone( $(".overtone")[0], App.baseTone.envelope );
+	tones.playFrequency( App.baseTone.frequency );
+	animateOvertone( $(".overtone")[0], App.baseTone.envelope );
 
-      /*
-       * Notes are grouped
-       */
-      if( App.options.groupNotes ){
-          if( App.options.octaveReduction ) {
-              tone.play();
-              animateOvertone( $(".overtone")[interval - 1], tone.envelope );
-          }
-          else {
-              // Loop through the first overtone and all the octaves of the same interval
-              while( $("#overtone-" + interval).length ) {
-                  tones.playFrequency( interval * App.baseTone.frequency );
-                  animateOvertone( $(".overtone")[interval - 1], tone.envelope );
-                  interval = interval * 2;
-               }
-              
-              tone.remove();
-          }
-      }
-      /*
-       * Notes are played sequentially
-       */
-      else {
-          if( App.options.octaveReduction ){
-              setTimeout(function(){
-                  tone.play();
-                  animateOvertone( $(".overtone")[interval - 1], tone.envelope );
-              }, 250);
-          }
-          else {
-              var axisIntervals = [];
-              
-              // Push into an array all the octaves of the same interval present
-              // on one particular axis
-              while( $("#overtone-" + interval).length ) {
-                  axisIntervals.push(interval);
-                  interval = interval * 2;
-              }
-              
-              // For each of them, play them sequentially with a delay of 250ms
-              axisIntervals.forEach(function(interval, idx){
-                  setTimeout(function(){
-                      tones.playFrequency( interval * App.baseTone.frequency );
-                      animateOvertone( $(".overtone")[interval - 1], tone.envelope );
-                  }, 250 * (idx + 1));
-              });
-              
-              tone.remove();
-          }
-      }
+	/*
+	* Notes are grouped
+	*/
+	if( App.options.groupNotes ){
+		if( App.options.octaveReduction ) {
+			tone.play();
+			animateOvertone( $(".overtone")[interval - 1], tone.envelope );
+		}
+		else {
+			// Loop through the first overtone and all the octaves of the same interval
+			while( $("#overtone-" + interval).length ) {
+				tones.playFrequency( interval * App.baseTone.frequency );
+				animateOvertone( $(".overtone")[interval - 1], tone.envelope );
+				interval = interval * 2;
+			}
+			
+			tone.remove();
+		}
+	}
+	/*
+	* Notes are played sequentially
+	*/
+	else {
+		if( App.options.octaveReduction ){
+			setTimeout(function(){
+				tone.play();
+				animateOvertone( $(".overtone")[interval - 1], tone.envelope );
+			}, 250);
+		}
+		else {
+			var axisIntervals = [];
+			
+			// Push into an array all the octaves of the same interval present
+			// on one particular axis
+			while( $("#overtone-" + interval).length ) {
+				axisIntervals.push(interval);
+				interval = interval * 2;
+			}
+			
+			// For each of them, play them sequentially with a delay of 250ms
+			axisIntervals.forEach(function(interval, idx){
+				setTimeout(function(){
+					tones.playFrequency( interval * App.baseTone.frequency );
+					animateOvertone( $(".overtone")[interval - 1], tone.envelope );
+				}, 250 * (idx + 1));
+			});
+			
+			tone.remove();
+		}
+	}
 }
 
 /**
@@ -379,14 +379,14 @@ function playIntervalOnAxis(interval, tone) {
  * @return {bool}  The new option state
  */
 function toggleOption(option) {
-    App.options[option] = !App.options[option];
-    $("[data-option=" + option + "]").toggleClass("off");
+	App.options[option] = !App.options[option];
+	$("[data-option=" + option + "]").toggleClass("off");
 	$(document).trigger({
 		type: "overtones:options:change",
 		details: { optionName: option, optionValue: App.options[option] }
 	});
-    
-    return App.options[option];
+	
+	return App.options[option];
 }
 
 /**
@@ -412,20 +412,20 @@ function updateBaseFrequency(val, mute) {
 	tones.sounds[ tones.sounds.indexOf(App.baseTone) ].remove(); // Remove the base tone
 	stopAllPlayingSounds();
 	
-    App.baseTone      = tones.createSound(val);
+	App.baseTone      = tones.createSound(val);
 	App.baseTone.name = frequencyToNoteDetails(val).name;
 	
-    $("#base, #base-detail").val(val);
-    
-    if( !mute && !App.options.sustain )
-        $("#overtone-1").click();
+	$("#base, #base-detail").val(val);
+	
+	if( !mute && !App.options.sustain )
+		$("#overtone-1").click();
 	
 	$(document).trigger({
 		type: "overtones:options:change",
 		details: { optionName: "baseFrequency", optionValue: val }
 	});
-    
-    return val;
+	
+	return val;
 }
 
 /**
@@ -437,11 +437,11 @@ function updateBaseFrequency(val, mute) {
  * @return {number}  The new volume (scale 0–1)
  */
 function updateVolume(val, mute) {
-    val /= 100;
+	val /= 100;
 
-    App.currentVolume = val;
-    tones.masterGain.gain.setValueAtTime(App.currentVolume, tones.context.currentTime);
-    if (!mute) {
+	App.currentVolume = val;
+	tones.masterGain.gain.setValueAtTime(App.currentVolume, tones.context.currentTime);
+	if (!mute) {
 		tones.playFrequency( App.baseTone.frequency );
 		
 		$(document).trigger({
@@ -449,8 +449,8 @@ function updateVolume(val, mute) {
 			details: { optionName: "mainVolume", optionValue: val }
 		});
 	}
-    
-    return val;
+	
+	return val;
 }
 
 /**
@@ -464,11 +464,11 @@ function updateVolume(val, mute) {
  * @return  void
  */
 function overtoneClickHandler() {
-    var idx           = $(this).index() + 1,
-		soundPlaying  = $(this).data("isPlaying"),
-        self          = this,
-        noteFrequency = idx * App.baseTone.frequency,
-        tone;
+	var idx           = $(this).index() + 1,
+	    soundPlaying  = $(this).data("isPlaying"),
+	    self          = this,
+	    noteFrequency = idx * App.baseTone.frequency,
+	    tone;
 	
 	if(soundPlaying){
 		soundPlaying.fadeOut();
@@ -484,8 +484,8 @@ function overtoneClickHandler() {
 	tone = tones.createSound(noteFrequency);
 	tone.fromClick = true;
 	
-    if( App.options.octaveReduction && tone.frequency !== App.baseTone.frequency )
-        tone.reduceToSameOctaveAs(App.baseTone);
+	if( App.options.octaveReduction && tone.frequency !== App.baseTone.frequency )
+		tone.reduceToSameOctaveAs(App.baseTone);
 	
 	if( App.options.sustain ){
 		let lastSoundPlaying = utils.findLast(tones.sounds, function(){ return this.isPlaying; }, 1);
@@ -508,9 +508,9 @@ function overtoneClickHandler() {
 	}
 	else fillSoundDetails(tone);
 
-    tone.play();
+	tone.play();
 
-    animateOvertone( self, tone.envelope );
+	animateOvertone( self, tone.envelope );
 	
 	$(document).trigger({
 		type: "overtones:play",
@@ -529,24 +529,24 @@ function overtoneClickHandler() {
  * @return  void
  */
 function spiralPieceClickHandler() {
-    var idx         = $(this).index() + 1,
-        firstTone   = tones.createSound(idx * App.baseTone.frequency),
-        secondTone  = tones.createSound( (idx + 1)  * App.baseTone.frequency );
+	var idx         = $(this).index() + 1,
+	    firstTone   = tones.createSound(idx * App.baseTone.frequency),
+	    secondTone  = tones.createSound( (idx + 1)  * App.baseTone.frequency );
 
-    if( App.options.octaveReduction ){
-      firstTone.reduceToSameOctaveAs(App.baseTone, true);
-      secondTone.reduceToSameOctaveAs(App.baseTone);
-    }
+	if( App.options.octaveReduction ){
+		firstTone.reduceToSameOctaveAs(App.baseTone, true);
+		secondTone.reduceToSameOctaveAs(App.baseTone);
+	}
 
-    playIntervalOnSpiral( [firstTone, secondTone], idx );
+	playIntervalOnSpiral( [firstTone, secondTone], idx );
 
-    fillSoundDetails( [firstTone, secondTone] );
+	fillSoundDetails( [firstTone, secondTone] );
 	
 	$(document).trigger({
 		type: "overtones:play",
-		details: { 
-			element: "spiral", 
-			idx: idx, 
+		details: {
+			element: "spiral",
+			idx: idx,
 			interval: getIntervalName(firstTone, secondTone),
 			options: App.options
 		}
@@ -564,14 +564,14 @@ function spiralPieceClickHandler() {
  * @return  void
  */
 function axisClickHandler() {
-    var interval = parseInt( $(this).data("interval") ),
-        tone = tones
-               .createSound(interval * App.baseTone.frequency)
-               .reduceToSameOctaveAs(App.baseTone);
+	var interval = parseInt( $(this).data("interval") ),
+	    tone = tones
+	           .createSound(interval * App.baseTone.frequency)
+	           .reduceToSameOctaveAs(App.baseTone);
 
-    playIntervalOnAxis(interval, tone);
+	playIntervalOnAxis(interval, tone);
 
-    fillSoundDetails( [App.baseTone, tone] );
+	fillSoundDetails( [App.baseTone, tone] );
 	
 	$(document).trigger({
 		type: "overtones:play",
@@ -595,8 +595,8 @@ function axisClickHandler() {
  */
 function baseInputHandler(e){
 	const ARROW_UP    = 38,
-		  ARROW_DOWN  = 40,
-		  $this       = $(this);
+	      ARROW_DOWN  = 40,
+	      $this       = $(this);
 	
 	let currentValue = +$this.get(0).value;
 	
@@ -633,67 +633,66 @@ function baseInputHandler(e){
  * @return  void
  */
 function init() {
-    updateVolume( $("#volume-control").val(), true );
+	updateVolume( $("#volume-control").val(), true );
 	App.baseTone.name = frequencyToNoteDetails(App.baseTone.frequency).name;
-    
-    $(".overtone").on("click", overtoneClickHandler);
-    $(".spiral-piece").on("click", spiralPieceClickHandler);
-    $(".axis").on("click", axisClickHandler);
 	
+	$(".overtone").on("click", overtoneClickHandler);
+	$(".spiral-piece").on("click", spiralPieceClickHandler);
+	$(".axis").on("click", axisClickHandler);
+
 	$("#base-detail").on("keydown", baseInputHandler);
-    
-    $("#base, #base-detail").on("change", function(){
-      updateBaseFrequency( $(this).val() );
-    });
 
-    $("#volume-control").on("change", function(){
-      updateVolume( $(this).val() );
-    });
+	$("#base, #base-detail").on("change", function(){
+	  updateBaseFrequency( $(this).val() );
+	});
 
-    $("[data-option]").on("click", function(){
-      toggleOption( $(this).data("option") );
-    });
-	
+	$("#volume-control").on("change", function(){
+	  updateVolume( $(this).val() );
+	});
+
+	$("[data-option]").on("click", function(){
+	  toggleOption( $(this).data("option") );
+	});
+
 	$(document).on("overtones:options:change", function(e){
 		if( e.details.optionName === "sustain" && e.details.optionValue === false )
 			stopAllPlayingSounds();
 	});
-	
 }
 
 var App = {
-    /**
-     * The fundamental tone from which to calculate the overtones values
-     *
-     * @alias module:overtones.baseTone
-     *
-     * @type  {Sound}
-     */
-    baseTone: tones.createSound( $("#base").val() ),
-    init:     init,
-    /**
-     * @alias module:overtones.options
-     *
-     * @type {object}
-     * @property  {bool}  groupNotes      If set to `true`, it will play the notes
-     *                                    at the same time.
-     * @property  {bool}  octaveReduction If set to `true` all notes will be played
-     *                                    on the same octave of the fundamental tone.
-     *                                    See {@link baseTone}.
-     */
-    options: {
-        groupNotes:      true,
-        octaveReduction: false
-    },
-    /**
-     * Frequency data for various tunings
-     *
-     * @alias module:overtones.tunings
-     *
-     * @type {object}
-     */
-    tunings: {
-    }
+	/**
+	* The fundamental tone from which to calculate the overtones values
+	*
+	* @alias module:overtones.baseTone
+	*
+	* @type  {Sound}
+	*/
+	baseTone: tones.createSound( $("#base").val() ),
+	init:     init,
+	/**
+	* @alias module:overtones.options
+	*
+	* @type {object}
+	* @property  {bool}  groupNotes      If set to `true`, it will play the notes
+	*                                    at the same time.
+	* @property  {bool}  octaveReduction If set to `true` all notes will be played
+	*                                    on the same octave of the fundamental tone.
+	*                                    See {@link baseTone}.
+	*/
+	options: {
+		groupNotes:      true,
+		octaveReduction: false
+	},
+	/**
+	* Frequency data for various tunings
+	*
+	* @alias module:overtones.tunings
+	*
+	* @type {object}
+	*/
+	tunings: {
+	}
 };
 
 module.exports = App;

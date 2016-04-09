@@ -1,103 +1,103 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>Overtone scale</title>
-    <meta property="og:url"           content="http://www.suonoterapia.org/overtones" />
+	<meta charset="utf-8">
+	<title>Overtone scale</title>
+	<meta property="og:url"           content="http://www.suonoterapia.org/overtones" />
 	<meta property="og:type"          content="website" />
 	<meta property="og:title"         content="Overtones Spiral" />
 	<meta property="og:description"   content="Interactive visualization of the Overtone series on the Octave Spiral, with sound and information about tunings and frequencies" />
 	<meta property="og:image"         content="http://www.suonoterapia.org/overtones/assets/images/meta-image.png" />
-    <link rel="apple-touch-icon" sizes="57x57" href="apple-touch-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="apple-touch-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="apple-touch-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="apple-touch-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="apple-touch-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="apple-touch-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="apple-touch-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180x180.png">
-    <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="favicon-194x194.png" sizes="194x194">
-    <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96">
-    <link rel="icon" type="image/png" href="android-chrome-192x192.png" sizes="192x192">
-    <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16">
-    <link rel="manifest" href="manifest.json">
-    <link rel="mask-icon" href="safari-pinned-tab.svg" color="#5bbad5">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="msapplication-TileImage" content="mstile-144x144.png">
-    <meta name="theme-color" content="#0080a3">
-    <link rel="stylesheet" href="assets/styles/style.css" type="text/css">
+	<link rel="apple-touch-icon" sizes="57x57" href="apple-touch-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="apple-touch-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="apple-touch-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="apple-touch-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="apple-touch-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="apple-touch-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="apple-touch-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180x180.png">
+	<link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="favicon-194x194.png" sizes="194x194">
+	<link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96">
+	<link rel="icon" type="image/png" href="android-chrome-192x192.png" sizes="192x192">
+	<link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16">
+	<link rel="manifest" href="manifest.json">
+	<link rel="mask-icon" href="safari-pinned-tab.svg" color="#5bbad5">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="msapplication-TileImage" content="mstile-144x144.png">
+	<meta name="theme-color" content="#0080a3">
+	<link rel="stylesheet" href="assets/styles/style.css" type="text/css">
 </head>
 <body>
   	<!--=include components/_analytics.html -->
-    <script src="assets/js/webfont.js" async></script>
-    <div id="options">
-        <h2>Options</h2>
-        <div class="section-content">
-            <div class="input-wrapper" id="base-wrapper">
-                <input type="range" min="100" max="1000" id="base" value="220" data-frequency="220Hz"/>
-                <div class="input-wrapper" id="base-detail-wrapper">
-                    <input type="number" id="base-detail" value="220" min="100" max="1000">
-                    <span>Hz</span>
-                </div>
-            </div>
-            <div class="input-wrapper" id="volume-control-wrapper">
-                <input type="range" min="0" max="50" id="volume-control" value="25"/>
-            </div>
-            <!-- @todo Refactor those as hidden checkboxes with labels -->
-            <div class="options-buttons">
-                <a href="#" id="group-notes" class="option-button grouped" data-option="groupNotes"></a>
-                <a href="#" id="reduce-to-octave" class="option-button off" data-option="octaveReduction"></a>
-                <a href="#" id="sustain" class="option-button off" data-option="sustain"></a>
-            </div>
-        </div>
-    </div>
-    <div id="sound-details">
-        <div id="interval"
-            data-intro="The ratio between the two frequencies"
-            data-position="left">
-            <sup></sup><span>&#8260;</span><sub></sub>
-        </div>
-        <div id="note"
-            data-intro="The note name in the <a href='https://en.wikipedia.org/wiki/Scientific_pitch_notation' target='_blank'>modern scientific pitch notation</a>"
-            data-position="left">
-            <span id="note-name"></span><span id="note-accidentals" class="accidental"></span><sub></sub>
-        </div>
-        <div id="interval-name" class="note-detail"
-            data-intro="The name of the interval"
-            data-position="left"></div>
-        <div id="note-frequency" class="note-detail"
-            data-intro="The exact frequency"
-            data-position="left">0 Hz</div>
-        <div class="cents-difference tuning"
-            data-intro="The difference in <a href='https://en.wikipedia.org/wiki/Cent_(music)' target='_blank'>cents</a> between the sound played and the note in <a href='https://en.wikipedia.org/wiki/Equal_temperament' target='_blank'>12 Equal Temperament</a>"
-            data-position="left">
-            <span class="cents">0</span>
-            <div class="cent-bar"></div>
-        </div>
-        <div class="cents-difference interval"
-            data-intro="The interval measured in cents"
-            data-position="left">
-            <span class="cents">1200</span>
-            <div class="cent-bar"></div>
-        </div>
-    </div>
-    
-    <!--=include assets/images/overtone-spiral.svg -->
-    
-    <footer>
-        <button href="#" id="help">?</button>
-        <p class="credits">Designed and crafted with joy by <a href="https://facebook.com/sunyatasattva">Marco Lucio Giannotta</a> and <a href="https://www.facebook.com/skye.lofvander">Skye Løfvander</a>. <span class="version">Version <a href="https://github.com/sunyatasattva/overtones/releases/tag/1.1.0">1.1.0</a></span></p>
-        <div class="social">
-            <!--=include components/_facebook.html -->
-            <!--=include components/_twitter.html -->
-            <!--=include components/_github.html -->
-        </div>
-        
-        <!--=include components/_easter-egg.html -->
-    </footer>
-    
-    <script src="assets/js/script.js"></script>
+	<script src="assets/js/webfont.js" async></script>
+	<div id="options">
+		<h2>Options</h2>
+		<div class="section-content">
+			<div class="input-wrapper" id="base-wrapper">
+				<input type="range" min="100" max="1000" id="base" value="220" data-frequency="220Hz"/>
+				<div class="input-wrapper" id="base-detail-wrapper">
+					<input type="number" id="base-detail" value="220" min="100" max="1000">
+					<span>Hz</span>
+				</div>
+			</div>
+			<div class="input-wrapper" id="volume-control-wrapper">
+				<input type="range" min="0" max="50" id="volume-control" value="25"/>
+			</div>
+			<!-- @todo Refactor those as hidden checkboxes with labels -->
+			<div class="options-buttons">
+				<a href="#" id="group-notes" class="option-button grouped" data-option="groupNotes"></a>
+				<a href="#" id="reduce-to-octave" class="option-button off" data-option="octaveReduction"></a>
+				<a href="#" id="sustain" class="option-button off" data-option="sustain"></a>
+			</div>
+		</div>
+	</div>
+	<div id="sound-details">
+		<div id="interval"
+			data-intro="The ratio between the two frequencies"
+			data-position="left">
+			<sup></sup><span>&#8260;</span><sub></sub>
+		</div>
+		<div id="note"
+			data-intro="The note name in the <a href='https://en.wikipedia.org/wiki/Scientific_pitch_notation' target='_blank'>modern scientific pitch notation</a>"
+			data-position="left">
+			<span id="note-name"></span><span id="note-accidentals" class="accidental"></span><sub></sub>
+		</div>
+		<div id="interval-name" class="note-detail"
+			data-intro="The name of the interval"
+			data-position="left"></div>
+		<div id="note-frequency" class="note-detail"
+			data-intro="The exact frequency"
+			data-position="left">0 Hz</div>
+		<div class="cents-difference tuning"
+			data-intro="The difference in <a href='https://en.wikipedia.org/wiki/Cent_(music)' target='_blank'>cents</a> between the sound played and the note in <a href='https://en.wikipedia.org/wiki/Equal_temperament' target='_blank'>12 Equal Temperament</a>"
+			data-position="left">
+			<span class="cents">0</span>
+			<div class="cent-bar"></div>
+		</div>
+		<div class="cents-difference interval"
+			data-intro="The interval measured in cents"
+			data-position="left">
+			<span class="cents">1200</span>
+			<div class="cent-bar"></div>
+		</div>
+	</div>
+	
+	<!--=include assets/images/overtone-spiral.svg -->
+	
+	<footer>
+		<button href="#" id="help">?</button>
+		<p class="credits">Designed and crafted with joy by <a href="https://facebook.com/sunyatasattva">Marco Lucio Giannotta</a> and <a href="https://www.facebook.com/skye.lofvander">Skye Løfvander</a>. <span class="version">Version <a href="https://github.com/sunyatasattva/overtones/releases/">1.1.1</a></span></p>
+		<div class="social">
+			<!--=include components/_facebook.html -->
+			<!--=include components/_twitter.html -->
+			<!--=include components/_github.html -->
+		</div>
+		
+		<!--=include components/_easter-egg.html -->
+	</footer>
+	
+	<script src="assets/js/script.js"></script>
 </body>
 </html>

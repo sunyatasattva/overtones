@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.1.1 — 2016.04.10
+
+### Changes
+* Better interval names (more commonly used). [#37](https://github.com/sunyatasattva/overtones/issues/37) 
+* Facebook share button now shows share count.
+* Linking latest release page in the footer instead of specific release.
+
+### Fixes
+* Fixes compatibility with older versions of Safari. [#38](https://github.com/sunyatasattva/overtones/issues/38) 
+
+### Behind the hood
+* Added some missing code documentation.
+
+### [Full changelog](https://github.com/sunyatasattva/overtones/compare/1.1.0...1.1.1)
+
 ## 1.1.0 — 2016.03.24
 
 ### New features
