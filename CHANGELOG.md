@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.2 — 2016.04.12
+
+### Fixes
+* Fixes an error introduced in new versions of Safari through latest patch.
+
+### [Full changelog](https://github.com/sunyatasattva/overtones/compare/1.1.0...1.1.2)
+
 ## 1.1.1 — 2016.04.10
 
 ### Changes
