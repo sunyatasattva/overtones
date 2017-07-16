@@ -29,6 +29,7 @@
 
 .overtone {
 	transform:        scale(1);
+    transform-box:    fill-box;
 	transform-origin: 50% 50%;
 	transition:       all 0.2s ease-in-out;
 	
