@@ -46,10 +46,10 @@ module.exports = function(){
 		
 		Object.defineProperty(OscillatorNode.prototype, "type", {
 			get: function() {
-				return ["sine", "square", "sawtooth", "triangle", "custom"][this.type];
+				return ["sine", "square", "sawtooth", "triangle", "custom"][this._type];
 			},
 			set: function(type) {
-				this.type = OscillatorNode.prototype[type.toUpperCase()] || type;
+				this._type = OscillatorNode.prototype[type.toUpperCase()] || type;
 			}
 		});
 	}
