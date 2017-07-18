@@ -176,6 +176,10 @@ module.exports = {
     },
     
     /**
+     * @see  {@link  https://lodash.com/docs#clamp|lodash.clamp}
+     */
+    clamp: require("lodash.clamp"),
+	/**
      * @see  {@link  https://lodash.com/docs#debounce|lodash.debounce}
      */
     debounce: require("lodash.debounce"),

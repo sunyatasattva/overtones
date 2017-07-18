@@ -693,7 +693,8 @@ var App = {
      * @type {object}
      */
     tunings: {
-    }
+    },
+    updateBaseFrequency: updateBaseFrequency
 };
 
 module.exports = App;
