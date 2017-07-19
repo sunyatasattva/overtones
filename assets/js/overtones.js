@@ -13,10 +13,10 @@ var $ = jQuery = require("jquery");
 
 require("velocity-animate");
 require("jquery.animate-number");
-
 var utils      = require("./lib/utils.js"),
     intervals  = require("../data/intervals.json"),
     tones      = require("./lib/tones.js"),
+	analyser   = require("./lib/spectrumAnalyser"),
     $          = require("jquery");
 
 // Partially applied function to get the names of pitches
@@ -32,8 +32,8 @@ const PITCH_SET = utils.pitchSet("P1 m2 M2 m3 M3 P4 4A P5 m6 M6 m7 M7"),
  * @param  {jQuery}  $element  The jQuery object of the element
  */
 var hideElementWhenIdle = utils.debounce(function($element){
-          $element.removeClass("visible");
-    }, 5000);
+	  $element.removeClass("visible");
+}, 5000);
 
 /**
  * Given a frequency, it gets the closest A440 12T Equal tempered note.
@@ -655,11 +655,68 @@ function init() {
     });
 	
 	$(document).on("overtones:options:change", function(e){
-		if( e.details.optionName === "sustain" && e.details.optionValue === false )
+		if( e.details.optionName === "sustain" && 
+		    e.details.optionValue === false )
 			stopAllPlayingSounds();
+		if(e.details.optionName === "microphone") {
+			if(e.details.optionValue === true) {
+				if(navigator.getUserMedia) {
+					navigator.getUserMedia(
+						{ audio: true },
+						gotStream,
+						noStream
+					);
+				}
+				else {
+					alert('Sorry, your browser does not support getUserMedia');
+				}
+			}
+		}
 	});
-	
 }
+
+function highlightOvertone($overtone, k) {
+	let fillColor = "#FFE08D",
+		$spaces   = $overtone.find('.spaces');
+
+	$overtone.velocity(
+		{ scale: utils.clamp(1.5 * k, 1, 1.5) }, 
+		{ duration: 15 }
+	);
+
+	$spaces.velocity(
+		{ fillBlue: 1/( 1/255 * Math.max(1, k * 2) ) },
+		{ duration: 15 }
+	);
+}
+
+function updateOvertones(spectrum) {
+	if(!spectrum.fundamental)
+		return;
+
+	//console.log(spectrum.spectrum);
+
+	Overtones.updateBaseFrequency(spectrum.fundamental, true);
+
+	spectrum.spectrum.forEach((partial, i) => {
+	  let $overtone        = jQuery(".overtone").eq(i),
+		  adjustedLoudness = partial * utils.logBase(8, i + 2);
+
+		highlightOvertone($overtone, adjustedLoudness);
+	});
+}
+
+function gotStream(stream){
+	analyser.init(stream);
+	analyser.update((promise) => {
+		promise.then((spectrum) => {
+			updateOvertones(spectrum);
+		});
+	});
+}
+
+
+function noStream(stream){} 
 
 var App = {
     /**
