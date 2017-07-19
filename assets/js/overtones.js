@@ -735,6 +735,7 @@ function gotStream(stream, debug){
 	analyser.init( stream, { debug: debug } );
 	analyser.update((promise) => {
 		promise.then((spectrum) => {
+			if(spectrum.confidence > 2)
 			updateOvertones(spectrum);
 		});
 	});

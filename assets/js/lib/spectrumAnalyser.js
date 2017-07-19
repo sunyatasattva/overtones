@@ -2,11 +2,14 @@
 
 var peakDetector = require("slayer");
 
-var audioCtx = new (window.AudioContext || window.webkitAudioContext)(),
-	analyser = audioCtx.createAnalyser(),
+var audioCtx    = new (window.AudioContext || window.webkitAudioContext)(),
+	analyser    = audioCtx.createAnalyser(),
+	confidence  = 0,
+	uncertainty = 0,
 	bufferLength,
 	dataArray,
 	debugMode,
+	lastHarmonicSpectrum,
 	overtonesResolution,
 	requestID,
 	source;
@@ -16,6 +19,22 @@ var canvas    = document.querySelector('.visualizer'),
 	canvasCtx = canvas.getContext("2d"),
 	canvasW   = canvas.width,
 	canvasH   = canvas.height;
+
+function compareHarmonics(a, b) {
+	return a.reduce(
+		(b, val, i) => {
+			if(b) {
+				if(val === 0 && b[i] === val) 
+					return b;
+				else if(val > 0 && b[i] > 0)
+					return b;
+			}
+			
+			return false;
+		},
+		b
+	)
+}
 
 function init(
 	stream,
@@ -27,9 +46,10 @@ function init(
 		resolution  = 16
 	} = {}
 ) {
-	debugMode           = debug;
-	overtonesResolution = resolution;
-	source              = audioCtx.createMediaStreamSource(stream);
+	debugMode            = debug;
+	overtonesResolution  = resolution;
+	lastHarmonicSpectrum = new Array(resolution).fill(0);
+	source               = audioCtx.createMediaStreamSource(stream);
 	
 	analyser.maxDecibels = maxDecibels;
 	analyser.minDecibels = minDecibels;
@@ -66,13 +86,30 @@ function analyse(dataArray) {
 					},
 					harmonicSpectrum // @todo check support for fill
 				);
+				
+				if( compareHarmonics(harmonicSpectrum, lastHarmonicSpectrum) ) {
+					confidence++;
+					uncertainty = 0;
+				}
+				else {
+					uncertainty++;
+					
+					if(uncertainty > 5)
+						confidence = 0;
+					else
+						confidence = Math.floor(confidence / 2);
+				}
+				
+				lastHarmonicSpectrum = harmonicSpectrum;
 			}
 		
 			if(debugMode) {
 				console.log(harmonicSpectrum);
+				console.log('%c %i', 'color:green', confidence);
 			}
 
 			return {
+				confidence:  confidence,
 				fundamental: lowestPeak,
 				spectrum:    harmonicSpectrum
 			}
@@ -89,8 +126,9 @@ function draw() {
 	
 	for(var i = 0; i < bufferLength; i++) {
 		barHeight = dataArray[i];
-
-		canvasCtx.fillStyle = `rgb(${barHeight + 100}, 50, 50)`;
+		
+		canvasCtx.fillStyle = `rgba(50, ${confidence * 15}, ${confidence * 5}, ${barHeight / 50})`;
+		
 		canvasCtx.fillRect(
 			x, 
 			canvasH - barHeight / 2,
