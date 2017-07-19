@@ -1,3 +1,11 @@
+.disabled {
+	opacity: 0.5;
+	
+	.disabled {
+		opacity: 1;
+	}
+}
+
 #base-wrapper,
 #volume-control-wrapper {
     display:  block;

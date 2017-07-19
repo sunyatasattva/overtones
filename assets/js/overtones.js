@@ -388,8 +388,10 @@ function toggleOption(option, originalEvent) {
 		type: "overtones:options:change",
 		details: { optionName: option, optionValue: App.options[option] }
 	});
-    
-    return App.options[option];
+
+	$(document).trigger(event);
+
+	return App.options[option];
 }
 
 /**
@@ -667,27 +669,35 @@ function init() {
 				activateMicrophoneStream(e.originalEvent.altKey);
 			}
 			else {
+				toggleInput('#base');
+				toggleInput('#base-detail');
 				analyser.stop();
 			}
 		}
 	});
 }
+
+function toggleInput(selector) {
+	var $wrapper = $(selector + '-wrapper'),
+		$input   = $(selector);
+	
+	$wrapper.toggleClass('disabled');
+	$input.attr( 'disabled', !$input.attr('disabled') );
+}
+
 function activateMicrophoneStream(debug) {
-				if(navigator.getUserMedia) {
-					navigator.getUserMedia(
-						{ audio: true },
+	if(navigator.getUserMedia) {
+		navigator.getUserMedia(
+			{ audio: true },
 			function(stream) {
 				gotStream(stream, debug);
 			},
-						noStream
-					);
-				}
-				else {
-					alert('Sorry, your browser does not support getUserMedia');
-				}
-			}
-		}
-	});
+			noStream
+		);
+	}
+	else {
+		alert('Sorry, your browser does not support getUserMedia');
+	}
 }
 
 function highlightOvertone($overtone, k) {
@@ -718,6 +728,9 @@ function updateOvertones(spectrum) {
 	});
 }
 
+function gotStream(stream, debug){
+	toggleInput('#base');
+	toggleInput('#base-detail');
 	
 	analyser.init( stream, { debug: debug } );
 	analyser.update((promise) => {
