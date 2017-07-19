@@ -378,10 +378,13 @@ function playIntervalOnAxis(interval, tone) {
  *
  * @return {bool}  The new option state
  */
-function toggleOption(option) {
+function toggleOption(option, originalEvent) {
+	var event;
+	
     App.options[option] = !App.options[option];
     $("[data-option=" + option + "]").toggleClass("off");
-	$(document).trigger({
+	
+	event = new jQuery.Event(originalEvent, {
 		type: "overtones:options:change",
 		details: { optionName: option, optionValue: App.options[option] }
 	});
@@ -650,8 +653,9 @@ function init() {
       updateVolume( $(this).val() );
     });
 
-    $("[data-option]").on("click", function(){
-      toggleOption( $(this).data("option") );
+    $("[data-option]").on("click", function(e){
+		e.preventDefault();
+    	toggleOption( $(this).data("option"), e );
     });
 	
 	$(document).on("overtones:options:change", function(e){
@@ -660,10 +664,21 @@ function init() {
 			stopAllPlayingSounds();
 		if(e.details.optionName === "microphone") {
 			if(e.details.optionValue === true) {
+				activateMicrophoneStream(e.originalEvent.altKey);
+			}
+			else {
+				analyser.stop();
+			}
+		}
+	});
+}
+function activateMicrophoneStream(debug) {
 				if(navigator.getUserMedia) {
 					navigator.getUserMedia(
 						{ audio: true },
-						gotStream,
+			function(stream) {
+				gotStream(stream, debug);
+			},
 						noStream
 					);
 				}
@@ -693,9 +708,6 @@ function highlightOvertone($overtone, k) {
 function updateOvertones(spectrum) {
 	if(!spectrum.fundamental)
 		return;
-
-	//console.log(spectrum.spectrum);
-
 	Overtones.updateBaseFrequency(spectrum.fundamental, true);
 
 	spectrum.spectrum.forEach((partial, i) => {
@@ -706,8 +718,8 @@ function updateOvertones(spectrum) {
 	});
 }
 
-function gotStream(stream){
-	analyser.init(stream);
+	
+	analyser.init( stream, { debug: debug } );
 	analyser.update((promise) => {
 		promise.then((spectrum) => {
 			updateOvertones(spectrum);

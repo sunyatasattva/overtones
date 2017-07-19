@@ -1,18 +1,39 @@
 "use strict";
 
 var peakDetector = require("slayer");
+
 var audioCtx = new (window.AudioContext || window.webkitAudioContext)(),
 	analyser = audioCtx.createAnalyser(),
 	bufferLength,
 	dataArray,
+	debugMode,
+	overtonesResolution,
+	requestID,
 	source;
 
-function init(stream) {
-	source = audioCtx.createMediaStreamSource(stream);
+// Debug variables
+var canvas    = document.querySelector('.visualizer'),
+	canvasCtx = canvas.getContext("2d"),
+	canvasW   = canvas.width,
+	canvasH   = canvas.height;
+
+function init(
+	stream,
+	{
+		debug       = false,
+		fftSize     = 2048,
+		maxDecibels = -10,
+		minDecibels = -70,
+		resolution  = 16
+	} = {}
+) {
+	debugMode           = debug;
+	overtonesResolution = resolution;
+	source              = audioCtx.createMediaStreamSource(stream);
 	
-	analyser.maxDecibels = -10;
-	analyser.minDecibels = -70;
-	analyser.fftSize     = 2048;
+	analyser.maxDecibels = maxDecibels;
+	analyser.minDecibels = minDecibels;
+	analyser.fftSize     = fftSize;
 	
 	source.connect(analyser);
 	
@@ -25,7 +46,7 @@ function analyse(dataArray) {
 		.x( (val, i) => i * (audioCtx.sampleRate/analyser.fftSize) )
 		.fromArray( Array.from(dataArray) )
 		.then( peaks => {
-			var harmonicSpectrum = new Array(16).fill(0),
+			var harmonicSpectrum = new Array(overtonesResolution).fill(0),
 				lowestPeak,
 				loudestPeak;
 		
@@ -46,6 +67,10 @@ function analyse(dataArray) {
 					harmonicSpectrum // @todo check support for fill
 				);
 			}
+		
+			if(debugMode) {
+				console.log(harmonicSpectrum);
+			}
 
 			return {
 				fundamental: lowestPeak,
@@ -54,15 +79,51 @@ function analyse(dataArray) {
 		} );
 }
 
+function draw() {
+	let barWidth = (canvasW / bufferLength) * 2.5,
+		x        = 0,
+		barHeight;
+	
+	canvasCtx.fillStyle = 'rgb(0, 0, 0)';
+    canvasCtx.fillRect(0, 0, canvasW, canvasH);
+	
+	for(var i = 0; i < bufferLength; i++) {
+		barHeight = dataArray[i];
+
+		canvasCtx.fillStyle = `rgb(${barHeight + 100}, 50, 50)`;
+		canvasCtx.fillRect(
+			x, 
+			canvasH - barHeight / 2,
+			barWidth,
+			barHeight / 2
+		);
+
+		x += barWidth + 1;
+	}
+}
+
+function stop() {
+	cancelAnimationFrame(requestID);
+	
+	if(debugMode) {
+		canvasCtx.clearRect(0, 0, canvasW, canvasH);
+	}
+}
+
 function update(cb) {
-	requestAnimationFrame(() => update(cb));
+	requestID = requestAnimationFrame(() => update(cb));
 
 	analyser.getByteFrequencyData(dataArray);
 	cb( analyse(dataArray) );
+	
+	if(debugMode) {
+		draw();
+	}
 }
 
 module.exports = {
 	analyse: analyse,
 	init:    init,
+	stop:    stop,
 	update:  update
 };
