@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-var peakDetector = require("slayer");
+var peakDetector = require('slayer');
 
 var audioCtx    = new (window.AudioContext || window.webkitAudioContext)(),
 	analyser    = audioCtx.createAnalyser(),
@@ -15,10 +15,15 @@ var audioCtx    = new (window.AudioContext || window.webkitAudioContext)(),
 	source;
 
 // Debug variables
-var canvas    = document.querySelector('.visualizer'),
-	canvasCtx = canvas.getContext("2d"),
-	canvasW   = canvas.width,
-	canvasH   = canvas.height;
+var canvas    = document.createElement('canvas'),
+	canvasCtx = canvas.getContext('2d');
+
+canvas.id     = 'spectrum-analyser-debug';
+canvas.width  = 640;
+canvas.height = 100;
+canvas.setAttribute('style', 'position: fixed; bottom: 0; left: 0'); 
+
+document.querySelector('body').append(canvas);
 
 function compareHarmonics(a, b) {
 	return a.reduce(
@@ -117,12 +122,12 @@ function analyse(dataArray) {
 }
 
 function draw() {
-	let barWidth = (canvasW / bufferLength) * 2.5,
+	let barWidth = (canvas.width / bufferLength) * 2.5,
 		x        = 0,
 		barHeight;
 	
 	canvasCtx.fillStyle = 'rgb(0, 0, 0)';
-    canvasCtx.fillRect(0, 0, canvasW, canvasH);
+    canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
 	
 	for(var i = 0; i < bufferLength; i++) {
 		barHeight = dataArray[i];
@@ -131,7 +136,7 @@ function draw() {
 		
 		canvasCtx.fillRect(
 			x, 
-			canvasH - barHeight / 2,
+			canvas.height - barHeight / 2,
 			barWidth,
 			barHeight / 2
 		);
@@ -144,7 +149,7 @@ function stop() {
 	cancelAnimationFrame(requestID);
 	
 	if(debugMode) {
-		canvasCtx.clearRect(0, 0, canvasW, canvasH);
+		canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 	}
 }
 
