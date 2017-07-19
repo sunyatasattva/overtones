@@ -7,7 +7,8 @@
 "use strict";
 
 var jQuery,
-    App;
+    App,
+	microphoneStream;
 
 var $ = jQuery = require("jquery");
 
@@ -672,6 +673,7 @@ function init() {
 				toggleInput('#base');
 				toggleInput('#base-detail');
 				analyser.stop();
+				microphoneStream.stop();
 			}
 		}
 	});
@@ -690,6 +692,7 @@ function activateMicrophoneStream(debug) {
 		navigator.getUserMedia(
 			{ audio: true },
 			function(stream) {
+				microphoneStream = stream.getAudioTracks()[0];
 				gotStream(stream, debug);
 			},
 			noStream
@@ -736,7 +739,7 @@ function gotStream(stream, debug){
 	analyser.update((promise) => {
 		promise.then((spectrum) => {
 			if(spectrum.confidence > 2)
-			updateOvertones(spectrum);
+				updateOvertones(spectrum);
 		});
 	});
 }
