@@ -98,6 +98,16 @@ a#group-notes {
     }
 }
 
+a#microphone {
+    background-image: url("../images/ico-microphone.svg");
+    
+    &::after { content: "Activate Microphone"; }
+    
+    &:not(.off) {
+        &::after { content: "Deactivate Microphone"; }
+    }
+}
+
 a#reduce-to-octave {
     background-image: url("../images/ico-octave-reduction.svg");
     
