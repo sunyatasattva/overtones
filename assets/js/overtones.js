@@ -16,8 +16,7 @@ require("jquery.animate-number");
 
 var utils      = require("./lib/utils.js"),
     intervals  = require("../data/intervals.json"),
-    tones      = require("./lib/tones.js"),
-    $          = require("jquery");
+    tones      = require("./lib/tones.js");
 
 // Partially applied function to get the names of pitches
 // @see {@link https://github.com/sunyatasattva/overtones/issues/30}
