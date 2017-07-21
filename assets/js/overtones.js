@@ -514,6 +514,35 @@ function overtoneClickHandler() {
 	});
 }
 
+/*
+ * Context handler for overtones circles.
+ *
+ * On right click it will update the base frequency to the octave reduced frequency
+ * of the overtone clicked. If the first partial is clicked, the base frequency is
+ * set to an octave lower of the original one.
+ *
+ * @param  {Event}  e  The event object.
+ *
+ * @return  void
+ */
+function overtoneContextHandler(e) {
+	var idx           = $(this).index() + 1,
+		noteFrequency = idx * App.baseTone.frequency;
+	
+	e.preventDefault();
+	
+	if(idx === 1)
+		updateBaseFrequency(noteFrequency / 2);
+	else {
+		updateBaseFrequency( 
+			tones.reduceToSameOctave(
+				{ frequency: noteFrequency },
+				App.baseTone
+			)
+		);
+	}
+}
+
 /**
  * Click Handler for Spiral piece connecting two overtones
  *
@@ -657,7 +686,9 @@ function init() {
 	updateVolume( $("#volume-control").val(), true );
 	App.baseTone.name = frequencyToNoteDetails(App.baseTone.frequency).name;
 	
-	$(".overtone").on("click", overtoneClickHandler);
+	$(".overtone")
+		.on("click", overtoneClickHandler)
+		.on("contextmenu", overtoneContextHandler);
 	$(".spiral-piece").on("click", spiralPieceClickHandler);
 	$(".axis").on("click", axisClickHandler);
 
