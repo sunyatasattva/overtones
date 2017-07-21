@@ -624,6 +624,31 @@ function baseInputHandler(e){
 	}
 }
 
+/*
+ * Handles the presses for numbers in the keyboard.
+ *
+ * Pressing a number will play that partial, where 0 is 10 and partials over the
+ * tenth can be played by pressing <kbd>shift + n</kbd> to add 10 to the pressed
+ * number.
+ *
+ * @param  {Event}  e  The event object.
+ *
+ * @return  void
+ */
+function keyboardHandler(e) {
+ 	var n;
+
+	// Numbers from 0 to 9
+  	if(e.keyCode >= 48 && e.keyCode <= 57) {
+		n = e.keyCode === 48 ? 9 : e.keyCode - 49;
+
+		if(e.shiftKey)
+		  n = Math.min(n + 10, 15);
+
+		$(".overtone").eq(n).click();
+	}
+}
+
 /**
  * Initializes the application
  *
@@ -640,6 +665,8 @@ function init() {
 	$(".spiral-piece").on("click", spiralPieceClickHandler);
 	$(".axis").on("click", axisClickHandler);
 
+    $(document).on("keydown", keyboardHandler);
+	
 	$("#base-detail").on("keydown", baseInputHandler);
 
 	$("#base, #base-detail").on("change", function(){
