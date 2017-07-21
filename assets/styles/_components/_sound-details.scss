@@ -52,17 +52,18 @@
 
 .cents-difference {
 	border-top:  1px solid white;
+	font-size:   17px; // Fixes a weird subpixel anti-aliasing problem in windows on the plus sign @_@
 	opacity:     0.5;
 	padding-top: 10px;
 	position:    relative;
 
 	transition: text-indent 0.2s ease-in-out;
+	
+	.show-note &.interval   { display: none; }
+	.show-interval &.tuning { display: none; }
+
+	.show-interval & { text-align:  left; }
 }
-
-	.show-note .interval.cents-difference   { display: none; }
-	.show-interval .tuning.cents-difference { display: none; }
-
-	.show-interval .cents-difference { text-align:  left; }
 
 .cent-bar {
 	border-bottom: 5px solid white;
