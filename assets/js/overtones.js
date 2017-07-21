@@ -198,7 +198,7 @@ function getIntervalName(a, b) {
 		intervalName;
 
 	if(arguments.length === 2 && a.frequency && b.frequency)
-		ratio = utils.fraction(b.frequency/a.frequency, 999);
+		ratio = b.intervalRatio(a);
 	else
 		ratio = a;
 	
@@ -226,17 +226,14 @@ function getIntervalName(a, b) {
  * @return  {string}  The interval name;
  */
 function showIntervalName(firstTone, secondTone) {
-	var octaveReducedFrequency = tones.reduceToSameOctave(secondTone, firstTone),
-	    ratio = utils.fraction(octaveReducedFrequency/firstTone.frequency, 999),
+	var ratio = firstTone.intervalRatio(secondTone, true),
 	    intervalName = getIntervalName(ratio),
-	    centsDifference = Math.abs( firstTone.intervalInCents(
-	                               	{ frequency: octaveReducedFrequency }
-	                                ) );
+	    centsDifference = Math.abs( firstTone.intervalInCents(secondTone, true) );
 
 	$("#interval-name").text(intervalName);
 	
-	$("#interval sup").text( ratio[1] );
-	$("#interval sub").text( ratio[2] );
+	$("#interval sup").text( ratio[2] );
+	$("#interval sub").text( ratio[1] );
 	
 	$(".cents-difference.interval")
 		.css("text-indent", centsDifference / 12 + "%")

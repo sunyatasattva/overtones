@@ -292,16 +292,51 @@ Sound.prototype.fadeOut = function(){
  *
  * @example
  * // Assume `sound` has a frequency of 440Hz
- * sound.intervalInCents( { frequency: 660 } ); // returns 702
+ * sound.intervalInCents(660); // returns 702
  *
- * @param  {Sound|Object}  tone  A Sound object (or an object containing a `frequency` property)
+ * @param  {Sound|Object|Number}  tone            A Sound object, or an object
+ *                                                containing a `frequency` property,
+ *                                                or the frequency itself.
+ * @param  {bool}                 reduceToOctave  Whether to reduce the second
+ *                                                frequency to the same octave.
  *
  * @return {int}  The interval between the two sounds rounded to the closest cent.
  */
-Sound.prototype.intervalInCents = function(tone){
-	var ratio = this.frequency / tone.frequency;
+Sound.prototype.intervalInCents = function(tone, reduceToOctave){
+	var frequency = tone.frequency || tone,
+	    ratio;
+	
+	if(reduceToOctave)
+		frequency = reduceToSameOctave( { frequency: frequency }, this);
+	
+	ratio = this.frequency / frequency;
 	
 	return Math.round( 1200 * utils.logBase(2, ratio) );
+};
+
+/**
+ * Calculates the approximate interval ratio with another tone.
+ *
+ * @example
+ * // Assume `sound` has a frequency of 440Hz
+ * sound.intervalRatio(660); // returns [0, 3, 2]
+ *
+ * @param  {Sound|Object|Number}  tone            A Sound object, or an object
+ *                                                containing a `frequency` property,
+ *                                                or the frequency itself.
+ * @param  {bool}                 reduceToOctave  Whether to reduce the second
+ *                                                frequency to the same octave.
+ *
+ * @return {Array}  The return value is an array of the form `[quot, num, den]`
+ *                  where `quot === 0` for improper fractions.
+ */
+Sound.prototype.intervalRatio = function(tone, reduceToOctave){
+	var frequency = tone.frequency || tone;
+	
+	if(reduceToOctave)
+		frequency = reduceToSameOctave( { frequency: frequency }, this);
+
+	return utils.fraction(this.frequency / frequency, 999);
 };
 
 /**
