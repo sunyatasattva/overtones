@@ -36,6 +36,23 @@ module.exports = {
 		
 		return array[highestIndex];
 	},
+    /*
+     * Weighs the loudness of a frequency depending on its height.
+     *
+     * It cuts off the most frequencies in the range of 2k–6k.
+     *
+     * @param  {number}  f  The frequency to weigh.
+     *
+     * @return {number}  A weighed number from 0 to 1 to apply to loudness of the sound.
+     */
+    weighFrequencyLoudness: function(f) {
+		var a = -1.5768 * Math.pow(10, -12),
+			b = 3.70162 * Math.pow(10, -8),
+			c = -0.000220906,
+			d = 1.05609;
+		
+		return a * Math.pow(f, 3) + b * Math.pow(f, 2) + c * f + d;
+	},
 	/**
 	* Checks if a number is a power of two
 	*

@@ -412,7 +412,7 @@ function updateBaseFrequency(val, mute) {
 	tones.sounds[ tones.sounds.indexOf(App.baseTone) ].remove(); // Remove the base tone
 	stopAllPlayingSounds();
 	
-	App.baseTone      = tones.createSound(val);
+	App.baseTone      = tones.createSound(val, { weigh: true });
 	App.baseTone.name = frequencyToNoteDetails(val).name;
 	
 	$("#base, #base-detail").val(val);
@@ -481,7 +481,7 @@ function overtoneClickHandler() {
 		return;
 	}
 	
-	tone = tones.createSound(noteFrequency);
+	tone = tones.createSound(noteFrequency, { weigh: true });
 	tone.fromClick = true;
 	
 	if( App.options.octaveReduction && tone.frequency !== App.baseTone.frequency )
@@ -530,8 +530,8 @@ function overtoneClickHandler() {
  */
 function spiralPieceClickHandler() {
 	var idx         = $(this).index() + 1,
-	    firstTone   = tones.createSound(idx * App.baseTone.frequency),
-	    secondTone  = tones.createSound( (idx + 1)  * App.baseTone.frequency );
+	    firstTone   = tones.createSound(idx * App.baseTone.frequency, { weigh: true }),
+	    secondTone  = tones.createSound( (idx + 1)  * App.baseTone.frequency, { weigh: true } );
 
 	if( App.options.octaveReduction ){
 		firstTone.reduceToSameOctaveAs(App.baseTone, true);
@@ -668,7 +668,7 @@ var App = {
 	*
 	* @type  {Sound}
 	*/
-	baseTone: tones.createSound( $("#base").val() ),
+	baseTone: tones.createSound( $("#base").val(), { weigh: true } ),
 	init:     init,
 	/**
 	* @alias module:overtones.options

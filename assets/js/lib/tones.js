@@ -367,6 +367,8 @@ Sound.prototype.reduceToSameOctaveAs = function(tone, excludeOctave){
  * @param  {number}  [opts.sustain]    The sustain duration of the sound (in ms). See {@link _createEnvelope}
  * @param  {string}  [opts.type]       The shape of the wave. See {@link _createOscillator}
  * @param  {float}   [opts.volume]     The amplitude of the sound, after the decay. 1 is full amplitude.
+ * @param  {bool}    [opts.weigh]      If `true` weighs the volume according to the frequency.
+ *                                     E.g. Volume is adjusted down for frequencies that "sound" louder.
  *
  * @return {Sound}  The Sound object.
  */
@@ -377,6 +379,11 @@ function createSound(frequency, opts){
 	    thisSound;
 	
 	opts.maxVolume = opts.maxVolume || opts.volume;
+	
+	if(opts.weigh) {
+		opts.maxVolume = utils.weighFrequencyLoudness(frequency) * opts.maxVolume;
+		opts.volume    = utils.weighFrequencyLoudness(frequency) * opts.volume;
+	}
 	
 	thisSound = new Sound(oscillator, envelope, opts);
 	
