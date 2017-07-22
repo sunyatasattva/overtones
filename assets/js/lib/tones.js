@@ -446,6 +446,24 @@ function playFrequency(frequency, opts) {
 	return thisSound.play();
 }
 
+function playSequence(sounds, copy) {
+	var sequence = Promise.resolve();
+	
+	if(copy) {
+		sounds = sounds.map(function(sound) {
+			return createSound(sound.frequency, sound);
+		});
+	}
+	
+	sounds.forEach(function(sound) {
+		sequence = sequence.then(function() {
+			return sound.play();
+		}); 
+	});
+	
+	return sequence;
+}
+
 module.exports = {
 	/**
 	 * The Audio Context where the module operates
@@ -459,6 +477,7 @@ module.exports = {
 	 */
 	masterGain:         masterGain,
 	playFrequency:      playFrequency,
+	playSequence:       playSequence,
 	reduceToSameOctave: reduceToSameOctave,
 	/**
 	 * A list of currently active sounds for manipulation
