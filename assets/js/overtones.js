@@ -14,7 +14,8 @@ var $ = jQuery = require("jquery");
 require("velocity-animate");
 require("jquery.animate-number");
 
-var utils      = require("./lib/utils.js"),
+var ls         = require("local-storage"),
+	utils      = require("./lib/utils.js"),
     intervals  = require("../data/intervals.json"),
     tones      = require("./lib/tones.js");
 
@@ -413,7 +414,7 @@ function updateBaseFrequency(val, mute) {
 	
 	$("#base, #base-detail").val(val);
 	
-	if( !mute && !App.options.sustain )
+	if( !mute && !App.options.sustain && !App.options.record )
 		$("#overtone-1").click();
 	
 	$(document).trigger({
@@ -482,6 +483,10 @@ function overtoneClickHandler() {
 	
 	if( App.options.octaveReduction && tone.frequency !== App.baseTone.frequency )
 		tone.reduceToSameOctaveAs(App.baseTone);
+	
+	if( App.options.record ) {
+		recordSound(tone);
+	}
 	
 	if( App.options.sustain ){
 		let lastSoundPlaying = utils.findLast(tones.sounds, function(){ return this.isPlaying; }, 1);
@@ -674,6 +679,61 @@ function keyboardHandler(e) {
 	}
 }
 
+function playSequence(sequence, animate) {
+	var _sequence = Promise.resolve(),
+		_sounds   = sequence.map(function(sound) {
+			return tones.createSound(sound.sound.frequency, sound.sound);
+		});
+	
+	sequence.forEach(function(sound, i) {
+		_sequence = _sequence.then(function() {
+			if(sound.base.frequency !== App.baseTone.frequency)
+				updateBaseFrequency(sound.base.frequency, true);
+			
+			if(animate)
+				animateOvertone( $(".overtone").get(sound.overtone - 1), _sounds[i].envelope );
+			
+			return _sounds[i].play();
+		});
+	});
+	
+	return _sequence;
+}
+
+function recordSound(sound) {
+	var soundCopy = tones.createSound(sound.frequency, sound),
+		sequence;
+	
+	sequence = App.sequence.push({
+		overtone: Math.floor(sound.frequency / App.baseTone.frequency),
+		sound:    soundCopy,
+		base:     App.baseTone
+	});
+	
+	ls.set("overtone-sequence", App.sequence);
+	
+	return sequence;
+}
+
+function loadSequence(json) {
+	var sounds;
+	
+	if(json.length) {
+		sounds = json.map(function(sound) {
+			if(sound.sound)
+				return sound;
+		});
+	}
+	
+	App.sequence = sounds || [];
+}
+
+function loadSequenceFromLocalStorage() {
+	var sequence = ls.get("overtone-sequence");
+	
+	loadSequence(sequence);
+}
+
 /**
  * Initializes the application
  *
@@ -685,6 +745,13 @@ function keyboardHandler(e) {
 function init() {
 	updateVolume( $("#volume-control").val(), true );
 	App.baseTone.name = frequencyToNoteDetails(App.baseTone.frequency).name;
+	
+	try {
+		loadSequenceFromLocalStorage();
+	}
+	catch(e) {
+		console.error(e);
+	}
 	
 	$(".overtone")
 		.on("click", overtoneClickHandler)
@@ -707,14 +774,17 @@ function init() {
 	$("[data-option]").on("click", function(){
 	  toggleOption( $(this).data("option") );
 	});
-
+	
 	$(document).on("overtones:options:change", function(e){
 		if( e.details.optionName === "sustain" && e.details.optionValue === false )
 			stopAllPlayingSounds();
+		if( e.details.optionName === "record" && e.details.optionValue === true )
+			App.sequence = [];
 	});
 }
 
 var App = {
+	play: playSequence,
 	/**
 	* The fundamental tone from which to calculate the overtones values
 	*
