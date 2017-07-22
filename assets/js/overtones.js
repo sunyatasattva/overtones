@@ -679,10 +679,10 @@ function keyboardHandler(e) {
 	}
 }
 
-function playSequence(sequence, animate) {
+function playSequence(sequence, opts) {
 	var _sequence = Promise.resolve(),
 		_sounds   = sequence.map(function(sound) {
-			return tones.createSound(sound.sound.frequency, sound.sound);
+			return sound.sound.duplicate(opts);
 		});
 	
 	sequence.forEach(function(sound, i) {
@@ -690,7 +690,7 @@ function playSequence(sequence, animate) {
 			if(sound.base.frequency !== App.baseTone.frequency)
 				updateBaseFrequency(sound.base.frequency, true);
 			
-			if(animate)
+			if(opts.animate)
 				animateOvertone( $(".overtone").get(sound.overtone - 1), _sounds[i].envelope );
 			
 			return _sounds[i].play();
@@ -701,7 +701,7 @@ function playSequence(sequence, animate) {
 }
 
 function recordSound(sound) {
-	var soundCopy = tones.createSound(sound.frequency, sound),
+	var soundCopy = sound.duplicate(),
 		sequence;
 	
 	sequence = App.sequence.push({
@@ -720,7 +720,10 @@ function loadSequence(json) {
 	
 	if(json.length) {
 		sounds = json.map(function(sound) {
-			if(sound.sound)
+			if(sound.sound) {
+				sound.sound = tones.duplicateSound(sound.sound);
+			}
+			
 				return sound;
 		});
 	}
