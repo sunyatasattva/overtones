@@ -104,9 +104,13 @@ function animateOvertone(el, duration) {
 	// If there are no inner circles, the animation only fills the spaces
 	// with the fillColor
 	if( !numbersOfCircles ) {
-		$.Velocity( $spacesGroup, {
+		$.Velocity(
+			$spacesGroup,
+			{
 			fill: fillColor
-		}, { duration: duration.attack * 1000 } )
+			}, 
+			{ duration: duration.attack * 1000 + duration.sustain * 1000 }
+		)
 			.then( function(spaces){
 			$.Velocity( spaces, { fill: originalFill });
 			el.classList.remove("active");
@@ -116,11 +120,16 @@ function animateOvertone(el, duration) {
 	// them progressively
 	else {
 		$circles.each(function(i){
+			var delay = i * (
+				(duration.attack * 1000 / numbersOfCircles) + 
+				(duration.sustain * 1000 / numbersOfCircles)
+			);
+			
 			$.Velocity( this, {
 				fill: fillColor
 			}, {
-				delay:    i * (duration.attack * 1000 / numbersOfCircles),
-				duration: duration.attack * 1000,
+				delay:    delay,
+				duration: duration.attack * 1000 + duration.sustain * 1000,
 			} )
 				.then( function(circle){
 				$.Velocity( circle, { fill: originalFill });
