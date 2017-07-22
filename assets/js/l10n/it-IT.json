@@ -1,0 +1,95 @@
+{
+	"help": {
+		"STEP_0": ['Puoi cliccare su questo bottone in qualsiasi momento per avere un guida veloce di quello che vedi.'],
+		"STEP_1": [
+			'Questa è una rappresentazione visiva di un suono fondamentale ed i suoi armonici',
+			'Ogni giro completo di spirale rappresenta un\'ottava.'
+		],
+		"STEP_2": [
+			'Il cerchio al centro della spirale rappresenta il tono fondamentale.',
+			'Ogni altro cerchio rappresenta i successivi armonici, fino al sedicesimo.',
+			'Clicca sul cerchio per ascoltarne il suono.'
+		],
+		"STEP_3": ['Ecco delle informazioni sul suono che hai appena ascoltato.'],
+		"STEP_4": ['Puoi anche cliccare su altre parti della spirale, come ad esempio le linee viola che connettono due cerchi.'],
+		"STEP_5": [
+			'In questo caso stai vedendo le informazioni riguardo la relazione tra le note che hai appena sentito.',
+		   	'<small>Le componenti della spirale sono dunque rappresentazioni degli intervalli della serie armonica.</small>'
+		],
+		"STEP_6": [
+			'Puoi modificare la frequenza della nota fondamentale usando questa barra.',
+		   	'<small>Puoi anche modificare direttamente il numero se vuoi un controllo più preciso!</small>'
+		],
+		"STEP_7": [
+			'Puoi modificare il volume di tutti i suoni attraverso questa barra.',
+		   	'<small>Fai attenzione se stai indossando cuffie! Armonici più alti possono suonare parecchio forti.</small>'
+		],
+		"STEP_8": ['Se disattivi questa opziona, potrai udire le note di un intervallo separatamente.'],
+		"STEP_9": ['Se attivi questa opzione, tutti i suoni saranno riportati a frequenze entro un\'ottava dal tono fondamentale'],
+		"STEP_10": [
+			'Se attivi questa opzione, i suoni continueranno finché non li fermi manualmente.',
+			'Puoi fermare i suoni manualmente cliccando nuovamente sul cerchio, disattivando questa opzione, o cambiando il tono fondamentale.',
+			'<small>Quando questa opzione è attiva, le informazioni mostrate saranno quelle dell\'intervallo tra il suono su cui è stato fatto il clic, e l\'ultimo suono attivo. Questo ti permette di esplorare tutti gli intervalli all\'interno della spirale.</small>'
+		],
+		"STEP_11": ['Questo è tutto! Divertiti!']
+	},
+	"intervals": {
+		"Perfect unison": "Unisono",
+		"Schisma": "Scisma",
+		"Syntonic comma": "Comma sintonico",
+		"Pythagorean comma": "Comma pitagorico",
+		"Enharmonic diesis": "Diesis enarmonico",
+		"Augmented unison": "Unisono aumentato",
+		"Limma": "Limma",
+		"Chromatic semitone": "Semitono cromatico",
+		"Small septendecimal semitone": "",
+		"Large septendecimal semitone": "",
+		"Minor second": "Seconda minore",
+		"Apotome": "Semitono pitagorico maggiore",
+		"Septimal diatonic semitone": "Semitono diatonico base sette",
+		"Supraminor second": "Seconda aumentata",
+		"Large limma": "Limma maggiore",
+		"Small neutral second": "Seconda neutrale minore",
+		"Neutral second": "Seconda neutrale",
+		"Submajor second": "",
+		"Minor tone": "Tono minore",
+		"Major second": "Seconda maggiore",
+		"Supermajor second": "Seconda sopramaggiore",
+		"Subminor third": "Terza sottominore",
+		"Minor third": "Terza minore",
+		"Tridecimal neutral third": "",
+		"Major third": "Terza maggiore",
+		"Perfect fourth": "Quarta giusta",
+		"Superfourth": "Quarta semi-aumentata",
+		"Augmented fourth": "Quarta aumentata",
+		"Diminished fifth": "Quinta diminuita",
+		"Undecimal subfifth": "",
+		"Perfect fifth": "Quinta giusta",
+		"Neutral sixth": "Sesta neutrale",
+		"Major sixth": "Sesta maggiore",
+		"Harmonic seventh": "Settima armonica",
+		"Minor seventh": "Settima minore",
+		"Major seventh": "Settima maggiore",
+		"Perfect octave": "Ottava giusta",
+		"Unknown interval": "Intervallo sconosciuto"
+	},
+	"notes": {
+		"C": "Do",
+		"C#": "Do#",
+		"Db": "Reb",
+		"D": "Re",
+		"D#": "Re#",
+		"Eb": "Mib",
+		"E": "Mi",
+		"F": "Fa",
+		"F#": "Fa#",
+		"Gb": "Solb",
+		"G": "Sol",
+		"G#": "Sol#",
+		"Ab": "Lab",
+		"A": "La",
+		"A#": "La#",
+		"Bb": "Sib",
+		"B": "Si"
+	}
+}

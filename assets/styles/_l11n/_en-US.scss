@@ -1,0 +1,21 @@
+html:lang(en) {
+	#group-notes {
+		&::after { content: "Group notes"; }
+		
+		&:not(.off) {
+			&::after { content: "Ungroup notes"; }
+		}
+	}
+	
+	#help {
+		@include has-tooltip("Explain me what I'm seeing", top);
+	}
+	
+	#reduce-to-octave {
+		&::after { content: "Reduce to octave"; }
+	}
+	
+	#sustain {
+		&::after { content: "Sustain notes"; }
+	}
+}

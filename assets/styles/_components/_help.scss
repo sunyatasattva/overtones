@@ -1,6 +1,4 @@
 #help {
-	@include has-tooltip("Explain me what I'm seeing", top);
-	
 	background-color: #666;
 	border:           0;
 	border-radius:    100%;
@@ -461,6 +459,11 @@ body.shepherd-active {
 	
 	.shepherd-enabled { opacity: 1 !important; }
 	
+	.thank-you-button {
+		text-align: center;
+		width:      100%;
+	}
+	
 	&[data-shepherd-step=overtone-spiral] {
 		.spiral-piece,
 		.axis,
@@ -487,7 +490,6 @@ body.shepherd-active {
 		}
 	}
 	
-	&[data-shepherd-step=options-octave],
 	&[data-shepherd-step=newbie-help] {
 		.shepherd-target.shepherd-enabled {
 			box-shadow: 0 0 10px #FF8A0B;

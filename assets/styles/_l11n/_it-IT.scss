@@ -1,0 +1,97 @@
+html:lang(it) {
+	#group-notes {
+		&::after { content: "Raggruppa note"; }
+		
+		&:not(.off) {
+			&::after { content: "Separa note"; }
+		}
+	}
+	
+	#help {
+		@include has-tooltip("Spiegami cosa sto vedendo!", top);
+	}
+	
+	#note {
+		font-size:      96px;
+		line-height:    185px;
+		text-transform: none;
+	}
+	
+	#options {
+		h2 {
+			color:       transparent;
+			
+			&::before {
+				color:   #fff;
+				content: "Opzioni";
+			}
+		}
+	}
+	
+	#reduce-to-octave {
+		&::after { content: "Riduci all'ottava"; }
+	}
+	
+	#sustain {
+		&::after { content: "Sostieni le note"; }
+	}
+	
+	.shepherd-element.newbie-tour {
+		header {
+			position: relative;
+		}
+		
+		.shepherd-title {
+			color:       transparent;
+			text-align:  right;
+			text-indent: -999px;
+			
+			&::after {
+				color:        #fff;
+				content:      "Confuso da ciò che vedi?";
+				padding-left: 40px;
+			}
+			
+			&::before {
+				text-indent: 0;
+				position:    absolute;
+				top:         7px;
+				left:        10px;
+			}
+		}
+		
+		.shepherd-button.button-cancel {
+			color: transparent;
+			
+			&::after {
+				color:   #888;
+				content: "No, grazie, faccio da me"
+			}
+		}
+	}
+	
+	.shepherd-step .shepherd-button {
+		color:       transparent;
+		text-indent: -999px;
+
+		&::after {
+			color:   #fff;
+			content: "Avanti";
+		}
+		
+		&.button-show-around {
+			&::after {
+				content: "Fammi fare un giro!"
+			}
+		}
+
+		&.button-thank-you {
+			text-align: right;
+			width:      auto;
+			
+			&::after {
+				content: "Grazie!"
+			}
+		}
+	}
+}
