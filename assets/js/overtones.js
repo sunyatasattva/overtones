@@ -15,6 +15,7 @@ require("velocity-animate");
 require("jquery.animate-number");
 
 var utils      = require("./lib/utils.js"),
+	i18n       = require("./i18n.js"),
     intervals  = require("../data/intervals.json"),
     tones      = require("./lib/tones.js");
 
@@ -144,6 +145,7 @@ function showIntervalDifferenceWithTuning(tone, tuning) {
 	var tuning = tuning || "12-TET", // @todo this doesn't do anything currently, placeholder
 
 	    note            = frequencyToNoteDetails(tone.frequency, App.baseTone.name),
+		localizedNote   = i18n.t( note.name, ["notes"] ),
 	    centsDifference = note.centsDifference;
 	
 	$("#note-frequency")
@@ -160,7 +162,7 @@ function showIntervalDifferenceWithTuning(tone, tuning) {
 	}, 200);
 
 		// Fills up the note name (disregarding the accidental)
-		$("#note-name").text( note.name[0] );
+		$("#note-name").text( localizedNote.replace(/[b#]/g, "") );
 		// Fills up the note accidentals
 		$("#note-accidentals").html( note.accidentals );
 		// Fills up the note octave
@@ -213,7 +215,7 @@ function getIntervalName(a, b) {
 		}
 	}
 	
-	return intervalName;
+	return i18n.t(intervalName, ["intervals"]);
 }
 
 /**
@@ -724,6 +726,7 @@ var App = {
 	*/
 	baseTone: tones.createSound( $("#base").val(), { weigh: true } ),
 	init:     init,
+	i18n:     i18n,
 	/**
 	* @alias module:overtones.options
 	*

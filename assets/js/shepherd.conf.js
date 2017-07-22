@@ -3,7 +3,10 @@
 var $        = require('jquery');
 var Shepherd = require('tether-shepherd');
 var once     = require("./lib/once");
-var tour,
+var i18n     = require("./i18n");
+
+var currentLanguage,
+	tour,
     mainTour,
     newbieTour;
 
@@ -35,15 +38,16 @@ Shepherd.on('complete', function(tour){
 
 mainTour = new Shepherd.Tour({
 	defaults: {
-		classes: 'shepherd-theme-dark',
+		classes: 'shepherd-theme-dark main-tour',
 		showCancelLink: true
 	}
 });
 
 mainTour
 .addStep('overtone-spiral', {
-	text: ['This is a visual representation of a fundamental sound and its overtones.',
-		   'Each complete spiral revolution represents an octave.'],
+	text: function() {
+		return i18n.t('STEP_1', ['help']);
+	},
 	attachTo: '#Overtone-Spiral right',
 	title: '1/11',
 	tetherOptions: {
@@ -60,10 +64,9 @@ mainTour
 	}
 })
 .addStep('fundamental-overtone', {
-	text: ['The circle at the center of the spiral represents the fundamental tone, ' +
-		   'first partial of the harmonic series.',
-		   'Each other circle represents the following partials, up to the 16th.',
-		   'Click on the circle to hear the sound.'],
+	text: function() {
+		return i18n.t('STEP_2', ['help']);
+	},
 	attachTo: '#overtone-1 bottom',
 	title: '2/11',
 	buttons: {},
@@ -73,12 +76,17 @@ mainTour
 	}
 })
 .addStep('note-details', {
-	text: ['Here you can see information about the sound you just heard'],
+	text: function() {
+		return i18n.t('STEP_3', ['help']);
+	},
 	attachTo: '#sound-details bottom',
 	title: '3/11',
 	when: {
 		show: function() {
-			$('body').chardinJs('start');
+			$('body').chardinJs({
+				attribute: `data-intro-${window.currentLanguage}`,
+				method:    'start'
+			});
 			$('#overtone-1').addClass('shepherd-enabled');
 		},
 		hide: function() {
@@ -91,7 +99,9 @@ mainTour
 	}
 })
 .addStep('spiral-pieces', {
-	text: ['You can also click on other places of the spiral, such as the purple pieces connecting two circles.'],
+	text: function() {
+		return i18n.t('STEP_4', ['help']);
+	},
 	attachTo: '.spiral-piece:nth-of-type(2) bottom',
 	title: '4/11',
 	buttons: {},
@@ -101,13 +111,17 @@ mainTour
 	}
 })
 .addStep('interval-details', {
-	text: ['In this case you see the information about the relationship between the notes you just heard.',
-		   '<small>The spiral pieces are thus representations of intervals in the harmonic series.</small>'],
+	text: function() {
+		return i18n.t('STEP_5', ['help']);
+	},
 	attachTo: '#sound-details bottom',
 	title: '5/11',
 	when: {
 		show: function() {
-			$('body').chardinJs('start');
+			$('body').chardinJs({
+				attribute: `data-intro-${window.currentLanguage}`,
+				method:    'start'
+			});
 			$('.spiral-piece').eq(1).addClass('shepherd-enabled');
 		},
 		hide: function() {
@@ -120,8 +134,9 @@ mainTour
 	}
 })
 .addStep('options-base', {
-	text: ['You can change the frequency of the fundamental note by using this slider.',
-		   '<small>You can also directly change the number if you want finer tuning!</small>'],
+	text: function() {
+		return i18n.t('STEP_6', ['help']);
+	},
 	attachTo: '#base-wrapper right',
 	title: '6/11',
 	advanceOn: {
@@ -133,8 +148,9 @@ mainTour
 	}
 })
 .addStep('options-volume', {
-	text: ['You can change the volume of all the sounds through this slider.',
-		   '<small>Be careful if you are wearing headphones! Higher overtones especially are going to sound piercing loud.</small>'],
+	text: function() {
+		return i18n.t('STEP_7', ['help']);
+	},
 	attachTo: '#volume-control-wrapper right',
 	advanceOn: {
 		selector: '#volume-control',
@@ -143,7 +159,9 @@ mainTour
 	title: '7/11'
 })
 .addStep('options-group', {
-	text: ['If you turn this option off, you will hear notes separately when playing intervals.'],
+	text: function() {
+		return i18n.t('STEP_8', ['help']);
+	},
 	attachTo: '#group-notes bottom',
 	title: '8/11',
 	tetherOptions: {
@@ -151,7 +169,9 @@ mainTour
 	}
 })
 .addStep('options-octave', {
-	text: ['If you turn this option on, all the sounds will be played on frequencies within one octave of the fundamental tone.'],
+	text: function() {
+		return i18n.t('STEP_9', ['help']);
+	},
 	attachTo: '#reduce-to-octave bottom',
 	title: '9/11',
 	tetherOptions: {
@@ -159,9 +179,9 @@ mainTour
 	}
 })
 .addStep('options-sustain', {
-	text: ['If you turn this option on, the sounds will play continuously until manually stopped.',
-		   'You can manually stop the sounds by clicking again on the circle, turning this option off, or changing the base tone',
-		   '<small>When this option is on, the information displayed is the interval between the sound you play and the last active sound. This allows you to explore all the intervals within the spiral.</small>'],
+	text: function() {
+		return i18n.t('STEP_10', ['help']);
+	},
 	attachTo: '#sustain bottom',
 	title: '10/11',
 	tetherOptions: {
@@ -169,12 +189,15 @@ mainTour
 	}
 })
 .addStep('end-tour', {
-	text: ['That is all! Enjoy!'],
+	text: function() {
+		return i18n.t('STEP_11', ['help']);
+	},
 	title: '11/11',
 	buttons: [
 		{
 			text: 'Thank you!',
-			action: mainTour.next
+			action: mainTour.next,
+			classes: 'button-thank-you'
 		}
 	]
 });
@@ -192,7 +215,9 @@ newbieTour = new Shepherd.Tour({
 
 newbieTour
 .addStep('newbie-help', {
-	text: 'You can click this button at any time to have a quick rundown of what\'s going on.',
+	text: function() {
+		return i18n.t('STEP_0', ['help']);
+	},
 	attachTo: '#help right',
 	title: 'Confused by what you see?',
 	buttons: [
@@ -218,7 +243,8 @@ newbieTour
 					type: "overtones:help:next",
 					idx: 0
 				});
-			}
+			},
+			classes: "button-show-around"
 		}
 	]
 });
@@ -249,6 +275,16 @@ module.exports = {
 					idx: idx
 				});
 			}
+		});
+		
+		$(document).on("i18n:localeChange", function() {
+			newbieTour.steps.forEach((step) => {
+				step.destroy();
+			});
+			
+			mainTour.steps.forEach((step) => {
+				step.destroy();
+			});
 		});
 	},
 };
