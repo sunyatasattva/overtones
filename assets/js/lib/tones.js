@@ -266,6 +266,10 @@ Sound.prototype.stop = function(){
 	return this.remove();
 };
 
+Sound.prototype.duplicate = function(opts){
+	return duplicateSound(this, opts);
+};
+
 /**
  * Fades out a sound according to its release value. Useful for sustained sounds.
  *
@@ -430,6 +434,18 @@ function createSound(frequency, opts){
 	return thisSound;
 }
 
+function duplicateSound(sound, opts) {
+	var opts = extend({}, opts),
+		envelope = extend({}, sound.envelope, {
+			attack:    sound.envelope.attack * 1000,
+			decay:     sound.envelope.decay * 1000,
+			sustain:   sound.envelope.sustain * 1000,
+			release:   sound.envelope.release * 1000
+		}, opts.envelope);
+	
+	return createSound(sound.frequency, envelope);
+}
+
 /**
  * Plays a given frequency.
  *
@@ -446,12 +462,12 @@ function playFrequency(frequency, opts) {
 	return thisSound.play();
 }
 
-function playSequence(sounds, copy) {
+function playSequence(sounds, opts) {
 	var sequence = Promise.resolve();
 	
-	if(copy) {
+	if(opts.copy) {
 		sounds = sounds.map(function(sound) {
-			return createSound(sound.frequency, sound);
+			return sound.duplicate();
 		});
 	}
 	
@@ -469,8 +485,9 @@ module.exports = {
 	 * The Audio Context where the module operates
 	 * @type  {AudioContext}
 	 */
-	context:       ctx,
-	createSound:   createSound,
+	context:        ctx,
+	createSound:    createSound,
+	duplicateSound: duplicateSound,
 	/**
 	 * The Master Gain node that is attached to the output device
 	 * @type  {GainNode}
