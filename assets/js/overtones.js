@@ -691,7 +691,17 @@ function keyboardHandler(e) {
 function playSequence(sequence, opts) {
 	var _sequence = Promise.resolve(),
 		_sounds   = sequence.map(function(sound) {
-			return sound.sound.duplicate(opts);
+			var copy = sound.sound.duplicate(opts),
+				e    = copy.envelope;
+			
+			if(opts.speed) {
+				if(e.sustain)
+					e.setProperty("sustain", e.sustain * e.speed); 
+				else
+					e.setProperty( "sustain", (e.attack + e.sustain) * opts.speed );
+			}
+			
+			return copy;
 		});
 	
 	sequence.forEach(function(sound, i) {

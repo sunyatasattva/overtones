@@ -27,6 +27,12 @@ var extend     = require("lodash.assign"),
 
 masterGain.connect(ctx.destination);
 
+function _calculateDuration() {
+	var e = this.envelope;
+	
+	return e.attack + e.decay + e.sustain + e.release;
+}
+
 /**
  * Reduces the Sound pitch to a tone within an octave of the tone.
  *
@@ -153,7 +159,13 @@ function Sound(oscillator, envelope, opts){
 		sustain:   envelope.sustain,
 		release:   envelope.release,
 		volume:    opts.volume,
-		maxVolume: opts.maxVolume
+		maxVolume: opts.maxVolume,
+		
+		setProperty: (prop, val) => {
+			this.envelope[prop] = val;
+			
+			this.duration = _calculateDuration.call(this);
+		}
 	};
 	/** @type  {OscillatorNode} */
 	this.oscillator = oscillator;
@@ -161,7 +173,7 @@ function Sound(oscillator, envelope, opts){
 	this.detune     = oscillator.detune.value;
 	this.waveType   = oscillator.type;
 
-	this.duration = envelope.attack + envelope.decay + envelope.sustain + envelope.release;
+	this.duration = _calculateDuration.call(this);
 }
 
 /**
