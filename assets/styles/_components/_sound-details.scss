@@ -6,22 +6,26 @@
 	opacity:     0;
 	padding:     10px;
 	text-align:  center;
-	z-index:     3;
+	z-index:     1;
 	width:       240px;
 	height:      240px;
 	position:    absolute;
 	top:         20px;
 	right:       20px;
 
-	transition:  opacity 0.5s ease-in-out;
+	transition:  opacity 0.5s ease-in-out,
+	             background-color 0.2s ease-out;
 	
-	&:hover {
-		background-color: rgba(0, 0, 0, 0.1);
-		cursor:           pointer;
+	&:hover { background-color: rgba(0, 0, 0, 0.1); }
+	
+	&.show-note {
+		&:active { background-color: rgba(255, 255, 255, 0.1); }
+		&:hover  { cursor: pointer; }
 	}
 	
 	&.visible {
 		opacity: 1;
+		z-index: 3;
 	}
 }
 

@@ -680,6 +680,30 @@ function keyboardHandler(e) {
 	}
 }
 
+function soundDetailsHandler(e) {
+	var $this     = $(this),
+		frequency = parseFloat( $("#note-frequency").text() ),
+		detune    = -parseInt( $(".cents-difference.tuning .cents").text() ),
+		sound;
+	
+	if( $this.is(".show-note") ) {
+		if(e.type === "mousedown") {
+			sound = tones.playFrequency(frequency, { 
+				detune:  detune,
+				sustain: -1
+			});
+
+			$this.data("isPlaying", sound);
+		}
+		else {
+			sound = $this.data("isPlaying");
+			sound.fadeOut();
+			
+			$this.removeData("isPlaying");
+		}
+	}
+}
+
 /**
  * Initializes the application
  *
@@ -698,13 +722,22 @@ function init() {
 	$(".spiral-piece").on("click", spiralPieceClickHandler);
 	$(".axis").on("click", axisClickHandler);
 
-    $(document).on("keydown", keyboardHandler);
+    $(document)
+		.on("keydown", keyboardHandler)
+		.on("mouseup", function(e) {
+			var $soundDetails = $("#sound-details");
+		
+			if( !$soundDetails.is(":hover") && $soundDetails.data("isPlaying") )
+				soundDetailsHandler.call($soundDetails, e);
+		});
 	
 	$("#base-detail").on("keydown", baseInputHandler);
 
 	$("#base, #base-detail").on("change", function(){
-	  updateBaseFrequency( $(this).val() );
+		updateBaseFrequency( $(this).val() );
 	});
+	
+	$("#sound-details").on("mousedown mouseup", soundDetailsHandler);
 
 	$("#volume-control").on("change", function(){
 	  updateVolume( $(this).val() );

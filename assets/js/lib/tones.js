@@ -275,6 +275,7 @@ Sound.prototype.fadeOut = function(){
 	var now  = ctx.currentTime,
 	    self = this;
 	
+	this.envelope.node.gain.cancelScheduledValues(now);
 	this.envelope.node.gain.setTargetAtTime( 0, now, this.envelope.release / 5 );
 	this.isPlaying = false;
 	this.isStopping = true;
