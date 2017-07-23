@@ -7,10 +7,24 @@ var $          = require("jquery"),
 	},
 	currentLocale = "en-US";
 
+/**
+ * Gets the current application locale.
+ *
+ * @return  {String}  The current locale in ISO-639 / ISO-3166 format.
+ */
 function getLocale() {
 	return currentLocale;
 }
 
+/**
+ * Sets the current application locale to a string.
+ *
+ * Also triggers an event for the locale change.
+ *
+ * @param  {String}  locale  The ISO-639 / ISO-3166 locale string.
+ *
+ * @return void
+ */
 function setLocale(locale) {
 	currentLocale = locale;
 	
@@ -21,6 +35,18 @@ function setLocale(locale) {
 	});
 }
 
+/**
+ * Translate a string to a certain locale.
+ *
+ * The string can be namespaced in the dictionary JSON.
+ *
+ * @param  {String}  string       The string to translate.
+ * @param  {Array}   [namespace]  An array containing the path of the dictionary.
+ * @param  {String}  [locale]     The locale to translate to. Default: current.
+ *
+ * @return {String}  Returns the translated string if it is found, otherwise
+ *                   defaults to the untranslated string/key.
+ */
 function translate(string, namespace, locale) {
 	var locale = locale || currentLocale,
 		path = [locale].concat(namespace);
@@ -29,7 +55,16 @@ function translate(string, namespace, locale) {
 }
 
 module.exports = {
+	/**
+	 * @alias module:i18n.getLocale
+	 */
 	getLocale: getLocale,
+	/*
+	 * @alias module:i18n.setLocale
+	 */
 	setLocale: setLocale,
+	/*
+	 * @alias module:i18n.translate
+	 */
 	t:         translate
 }
