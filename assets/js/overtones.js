@@ -719,17 +719,29 @@ function playSequence(sequence, opts) {
 	return _sequence;
 }
 
+function controlSequence(step) {
+	var i     = App.sequence.current + step,
+		speed = $("#sequence-speed").val(),
+		sound = App.sequence.sounds[i];
+
+	if(sound) {
+		playSequence([sound], { animate: true, speed: speed });
+
+		App.sequence.current += step;
+	}
+}
+
 function recordSound(sound) {
 	var soundCopy = sound.duplicate(),
 		sequence;
 	
-	sequence = App.sequence.push({
+	sequence = App.sequence.sounds.push({
 		overtone: Math.floor(sound.frequency / App.baseTone.frequency),
 		sound:    soundCopy,
 		base:     App.baseTone
 	});
 	
-	ls.set("overtone-sequence", App.sequence);
+	ls.set("overtone-sequence", App.sequence.sounds);
 	
 	return sequence;
 }
@@ -747,7 +759,7 @@ function loadSequence(json) {
 		});
 	}
 	
-	App.sequence = sounds || [];
+	App.sequence.sounds = sounds || [];
 }
 
 function loadSequenceFromLocalStorage() {
@@ -797,11 +809,37 @@ function init() {
 	  toggleOption( $(this).data("option") );
 	});
 	
+	$("#play-sequence").on("click", function(){
+		var speed = $("#sequence-speed").val(),
+			$this = $(this);
+		
+		if( !$this.is(".off") )
+			return;
+		
+		$this.removeClass("off");
+		
+		playSequence(App.sequence.sounds, { 
+			animate: true,
+			speed:   speed
+		})
+		.then(function(){
+			$this.addClass("off");
+		});
+	});
+	
+	$("#sequence-next").on("click", function(){
+		controlSequence(1)
+	});
+	
+	$("#sequence-prev").on("click", function(){
+		controlSequence(-1)
+	});
+	
 	$(document).on("overtones:options:change", function(e){
 		if( e.details.optionName === "sustain" && e.details.optionValue === false )
 			stopAllPlayingSounds();
 		if( e.details.optionName === "record" && e.details.optionValue === true )
-			App.sequence = [];
+			App.sequence = { current: 0, sounds: [] };
 	});
 }
 
@@ -829,6 +867,10 @@ var App = {
 	options: {
 		groupNotes:      true,
 		octaveReduction: false
+	},
+	sequence: {
+		current: 0,
+		sounds: [],
 	},
 	/**
 	* Frequency data for various tunings
