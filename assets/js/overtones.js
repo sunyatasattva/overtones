@@ -23,7 +23,12 @@ var memoize    = require("lodash.memoize"),
 // @see {@link https://github.com/sunyatasattva/overtones/issues/30}
 const PITCH_SET = utils.pitchSet("P1 m2 M2 m3 M3 P4 4A P5 m6 M6 m7 M7"),
       MIDI_A4   = 69,
-	  KEYCODES  = [90, 83, 88, 67, 70, 86, 71, 66, 78,   74, 77, 75, 188];
+	  /*
+	   * @const  KEYCODES
+       *
+	   * A list of keycodes for the bottom and home row in QWERTY layout.
+	   */
+	  KEYCODES  = [90, 83, 88, 67, 70, 86, 71, 66, 78, 74, 77, 75, 188];
 
 /**
  * Will hide the elements if this function is not called again for 5 seconds
@@ -31,6 +36,8 @@ const PITCH_SET = utils.pitchSet("P1 m2 M2 m3 M3 P4 4A P5 m6 M6 m7 M7"),
  * @function
  *
  * @param  {jQuery}  $element  The jQuery object of the element
+ *
+ * @return {Function}  The debounced function
  */
 var hideElementWhenIdle = function($element) {
 	var fn = utils.debounce( function() {
@@ -664,11 +671,17 @@ function baseInputHandler(e){
 }
 
 /*
- * Handles the presses for numbers in the keyboard.
+ * Handles the keyboard events.
  *
  * Pressing a number will play that partial, where 0 is 10 and partials over the
  * tenth can be played by pressing <kbd>shift + n</kbd> to add 10 to the pressed
  * number.
+ *
+ * Pressing letters from the bottom row will play the diatonic scale starting from
+ * A2 to the next octave. While playing the home row will play the black keys. Here,
+ * too, <kbd>shift + key</kbd> will raise the sound one octave.
+ *
+ * Pressing the letters will also bring up the virtual keyboard for some time.
  *
  * @param  {Event}  e  The event object.
  *
@@ -714,12 +727,29 @@ function keyboardHandler(e) {
 	}
 }
 
+/*
+ * Handles clicks on the piano keys.
+ *
+ * @param  {Event}  e  The event object.
+ *
+ * @return void
+ */
 function pianoKeysHandler(e) {
 	var n = $(this).index() + 1;
 	
 	playSoundFromKeyboardPosition(n, e.shiftKey);
 }
 
+/*
+ * Given a position on the keyboard, plays a sound accordingly.
+ *
+ * Positions start at 0 for A2 and go up one semitone at the time.
+ *
+ * @param  {Number}  n       The position starting from A2.
+ * @param  {bool}    octave  Whether to raise the note one octave.
+ *
+ * @return void
+ */
 function playSoundFromKeyboardPosition(n, octave) {
 	var frequency = utils.getETFrequencyfromMIDINumber(n + MIDI_A4);
 	
@@ -729,6 +759,15 @@ function playSoundFromKeyboardPosition(n, octave) {
 		updateBaseFrequency(frequency);
 }
 
+/*
+ * Plays the reference sound from the sound details panel.
+ *
+ * The sound holds as long as the mouse press.
+ *
+ * @param  {Event}  e  The event object.
+ *
+ * @return void
+ */
 function soundDetailsHandler(e) {
 	var $this     = $(this),
 		frequency = parseFloat( $("#note-frequency").text() ),
