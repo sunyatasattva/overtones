@@ -102,6 +102,11 @@ module.exports = {
 		return round ? Math.round(n) : n;
 	},
 	/* jshint ignore:end */
+	getETFrequencyfromMIDINumber: function(n, a4) {
+		a4 = a4 || 440;
+		
+		return Math.pow(2, (n - 69) / 12) * a4;
+	},
 	/**
 	 * Given a MIDI note number it returns the name for that note.
 	 *

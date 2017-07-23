@@ -14,14 +14,21 @@ var $ = jQuery = require("jquery");
 require("velocity-animate");
 require("jquery.animate-number");
 
-var utils      = require("./lib/utils.js"),
+var memoize    = require("lodash.memoize"),
+	utils      = require("./lib/utils.js"),
     intervals  = require("../data/intervals.json"),
     tones      = require("./lib/tones.js");
 
 // Partially applied function to get the names of pitches
 // @see {@link https://github.com/sunyatasattva/overtones/issues/30}
 const PITCH_SET = utils.pitchSet("P1 m2 M2 m3 M3 P4 4A P5 m6 M6 m7 M7"),
-      MIDI_A4   = 69;
+      MIDI_A4   = 69,
+	  /*
+	   * @const  KEYCODES
+       *
+	   * A list of keycodes for the bottom and home row in QWERTY layout.
+	   */
+	  KEYCODES  = [90, 83, 88, 67, 70, 86, 71, 66, 78, 74, 77, 75, 188];
 
 /**
  * Will hide the elements if this function is not called again for 5 seconds
@@ -29,13 +36,23 @@ const PITCH_SET = utils.pitchSet("P1 m2 M2 m3 M3 P4 4A P5 m6 M6 m7 M7"),
  * @function
  *
  * @param  {jQuery}  $element  The jQuery object of the element
+ *
+ * @return {Function}  The debounced function
  */
-var hideElementWhenIdle = utils.debounce(function($element){
-	if( $element.is(":hover") )
-		hideElementWhenIdle($element);
-	else
-		$element.removeClass("visible");
-}, 5000);
+var hideElementWhenIdle = function($element) {
+	var fn = utils.debounce( function() {
+		if( $element.is(":hover") || $element.is(".is-active") )
+			fn($element);
+		else
+			$element.removeClass("visible");
+	}, 5000 );
+	
+	return fn;
+};
+
+// @todo Dirty solution
+var hideNoteDetailsWhenIdle,
+	hideKeyboardWhenIdle;
 
 /**
  * Given a frequency, it gets the closest A440 12T Equal tempered note.
@@ -53,6 +70,7 @@ function frequencyToNoteDetails(frequency, tonic = "C") {
 	let noteNumber = utils.getEqualTemperedNoteNumber( frequency,
 					{ referencePoint: MIDI_A4, round: false } ),
 		noteName   = utils.MIDIToName( noteNumber, PITCH_SET(tonic) );
+	console.log(noteNumber);
 	
 	noteName.centsDifference = utils.decimalsToCents(noteNumber);
 	noteName.accidentals     = utils.encodeAccidentals(noteName.name);
@@ -260,7 +278,7 @@ function showIntervalName(firstTone, secondTone) {
  */
 function fillSoundDetails(tones) {
 	$("#sound-details").addClass("visible");
-	hideElementWhenIdle( $("#sound-details") );
+	hideNoteDetailsWhenIdle();
 	
 	if( !tones.length ) {
 		$("#sound-details").addClass("show-note").removeClass("show-interval");
@@ -653,18 +671,26 @@ function baseInputHandler(e){
 }
 
 /*
- * Handles the presses for numbers in the keyboard.
+ * Handles the keyboard events.
  *
  * Pressing a number will play that partial, where 0 is 10 and partials over the
  * tenth can be played by pressing <kbd>shift + n</kbd> to add 10 to the pressed
  * number.
+ *
+ * Pressing letters from the bottom row will play the diatonic scale starting from
+ * A2 to the next octave. While playing the home row will play the black keys. Here,
+ * too, <kbd>shift + key</kbd> will raise the sound one octave.
+ *
+ * Pressing the letters will also bring up the virtual keyboard for some time.
  *
  * @param  {Event}  e  The event object.
  *
  * @return  void
  */
 function keyboardHandler(e) {
- 	var n;
+ 	var n,
+		$key,
+		$el;
 	
 	if( $(e.target).is("input") )
 		return;
@@ -678,8 +704,70 @@ function keyboardHandler(e) {
 
 		$(".overtone").eq(n).click();
 	}
+	else {
+		n   = KEYCODES.indexOf(e.keyCode);
+		
+		// Bottom row and some home row keys
+		// @todo this doesn't support AZERTY
+		if(n !== -1) {
+			$el  = $("#keyboard-container");
+			$key = $("#keyboard .key").eq(n);
+			
+			$el.addClass("visible");
+			hideKeyboardWhenIdle();
+			
+			$key.addClass("is-active");
+	
+			setTimeout(function(){
+				$key.removeClass("is-active");
+			}, 200);
+			
+			playSoundFromKeyboardPosition(n, e.shiftKey);
+		}
+	}
 }
 
+/*
+ * Handles clicks on the piano keys.
+ *
+ * @param  {Event}  e  The event object.
+ *
+ * @return void
+ */
+function pianoKeysHandler(e) {
+	var n = $(this).index() + 1;
+	
+	playSoundFromKeyboardPosition(n, e.shiftKey);
+}
+
+/*
+ * Given a position on the keyboard, plays a sound accordingly.
+ *
+ * Positions start at 0 for A2 and go up one semitone at the time.
+ *
+ * @param  {Number}  n       The position starting from A2.
+ * @param  {bool}    octave  Whether to raise the note one octave.
+ *
+ * @return void
+ */
+function playSoundFromKeyboardPosition(n, octave) {
+	var frequency = utils.getETFrequencyfromMIDINumber(n + MIDI_A4);
+	
+	if(!octave)
+		updateBaseFrequency(frequency / 2);
+	else
+		updateBaseFrequency(frequency);
+}
+
+/*
+ * Plays the reference sound from the sound details panel.
+ *
+ * The sound holds as long as the mouse press.
+ *
+ * @param  {Event}  e  The event object.
+ *
+ * @return void
+ */
 function soundDetailsHandler(e) {
 	var $this     = $(this),
 		frequency = parseFloat( $("#note-frequency").text() ),
@@ -716,6 +804,10 @@ function init() {
 	updateVolume( $("#volume-control").val(), true );
 	App.baseTone.name = frequencyToNoteDetails(App.baseTone.frequency).name;
 	
+	// @todo dirty
+	hideNoteDetailsWhenIdle = hideElementWhenIdle( $("#sound-details") ),
+	hideKeyboardWhenIdle    = hideElementWhenIdle( $("#keyboard-container") );
+	
 	$(".overtone")
 		.on("click", overtoneClickHandler)
 		.on("contextmenu", overtoneContextHandler);
@@ -736,6 +828,13 @@ function init() {
 	$("#base, #base-detail").on("change", function(){
 		updateBaseFrequency( $(this).val() );
 	});
+	
+	$("#base-wrapper").on("click", function(e) {
+		if( !$(e.target).is("input") )
+			$("#keyboard-container").toggleClass("visible is-active");
+	});
+	
+	$("#keyboard-container .key").on("mousedown", pianoKeysHandler);
 	
 	$("#sound-details").on("mousedown mouseup", soundDetailsHandler);
 
