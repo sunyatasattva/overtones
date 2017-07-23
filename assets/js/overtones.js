@@ -34,7 +34,7 @@ var hideElementWhenIdle = utils.debounce(function($element){
 	if( $element.is(":hover") )
 		hideElementWhenIdle($element);
 	else
-	$element.removeClass("visible");
+		$element.removeClass("visible");
 }, 5000);
 
 /**
@@ -665,6 +665,9 @@ function baseInputHandler(e){
  */
 function keyboardHandler(e) {
  	var n;
+	
+	if( $(e.target).is("input") )
+		return;
 
 	// Numbers from 0 to 9
   	if(e.keyCode >= 48 && e.keyCode <= 57) {
