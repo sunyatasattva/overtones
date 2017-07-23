@@ -18,7 +18,8 @@
 
 #base-wrapper {
 	&::before {
-	background-image: url("../images/ico-base.svg");
+		background-image: url("../images/ico-base.svg");
+		cursor:           pointer;
 	}
 }
 

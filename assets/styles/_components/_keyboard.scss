@@ -1,0 +1,117 @@
+$white-keys-n:    8;
+$white-keys-size: 100% / $white-keys-n;
+$black-keys-size: $white-keys-size / 1.5;
+
+#keyboard {
+	background:    -webkit-gradient(linear, right bottom, left top, color-stop(0%, rgba(0, 0, 0, 0.3)), color-stop(100%, transparent));
+	border:        1px solid #160801;
+	border-radius: 10px;
+	box-shadow:    0 0 50px rgba(0, 0, 0, 0.5) inset, 0 1px rgba(212, 152, 125, 0.2) inset, 0 5px 15px rgba(0, 0, 0, 0.5);
+	opacity:       0;
+	padding:       $black-keys-size;
+	width:         100%;
+	height:        150px;
+	position:      relative;
+	
+	transition:    opacity 0.2s ease-in-out;
+	
+	&:hover {
+		.key::after {
+			opacity: 0.25;
+		}
+	}
+	
+	.key { 
+		cursor:     pointer;
+		float:      left;
+		list-style: none;
+		margin:     0;
+		padding:    0;
+		position:   relative;
+		
+		&.white {
+			background:    linear-gradient(to bottom, #eee 0%, #fff 100%);
+			border-bottom: 1px solid #bbb;
+			border-left:   1px solid #bbb;
+			border-radius: 0 0 5px 5px;
+			box-shadow:    -1px 0 0 rgba(255, 255, 255, 0.8) inset, 0 0 5px #ccc inset, 0 0 3px rgba(0, 0, 0, 0.2);
+			z-index:       1;
+			width:         $white-keys-size;
+			height:        120px;
+			
+			&:active,
+			&.is-active {
+				background:    linear-gradient(to bottom, rgb(155, 241, 255) 0%,#e9e9e9 100%);
+				border-bottom: 1px solid #999;
+				border-left:   1px solid #999;
+				border-top:    1px solid #777;
+				box-shadow:    2px 0 3px rgba(0,0,0,0.1) inset, -5px 5px 20px rgba(0,0,0,0.2) inset,0 0 3px rgba(0,0,0,0.2);
+			}
+			
+			&::after {
+				background-color: rgba(0, 0, 0, 0.5);
+				box-shadow:       inset 0 0 10px rgba(0, 0, 0, 0.1);
+			}
+		}
+		
+		&.black {
+			background:    linear-gradient(45deg, #222 0%, #555 100%);
+			border:        1px solid #000;
+			border-radius: 0 0 3px 3px;
+			box-shadow:    -1px -1px 2px rgba(255, 255, 255, 0.2) inset, 0 -5px 2px 3px rgba(0, 0, 0, 0.6) inset, 0 2px 4px rgba(0, 0, 0, 0.5);
+			margin-left:   -$black-keys-size / 2;
+			z-index:       2;
+			width:         $black-keys-size;
+			height:        80px;
+			
+			&:active,
+			&.is-active {
+				background: linear-gradient(to left, #444 0%,#222 100%);
+				box-shadow: -1px -1px 2px rgba(255,255,255,0.2) inset, 0 -2px 2px 3px rgba(0,0,0,0.6) inset, 0 1px 2px rgba(0,0,0,0.5);
+			}
+			
+			& + .white {
+				margin-left: -$black-keys-size / 2;
+			}
+		}
+		
+		&::after {
+			background-color: rgba(255, 255, 255, 0.5);
+			border-radius:    2px;
+			content:          attr(data-key);
+			display:          block;
+			display:          block;
+			font-size:        10px;
+			padding:          5px 0;
+			text-align:       center;
+			text-transform:   uppercase;
+			width:            calc(100% - 2px);
+			position:         absolute;
+			bottom:           10px;
+			left:             1px;
+			
+			transition:       opacity 0.5s ease-out;
+		}
+	}
+}
+
+#keyboard-container {
+	position: absolute;
+	bottom:   -170px;
+	left:     -100%;
+	width:    100%;
+	
+	transition: left 1s ease-in;
+	
+	&.visible {
+		left:       0;
+		transition: left 0.8s cubic-bezier(0, 1, 0, 1);
+		
+		#keyboard {
+			opacity: 1;
+		}
+	}
+}
+
+ul li:first-child { border-radius: 5px 0 5px 5px; }
+ul li:last-child { border-radius: 0 5px 5px 5px; }

@@ -14,7 +14,8 @@ var $ = jQuery = require("jquery");
 require("velocity-animate");
 require("jquery.animate-number");
 
-var utils      = require("./lib/utils.js"),
+var memoize    = require("lodash.memoize"),
+	utils      = require("./lib/utils.js"),
     intervals  = require("../data/intervals.json"),
     tones      = require("./lib/tones.js");
 
@@ -31,12 +32,20 @@ const PITCH_SET = utils.pitchSet("P1 m2 M2 m3 M3 P4 4A P5 m6 M6 m7 M7"),
  *
  * @param  {jQuery}  $element  The jQuery object of the element
  */
-var hideElementWhenIdle = utils.debounce(function($element){
-	if( $element.is(":hover") )
-		hideElementWhenIdle($element);
-	else
-		$element.removeClass("visible");
-}, 5000);
+var hideElementWhenIdle = function($element) {
+	var fn = utils.debounce( function() {
+		if( $element.is(":hover") || $element.is(".is-active") )
+			fn($element);
+		else
+			$element.removeClass("visible");
+	}, 5000 );
+	
+	return fn;
+};
+
+// @todo Dirty solution
+var hideNoteDetailsWhenIdle,
+	hideKeyboardWhenIdle;
 
 /**
  * Given a frequency, it gets the closest A440 12T Equal tempered note.
@@ -262,7 +271,7 @@ function showIntervalName(firstTone, secondTone) {
  */
 function fillSoundDetails(tones) {
 	$("#sound-details").addClass("visible");
-	hideElementWhenIdle( $("#sound-details") );
+	hideNoteDetailsWhenIdle();
 	
 	if( !tones.length ) {
 		$("#sound-details").addClass("show-note").removeClass("show-interval");
@@ -667,7 +676,8 @@ function baseInputHandler(e){
  */
 function keyboardHandler(e) {
  	var n,
-		f;
+		$key,
+		$el;
 	
 	if( $(e.target).is("input") )
 		return;
@@ -682,20 +692,41 @@ function keyboardHandler(e) {
 		$(".overtone").eq(n).click();
 	}
 	else {
-		n = KEYCODES.indexOf(e.keyCode);
-		console.log(e.keyCode);
+		n   = KEYCODES.indexOf(e.keyCode);
 		
 		// Bottom row and some home row keys
 		// @todo this doesn't support AZERTY
 		if(n !== -1) {
-			f = utils.getETFrequencyfromMIDINumber(n + MIDI_A4);
+			$el  = $("#keyboard-container");
+			$key = $("#keyboard .key").eq(n);
 			
-			if(!e.shiftKey)
-				updateBaseFrequency(f / 2);
-			else
-				updateBaseFrequency(f);
+			$el.addClass("visible");
+			hideKeyboardWhenIdle();
+			
+			$key.addClass("is-active");
+	
+			setTimeout(function(){
+				$key.removeClass("is-active");
+			}, 200);
+			
+			playSoundFromKeyboardPosition(n, e.shiftKey);
 		}
 	}
+}
+
+function pianoKeysHandler(e) {
+	var n = $(this).index() + 1;
+	
+	playSoundFromKeyboardPosition(n, e.shiftKey);
+}
+
+function playSoundFromKeyboardPosition(n, octave) {
+	var frequency = utils.getETFrequencyfromMIDINumber(n + MIDI_A4);
+	
+	if(!octave)
+		updateBaseFrequency(frequency / 2);
+	else
+		updateBaseFrequency(frequency);
 }
 
 function soundDetailsHandler(e) {
@@ -734,6 +765,10 @@ function init() {
 	updateVolume( $("#volume-control").val(), true );
 	App.baseTone.name = frequencyToNoteDetails(App.baseTone.frequency).name;
 	
+	// @todo dirty
+	hideNoteDetailsWhenIdle = hideElementWhenIdle( $("#sound-details") ),
+	hideKeyboardWhenIdle    = hideElementWhenIdle( $("#keyboard-container") );
+	
 	$(".overtone")
 		.on("click", overtoneClickHandler)
 		.on("contextmenu", overtoneContextHandler);
@@ -754,6 +789,13 @@ function init() {
 	$("#base, #base-detail").on("change", function(){
 		updateBaseFrequency( $(this).val() );
 	});
+	
+	$("#base-wrapper").on("click", function(e) {
+		if( !$(e.target).is("input") )
+			$("#keyboard-container").toggleClass("visible is-active");
+	});
+	
+	$("#keyboard-container .key").on("mousedown", pianoKeysHandler);
 	
 	$("#sound-details").on("mousedown mouseup", soundDetailsHandler);
 
