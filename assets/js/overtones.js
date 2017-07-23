@@ -31,6 +31,9 @@ const PITCH_SET = utils.pitchSet("P1 m2 M2 m3 M3 P4 4A P5 m6 M6 m7 M7"),
  * @param  {jQuery}  $element  The jQuery object of the element
  */
 var hideElementWhenIdle = utils.debounce(function($element){
+	if( $element.is(":hover") )
+		hideElementWhenIdle($element);
+	else
 	$element.removeClass("visible");
 }, 5000);
 
