@@ -21,7 +21,8 @@ var utils      = require("./lib/utils.js"),
 // Partially applied function to get the names of pitches
 // @see {@link https://github.com/sunyatasattva/overtones/issues/30}
 const PITCH_SET = utils.pitchSet("P1 m2 M2 m3 M3 P4 4A P5 m6 M6 m7 M7"),
-      MIDI_A4   = 69;
+      MIDI_A4   = 69,
+	  KEYCODES  = [90, 83, 88, 67, 70, 86, 71, 66, 78,   74, 77, 75, 188];
 
 /**
  * Will hide the elements if this function is not called again for 5 seconds
@@ -53,6 +54,7 @@ function frequencyToNoteDetails(frequency, tonic = "C") {
 	let noteNumber = utils.getEqualTemperedNoteNumber( frequency,
 					{ referencePoint: MIDI_A4, round: false } ),
 		noteName   = utils.MIDIToName( noteNumber, PITCH_SET(tonic) );
+	console.log(noteNumber);
 	
 	noteName.centsDifference = utils.decimalsToCents(noteNumber);
 	noteName.accidentals     = utils.encodeAccidentals(noteName.name);
@@ -664,7 +666,8 @@ function baseInputHandler(e){
  * @return  void
  */
 function keyboardHandler(e) {
- 	var n;
+ 	var n,
+		f;
 	
 	if( $(e.target).is("input") )
 		return;
@@ -677,6 +680,21 @@ function keyboardHandler(e) {
 		  n = Math.min(n + 10, 15);
 
 		$(".overtone").eq(n).click();
+	}
+	else {
+		n = KEYCODES.indexOf(e.keyCode);
+		console.log(e.keyCode);
+		
+		// Bottom row and some home row keys
+		// @todo this doesn't support AZERTY
+		if(n !== -1) {
+			f = utils.getETFrequencyfromMIDINumber(n + MIDI_A4);
+			
+			if(!e.shiftKey)
+				updateBaseFrequency(f / 2);
+			else
+				updateBaseFrequency(f);
+		}
 	}
 }
 
