@@ -1,3 +1,10 @@
+a#sequence-next,
+a#sequence-prev {
+	&:active {
+		background-color: #d4d4d4;
+	}
+}
+
 #base-wrapper,
 #volume-control-wrapper {
 	display:  block;
@@ -51,10 +58,23 @@
 }
 
 #play-panel {
-	position: absolute;
-	bottom:   75px;
-	left:     20px;
-	z-index:  3;
+	border:        1px solid #2b2b2b;
+	border-radius: 5px;
+	font-size:     0;
+	padding:       20px 5px;
+	opacity:       0;
+	text-align:    center;
+	z-index:       3;
+	width:         40px;
+	position:      absolute;
+	bottom:        75px;
+	left:          20px;
+	
+	transition:    opacity 0.2s ease-in-out;
+	
+	&.visible {
+		opacity:   1;
+	}
 	
 	.options-button {
 		&:hover {
@@ -65,15 +85,70 @@
 	.panel {
 		background-color: rgba(64, 64, 64, 0.1);
 		padding:          20px;
+		opacity:          0;
 		text-align:       center;
+		width:            170px;
 		position:         absolute;
 		bottom:           0;
 		left:             55px;
+		z-index:          -1;
+		
+		transform:        translateX(-100px);
+		transition:       transform 0.25s cubic-bezier(1, 0, 1, 0),
+			              opacity 0.25s ease-in-out;
+		
+		&.visible {
+			opacity:   1;
+			transform: translate(0);
+			z-index:   3;
+			
+			transition: transform 0.25s cubic-bezier(0, 1, 0, 1),
+			            opacity 0.25s ease-in-out;
+			
+		}
 	}
 }
 
+#sequence-speed {
+	width: 100%;
+}
+
 #sequence-speed-wrapper {
-	padding-bottom: 20px;
+	padding: 0 0 20px 20px;
+	position: relative;
+	
+	&::before {
+		background-image:    url("../images/ico-speed.svg");
+		background-position: center;
+		background-repeat:   no-repeat;
+		background-size:     contain;
+		content:             "";
+		display:             block;
+		width:               20px;
+		height:              20px;
+		position:            absolute;
+		top:                 -2px;
+		left:                -10px;
+	}
+}
+
+#settings-button {
+	background-image:    url(../images/ico-settings.svg);
+	background-position: center;
+	background-repeat:   no-repeat;
+	background-size:     cover;
+	border-radius:       5px;
+	display:             inline-block;
+	margin:              0 0 10px;
+	opacity:             0.3;
+	padding:             2px;
+	width:               20px;
+	height:              20px;
+	
+	&:hover,
+	&.is-active {
+		opacity: 0.8;
+	}
 }
 
 #volume-control-wrapper {
@@ -117,6 +192,9 @@ a#group-notes {
 }
 
 a#play-sequence {
+	background-image: url("../images/ico-play.svg");
+	margin: 0;
+	
 	&::after {
 		content: "Play recorded sequence";
 		top:     -25px;
@@ -149,6 +227,24 @@ a#reduce-to-octave {
 	background-image: url("../images/ico-octave-reduction.svg");
 	
 	&::after { content: "Reduce to octave"; }
+}
+
+a#sequence-next {
+	background-image: url("../images/ico-skip-forward.svg");
+	
+	&::after { 
+		content: "Forward one step";
+		left:    0;
+	}
+}
+
+a#sequence-prev {
+	background-image: url("../images/ico-skip-backwards.svg");
+	
+	&::after { 
+		content: "Back one step";
+		right:   0;
+	}
 }
 
 a#sustain {

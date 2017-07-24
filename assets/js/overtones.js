@@ -780,6 +780,13 @@ function recordSound(sound) {
 	
 	ls.set("overtone-sequence", App.sequence.sounds);
 	
+	// @todo Ideally we don't duplicate this code and we have a custom setter
+	// but we might as well refactor the whole thing, really…
+	$(document).trigger({ 
+		type: "sequence:change", 
+		details: { sequence: App.sequence.sounds }
+	});
+	
 	return sequence;
 }
 
@@ -807,6 +814,11 @@ function loadSequence(json) {
 	}
 	
 	App.sequence.sounds = sounds || [];
+	
+	$(document).trigger({ 
+		type: "sequence:change", 
+		details: { sequence: App.sequence.sounds }
+	});
 }
 
 /*
@@ -832,6 +844,28 @@ function init() {
 	updateVolume( $("#volume-control").val(), true );
 	App.baseTone.name = frequencyToNoteDetails(App.baseTone.frequency).name;
 	
+	$(document)
+		.on("keydown", keyboardHandler)
+		.on("overtones:options:change", function(e){
+			if( e.details.optionName === "sustain" && e.details.optionValue === false )
+				stopAllPlayingSounds();
+			if( e.details.optionName === "record" && e.details.optionValue === true ) {
+				App.sequence = { current: 0, sounds: [] };
+				
+				$(document).trigger({ 
+					type: "sequence:change", 
+					details: { sequence: App.sequence.sounds }
+				});
+			}
+		})
+		.on("sequence:change", function(e) {
+			console.log(e.details);
+			if(e.details.sequence.length)
+				$("#play-panel").addClass("visible");
+			else
+				$("#play-panel").removeClass("visible");
+		});
+	
 	try {
 		loadSequenceFromLocalStorage();
 	}
@@ -845,8 +879,6 @@ function init() {
 	$(".spiral-piece").on("click", spiralPieceClickHandler);
 	$(".axis").on("click", axisClickHandler);
 
-    $(document).on("keydown", keyboardHandler);
-	
 	$("#base-detail").on("keydown", baseInputHandler);
 
 	$("#base, #base-detail").on("change", function(){
@@ -859,6 +891,14 @@ function init() {
 
 	$("[data-option]").on("click", function(){
 	  toggleOption( $(this).data("option") );
+	});
+	
+	$("[data-toggle]").on("click", function(){
+		var $this = $(this);
+		
+		$( $this.data("toggle") ).toggleClass("visible");
+		
+		$this.toggleClass("is-active");
 	});
 	
 	$("#play-sequence").on("click", function(){
@@ -885,13 +925,6 @@ function init() {
 	
 	$("#sequence-prev").on("click", function(){
 		controlSequence(-1)
-	});
-	
-	$(document).on("overtones:options:change", function(e){
-		if( e.details.optionName === "sustain" && e.details.optionValue === false )
-			stopAllPlayingSounds();
-		if( e.details.optionName === "record" && e.details.optionValue === true )
-			App.sequence = { current: 0, sounds: [] };
 	});
 }
 
@@ -920,7 +953,7 @@ var App = {
 		octaveReduction: false
 	},
 	sequence: {
-		current: 0,
+		current: -1,
 		sounds: [],
 	},
 	/**
