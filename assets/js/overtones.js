@@ -688,17 +688,35 @@ function keyboardHandler(e) {
 	}
 }
 
+/*
+ * Plays a sequence of overtones.
+ *
+ * It updates the fundamental frequency and optionally it animates the overtones
+ * while playing them. The sequence is always played of copies of sounds, so the
+ * originals are preserved.
+ *
+ * An optional options object can be passed to modify every single sound in the
+ * sequence. Particularly implements a `speed` option to modify the speed of each
+ * of the sounds in the sequence.
+ *
+ * @param  {Array.<{sound:Sound, base:Sound}>}  sequence  An array of objects
+ *                                                        containing the sounds and
+ *                                                        their relative base.
+ * @param  {Object}  [opts]  Options to apply to each sound.
+ *                           See {@link Sound.prototype.duplicate}
+ * @param  {Number}  [opts.speed]    The relative speed of playback of each sound.
+ * @param  {bool}    [opts.animate]  Whether to activate the overtone circle
+ *                                   animation at each sound.
+ *
+ * @return {Promise}  A Promise resolving when the sequence of sounds is done.
+ */
 function playSequence(sequence, opts) {
 	var _sequence = Promise.resolve(),
 		_sounds   = sequence.map(function(sound) {
-			var copy = sound.sound.duplicate(opts),
-				e    = copy.envelope;
+			var copy = sound.sound.duplicate(opts);
 			
 			if(opts.speed) {
-				if(e.sustain)
-					e.setProperty("sustain", e.sustain * e.speed); 
-				else
-					e.setProperty( "sustain", (e.attack + e.sustain) * opts.speed );
+				copy.modifySpeed(opts.speed);
 			}
 			
 			return copy;
@@ -719,9 +737,17 @@ function playSequence(sequence, opts) {
 	return _sequence;
 }
 
+/*
+ * Moves the recorded sequence forwards or backwards and plays it.
+ *
+ * @param  {Number}  step  The number of steps to move the sequence (negative
+ *                         to move the sequence back).
+ *
+ * @return void
+ */
 function controlSequence(step) {
 	var i     = App.sequence.current + step,
-		speed = $("#sequence-speed").val(),
+		speed = +$("#sequence-speed").val(),
 		sound = App.sequence.sounds[i];
 
 	if(sound) {
@@ -731,6 +757,17 @@ function controlSequence(step) {
 	}
 }
 
+/*
+ * Records a sound to the current saved sequence.
+ *
+ * It adds the recorded sound with infromation on which overtone number it is and
+ * its relative fundamental frequency to the recorded sequence and saves it to
+ * local storage.
+ *
+ * @param  {Sound}  sound  The sound to record.
+ *
+ * @return {Number} The new length of the sequence.
+ */
 function recordSound(sound) {
 	var soundCopy = sound.duplicate(),
 		sequence;
@@ -746,6 +783,16 @@ function recordSound(sound) {
 	return sequence;
 }
 
+/*
+ * Loads a sequence from a JSON object.
+ *
+ * Initializes each sound in the JSON as a Sound object and loads it into
+ * the current sequence.
+ *
+ * @param  {Object}  json  The JSON object.
+ *
+ * @return void
+ */
 function loadSequence(json) {
 	var sounds;
 	
@@ -762,6 +809,11 @@ function loadSequence(json) {
 	App.sequence.sounds = sounds || [];
 }
 
+/*
+ * Loads a sequence from local storage.
+ *
+ * @return void
+ */
 function loadSequenceFromLocalStorage() {
 	var sequence = ls.get("overtone-sequence");
 	
@@ -810,7 +862,7 @@ function init() {
 	});
 	
 	$("#play-sequence").on("click", function(){
-		var speed = $("#sequence-speed").val(),
+		var speed = +$("#sequence-speed").val(),
 			$this = $(this);
 		
 		if( !$this.is(".off") )
@@ -844,7 +896,6 @@ function init() {
 }
 
 var App = {
-	play: playSequence,
 	/**
 	* The fundamental tone from which to calculate the overtones values
 	*

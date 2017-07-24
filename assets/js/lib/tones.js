@@ -27,54 +27,6 @@ var extend     = require("lodash.assign"),
 
 masterGain.connect(ctx.destination);
 
-function _calculateDuration() {
-	var e = this.envelope;
-	
-	return e.attack + e.decay + e.sustain + e.release;
-}
-
-/**
- * Reduces the Sound pitch to a tone within an octave of the tone.
- *
- * @see  {@link Sound.prototype.reduceToSameOctaveAs}
- * @alias module:tones.reduceToSameOctave
- *
- * @param  {Sound|Object} firstTone      A Sound object (or an object containing a `frequency` property)
- * @param  {Sound|Object} referenceTone  The first sound will adjust its frequency
- *                                       to the same octave as this tone
- * @param  {bool}  excludeOctave  If this option is `true`, the exact octave will be reduced
- *                                to the unison of the original sound
- *
- * @return {Number}  The frequency of the first sound within the same octave as the reference tone.
- */
-function reduceToSameOctave(firstTone, referenceTone, excludeOctave){
-	var targetFrequency = firstTone.frequency,
-	    ratio           = targetFrequency / referenceTone.frequency;
-
-	if( excludeOctave ) {
-		while( ratio <= 0.5 || ratio >= 2 ){
-			if( ratio <= 0.5 )
-				targetFrequency = targetFrequency * 2;
-			else
-				targetFrequency = targetFrequency / 2;
-
-			ratio = targetFrequency / referenceTone.frequency;
-		}
-	}
-	else {
-		while( ratio < 0.5 || ratio > 2 ){
-			if( ratio < 0.5 )
-				targetFrequency = targetFrequency * 2;
-			else
-				targetFrequency = targetFrequency / 2;
-
-			ratio = targetFrequency / referenceTone.frequency;
-		}
-	}
-
-return targetFrequency;
-}
-
 /**
  * @typedef Envelope
  *
@@ -161,10 +113,18 @@ function Sound(oscillator, envelope, opts){
 		volume:    opts.volume,
 		maxVolume: opts.maxVolume,
 		
+		/*
+		 * Changes an envelope property and recalculates the duration.
+		 *
+		 * @param  {string}  prop  The property to change.
+		 * @param  {Number}  val   The new value.
+		 *
+		 * @return void
+		 */
 		setProperty: (prop, val) => {
 			this.envelope[prop] = val;
 			
-			this.duration = _calculateDuration.call(this);
+			this.duration = this.calculateDuration();
 		}
 	};
 	/** @type  {OscillatorNode} */
@@ -173,111 +133,27 @@ function Sound(oscillator, envelope, opts){
 	this.detune     = oscillator.detune.value;
 	this.waveType   = oscillator.type;
 
-	this.duration = _calculateDuration.call(this);
+	this.duration = this.calculateDuration();
 }
 
-/**
- * Plays the sound
+/*
+ * Calculates the duration of a sound from its envelope.
  *
- * It also removes itself when done if not sustained.
- *
- * @return  {Sound}  The played Sound
+ * @return {Number} The duration of the sound in seconds.
  */
-Sound.prototype.play = function(){
-	var now  = ctx.currentTime,
-	    self = this;
+Sound.prototype.calculateDuration = function(){
+	var e = this.envelope;
 	
-	this.oscillator.start();
-	
-	this.isPlaying = true;
+	return e.attack + e.decay + e.sustain + e.release;
+}
 
-	/**
-	 * Using `setTargetAtTime` because `exponentialRampToValueAtTime` doesn't seem to work properly under
-	 * the current build of Chrome I'm developing in. Not sure if a bug, or I didn't get something.
-	 * `setTargetAtTime` gets the `timeCostant` as third argument, which is the amount of time it takes
-	 * for the curve to reach 1 - 1/e * 100% of the target. The reason why the provided arguments are divided
-	 * by 5 is because after 5 times worth of the Time Constant the value reaches 99.32% of the target, which
-	 * is an acceptable approximation for me.
-	 *
-	 * @see {@link https://en.wikipedia.org/wiki/Time_constant}
-	 *
-	 * @todo put an if with opts.linear = true to use linearRampToValueAtTime instead
-	 */
-	
-	// The note starts NOW from 0 and will get to `maxVolume` in approximately `attack` seconds
-	this.envelope.node.gain.setTargetAtTime( this.envelope.maxVolume, now, this.envelope.attack / 5 );
-	// After `attack` seconds, start a transition to fade to sustain volume in `decay` seconds
-	this.envelope.node.gain
-	    .setTargetAtTime( this.envelope.volume, now + this.envelope.attack, this.envelope.decay / 5 );
-
-	if( this.envelope.sustain >= 0 ) {
-		// Setting a "keyframe" for the volume to be kept until `sustain` seconds have passed
-		// (plus all the rest)
-		this.envelope.node.gain
-			.setValueAtTime( this.envelope.volume,
-			                 now +
-			                 this.envelope.attack +
-			                 this.envelope.decay +
-			                 this.envelope.sustain
-			               );
-		// Fade out completely starting at the end of the `sustain` in `release` seconds
-		this.envelope.node.gain
-			.setTargetAtTime( 0,
-			                 now +
-			                 this.envelope.attack +
-			                 this.envelope.decay +
-			                 this.envelope.sustain,
-			                 this.envelope.release / 5
-			                );
-
-		// Start the removal of the sound process after a little more than the sound duration to account for
-		// the approximation. (To make sure that the sound doesn't get cut off while still audible)
-		return new Promise(function(resolve, reject){
-			let effectiveSoundDuration = self.envelope.attack + self.envelope.decay + self.envelope.sustain;
-			
-			setTimeout( ()=>resolve(self), effectiveSoundDuration * 1000 );
-			
-			setTimeout( function() {
-				if( !self.isStopping ) self.stop();
-			}, self.duration * 1250 );
-		});
-	}
-	
-	return this;
-};
-
-/**
- * Disconnects a sound and removes it from the array of active sounds.
+/*
+ * Duplicates itself.
  *
- * @return {Sound}  The Sound object that was removed
+ * @see {@link duplicateSound}
+ *
+ * @return  {Sound}  The copy of the sound.
  */
-Sound.prototype.remove = function(){
-	try { 
-		this.oscillator.disconnect(this.envelope.node);
-		this.envelope.node.gain.cancelScheduledValues(ctx.currentTime);
-		this.envelope.node.disconnect(masterGain);
-	}
-	catch (e) {
-		console.trace();
-	}
-
-	if( sounds.indexOf(this) !== -1 )
-		return sounds.splice( sounds.indexOf(this), 1 )[0];
-};
-
-/**
- * Stops a sound, removing it.
- *
- * @see {@link Sound.prototype.remove}
- *
- * @return  {Sound}  The stopped Sound
- */
-Sound.prototype.stop = function(){
-	this.oscillator.stop();
-	
-	return this.remove();
-};
-
 Sound.prototype.duplicate = function(opts){
 	return duplicateSound(this, opts);
 };
@@ -370,6 +246,93 @@ Sound.prototype.isOctaveOf = function(tone){
 	return utils.isPowerOfTwo( this.frequency / tone.frequency );
 };
 
+/*
+ * Modifies the speed of a sound by a specified amount.
+ *
+ * @param  {Number}  speed  The amount to speed the sound up or down (1 is normal).
+ *
+ * @return void
+ */
+Sound.prototype.modifySpeed = function(speed){
+	var e = this.envelope,
+		n = 1 / speed;
+	
+	if(e.sustain)
+		e.setProperty("sustain", e.sustain * n);
+	else
+		e.setProperty( "sustain", (e.attack + e.sustain) * n);
+};
+
+/**
+ * Plays the sound
+ *
+ * It also removes itself when done if not sustained.
+ *
+ * @return  {Sound}  The played Sound
+ */
+Sound.prototype.play = function(){
+	var now  = ctx.currentTime,
+	    self = this;
+	
+	this.oscillator.start();
+	
+	this.isPlaying = true;
+
+	/**
+	 * Using `setTargetAtTime` because `exponentialRampToValueAtTime` doesn't seem to work properly under
+	 * the current build of Chrome I'm developing in. Not sure if a bug, or I didn't get something.
+	 * `setTargetAtTime` gets the `timeCostant` as third argument, which is the amount of time it takes
+	 * for the curve to reach 1 - 1/e * 100% of the target. The reason why the provided arguments are divided
+	 * by 5 is because after 5 times worth of the Time Constant the value reaches 99.32% of the target, which
+	 * is an acceptable approximation for me.
+	 *
+	 * @see {@link https://en.wikipedia.org/wiki/Time_constant}
+	 *
+	 * @todo put an if with opts.linear = true to use linearRampToValueAtTime instead
+	 */
+	
+	// The note starts NOW from 0 and will get to `maxVolume` in approximately `attack` seconds
+	this.envelope.node.gain.setTargetAtTime( this.envelope.maxVolume, now, this.envelope.attack / 5 );
+	// After `attack` seconds, start a transition to fade to sustain volume in `decay` seconds
+	this.envelope.node.gain
+	    .setTargetAtTime( this.envelope.volume, now + this.envelope.attack, this.envelope.decay / 5 );
+
+	if( this.envelope.sustain >= 0 ) {
+		// Setting a "keyframe" for the volume to be kept until `sustain` seconds have passed
+		// (plus all the rest)
+		this.envelope.node.gain
+			.setValueAtTime( this.envelope.volume,
+			                 now +
+			                 this.envelope.attack +
+			                 this.envelope.decay +
+			                 this.envelope.sustain
+			               );
+		// Fade out completely starting at the end of the `sustain` in `release` seconds
+		this.envelope.node.gain
+			.setTargetAtTime( 0,
+			                 now +
+			                 this.envelope.attack +
+			                 this.envelope.decay +
+			                 this.envelope.sustain,
+			                 this.envelope.release / 5
+			                );
+
+		// Start the removal of the sound process after a little more than the sound duration to account for
+		// the approximation. (To make sure that the sound doesn't get cut off while still audible)
+		return new Promise(function(resolve, reject){
+			let effectiveSoundDuration = self.envelope.attack + self.envelope.decay + self.envelope.sustain;
+			
+			setTimeout( ()=>resolve(self), effectiveSoundDuration * 1000 );
+			
+			setTimeout( function() {
+				if( !self.isStopping ) self.stop();
+			}, self.duration * 1250 );
+		});
+	}
+	
+	return this;
+};
+
 /**
  * Reduces the Sound pitch to a tone within an octave of the tone.
  *
@@ -397,6 +360,38 @@ Sound.prototype.reduceToSameOctaveAs = function(tone, excludeOctave){
 	this.oscillator.frequency.setValueAtTime( this.frequency, ctx.currentTime );
 
 	return this;
+};
+
+/**
+ * Disconnects a sound and removes it from the array of active sounds.
+ *
+ * @return {Sound}  The Sound object that was removed
+ */
+Sound.prototype.remove = function(){
+	try { 
+		this.oscillator.disconnect(this.envelope.node);
+		this.envelope.node.gain.cancelScheduledValues(ctx.currentTime);
+		this.envelope.node.disconnect(masterGain);
+	}
+	catch (e) {
+		console.trace();
+	}
+
+	if( sounds.indexOf(this) !== -1 )
+		return sounds.splice( sounds.indexOf(this), 1 )[0];
+};
+
+/**
+ * Stops a sound, removing it.
+ *
+ * @see {@link Sound.prototype.remove}
+ *
+ * @return  {Sound}  The stopped Sound
+ */
+Sound.prototype.stop = function(){
+	this.oscillator.stop();
+	
+	return this.remove();
 };
 
 /**
@@ -446,6 +441,14 @@ function createSound(frequency, opts){
 	return thisSound;
 }
 
+/*
+ * Duplicates a sound, optionally applying different options.
+ *
+ * @param  {Sound}  sound  The sound to duplicate.
+ * @param  {Object} [opts] The options to replace in the original sound.
+ *
+ * @return {Sound}  The duplicated sound.
+ */
 function duplicateSound(sound, opts) {
 	var opts = extend({}, opts),
 		envelope = extend({}, sound.envelope, {
@@ -474,6 +477,18 @@ function playFrequency(frequency, opts) {
 	return thisSound.play();
 }
 
+/*
+ * Plays a sequence of overtones.
+ *
+ * It updates the fundamental frequency and optionally it animates the overtones
+ * while playing them. The sequence is always played of copies of sounds, so the
+ * originals are preserved.
+ *
+ * An optional options object can be passed to modify every single sound in the
+ * sequence. Particularly implements a `speed` option to modify the speed of each
+ * of the sounds in the sequence.
+ *
+ */
 function playSequence(sounds, opts) {
 	var sequence = Promise.resolve();
 	
@@ -490,6 +505,48 @@ function playSequence(sounds, opts) {
 	});
 	
 	return sequence;
+}
+
+/**
+ * Reduces the Sound pitch to a tone within an octave of the tone.
+ *
+ * @see  {@link Sound.prototype.reduceToSameOctaveAs}
+ * @alias module:tones.reduceToSameOctave
+ *
+ * @param  {Sound|Object} firstTone      A Sound object (or an object containing a `frequency` property)
+ * @param  {Sound|Object} referenceTone  The first sound will adjust its frequency
+ *                                       to the same octave as this tone
+ * @param  {bool}  excludeOctave  If this option is `true`, the exact octave will be reduced
+ *                                to the unison of the original sound
+ *
+ * @return {Number}  The frequency of the first sound within the same octave as the reference tone.
+ */
+function reduceToSameOctave(firstTone, referenceTone, excludeOctave){
+	var targetFrequency = firstTone.frequency,
+	    ratio           = targetFrequency / referenceTone.frequency;
+
+	if( excludeOctave ) {
+		while( ratio <= 0.5 || ratio >= 2 ){
+			if( ratio <= 0.5 )
+				targetFrequency = targetFrequency * 2;
+			else
+				targetFrequency = targetFrequency / 2;
+
+			ratio = targetFrequency / referenceTone.frequency;
+		}
+	}
+	else {
+		while( ratio < 0.5 || ratio > 2 ){
+			if( ratio < 0.5 )
+				targetFrequency = targetFrequency * 2;
+			else
+				targetFrequency = targetFrequency / 2;
+
+			ratio = targetFrequency / referenceTone.frequency;
+		}
+	}
+
+return targetFrequency;
 }
 
 module.exports = {
