@@ -679,6 +679,14 @@ function init() {
 	});
 }
 
+/*
+ * Toggles an input between enabled and disabled.
+ *
+ * @param  {String}  selector  The selector of the input.
+ *
+ * @return void
+ * 
+ */
 function toggleInput(selector) {
 	var $wrapper = $(selector + '-wrapper'),
 		$input   = $(selector);
@@ -687,6 +695,15 @@ function toggleInput(selector) {
 	$input.attr( 'disabled', !$input.attr('disabled') );
 }
 
+/*
+ * Ask the user for permission to access the microphone stream.
+ *
+ * @param  {bool}  debug  Whether to activate debug mode.
+ *
+ * @todo  Implement better degradation and clear up UI.
+ *
+ * @return void
+ */
 function activateMicrophoneStream(debug) {
 	if(navigator.getUserMedia) {
 		navigator.getUserMedia(
@@ -703,6 +720,14 @@ function activateMicrophoneStream(debug) {
 	}
 }
 
+/*
+ * Slowly animate and highlight the overtone circles.
+ *
+ * @param  {jQuery}  $overtone  The overtone element.
+ * @param  {Number}  k          The intensity of the highlight.
+ *
+ * @return void
+ */
 function highlightOvertone($overtone, k) {
 	let fillColor = "#FFE08D",
 		$spaces   = $overtone.find('.spaces');
@@ -718,6 +743,16 @@ function highlightOvertone($overtone, k) {
 	);
 }
 
+/*
+ * Shows the visual representation of an overtone spectrum.
+ *
+ * @param  {Object}  spectrum  The overtone spectrum.
+ * @param  {Number}  spectrum.fundamental  The frequency fundamental.
+ * @param  {Array}   spectrum.spectrum     A spectrum of intensity (from 0 to 1) of 
+ *                                         overtones from 0 to 16.
+ *
+ * @return void
+ */
 function updateOvertones(spectrum) {
 	if(!spectrum.fundamental)
 		return;
@@ -731,10 +766,22 @@ function updateOvertones(spectrum) {
 	});
 }
 
+/*
+ * Callback for when we get the microphone audio stream.
+ *
+ * Initializes the analyzer and the updating loop. Updates the overtones if there
+ * is at least a confidence level of 2. See {@link module:spectrumAnalyser.update}.
+ *
+ * @param  {MediaStream}  stream  The audio stream.
+ * @param  {bool}         debug   Whether to run the analyser in debug mode.
+                                  See {@link module:spectrumAnalyser.init}
+ *
+ * @return void
+ */
 function gotStream(stream, debug){
 	toggleInput('#base');
 	toggleInput('#base-detail');
-	
+
 	analyser.init( stream, { debug: debug } );
 	analyser.update((promise) => {
 		promise.then((spectrum) => {
@@ -744,7 +791,11 @@ function gotStream(stream, debug){
 	});
 }
 
-
+/*
+ * Callback for when no stream is available.
+ *
+ * @todo implement
+ */
 function noStream(stream){} 
 
 var App = {
