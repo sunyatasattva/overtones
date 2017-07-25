@@ -3,13 +3,15 @@ var $          = require("jquery"),
 	extend     = require("lodash.assign"),
 	dictionary = {
 		"en-US": require("./l10n/en-US.json"),
-		"it-IT": require("./l10n/it-IT.json")
+		"it-IT": require("./l10n/it-IT.json"),
+		"hu-HU": require("./l10n/hu-HU.json")
 	},
 	currentLocale = "en-US";
 
 const LANGUAGES = {
 	"en-US": "English",
-	"it-IT": "Italiano"
+	"it-IT": "Italiano",
+	"hu-HU": "Magyar"
 };
 
 /*
