@@ -1,0 +1,46 @@
+{
+	"credits": "Örömmel dizájnolta és fejlesztette <a href=\"https://facebook.com/sunyatasattva\">Marco Lucio Giannotta</a> és <a href=\"https://www.facebook.com/skye.lofvander\">Skye Løfvander</a>. <span class=\"version\">Verziószám: <a href=\"https://github.com/sunyatasattva/overtones/releases/\">1.1.3</a></span>",
+	"help": {
+		"buttons": {
+			"CANCEL": "Nem, köszönöm, boldogulok magamtól",
+			"NEXT": "Következő",
+			"SHOW_AROUND": "Vezess körbe!",
+			"THANKS": "Köszönöm!"
+		},
+		"STEP_0": {
+			"TITLE": "Nem egyértelmű, amit látsz?",
+			"CONTENT": ["Erre a gombra kattintva bármikor kérhetsz egy körbevezetést, hogy megtudd, mi is történik itt."]
+		},
+		"STEP_1": [
+			"Ez a vizuális reprezentációja egy alaphangnak és a hozzátartozó felharmonikusoknak.",
+			"Minden egyes csavar a spirálon egy oktávot reprezentál."
+		],
+		"STEP_2": [
+			"A spirál közepén álló kör reprezentálja az alaphangot, a felhangsor első eleme.",
+			"Minden más kör a soron következő felharmonikust reprezentálja, a 16-ikig bezárólag.",
+		   	"Kattints a körre, hogy halld a hangját."
+		],
+		"STEP_3": ["Itt találsz információt arról a hangról, amit hallottál."],
+		"STEP_4": ["Más részeire is kattinthatsz a spirálnak, mint például a két kört összekötő lila elemre."],
+		"STEP_5": [
+            "Ebben az esetben a két hang közötti kapcsolatról olvashatsz információt.",
+            "<small>Ebből következik az, hogy a spirál részei a felhangsor akkordjainak felelnek meg.</small>",
+		],
+		"STEP_6": [
+			"Meg tudod változtatni az alaphang magasságát a csúszka mozgatásával.",
+		   	"<small>A számot közvetlenül tudod szerkeszteni a precízebb hangolás érdekében!</small>"
+		],
+		"STEP_7": [
+			"Az összes hang erejét tudod változtatni ezzel a csúszkával.",
+		   	"<small>Vigyázz, ha fejhallgatót használsz! A magasabb felharmonikusok jelentősen hangosabbak.</small>"
+		],
+		"STEP_8": ["Ha ezt az opciót kikapcsolod, akkor az akkordok hangjai külön fognak szólni."],
+		"STEP_9": ["Ha ezt az opciót bekapcsolod, akkor az összes hang olyan frekvenciákon fog szólni, amik az alaphanghoz képest egy oktávon belül vannak."],
+		"STEP_10": [
+			"Ha ezt az opciót bekapcsolod, akkor a hangok addig szólnak, amíg manuálisan le nem állítod.",
+			"Le tudod állítani a hangokat manuálisan, ha rákattintasz ismét a körre, kikapcsolod ezt az opciót, vagy az alap frekvenciát megváltoztatod.",
+			"<small>Amíg ez az opció be van kapcsolva, addig az éppen lenyomott és a legutóbbi hang által képzett akkordról fog megjelenni információ. Ezzel be tudod járni az összes hangközt a spirálon.</small>"
+		],
+		"STEP_11": ["Ennyiről lenne szó! Jó szórakozást!"]
+	},
+}
