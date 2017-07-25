@@ -196,7 +196,10 @@ module.exports = {
 	}
 	return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
 },
-	
+    /**
+     * @see  {@link  https://lodash.com/docs#clamp|lodash.clamp}
+     */
+    clamp: require("lodash.clamp"),
 	/**
 	* @see  {@link  https://lodash.com/docs#debounce|lodash.debounce}
 	*/

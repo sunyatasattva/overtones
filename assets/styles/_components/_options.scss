@@ -1,3 +1,11 @@
+.disabled {
+	opacity: 0.5;
+	
+	.disabled {
+		opacity: 1;
+	}
+}
+
 #base-wrapper,
 #volume-control-wrapper {
 	display:  block;
@@ -85,6 +93,16 @@ a#group-notes {
 	&:not(.off) {
 		background-image: url("../images/ico-link.svg");
 	}
+}
+
+a#microphone {
+    background-image: url("../images/ico-microphone.svg");
+    
+    &::after { content: "Activate Microphone"; }
+    
+    &:not(.off) {
+        &::after { content: "Deactivate Microphone"; }
+    }
 }
 
 a#reduce-to-octave {

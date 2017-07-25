@@ -7,7 +7,8 @@
 "use strict";
 
 var jQuery,
-    App;
+    App,
+	microphoneStream;
 
 var $ = jQuery = require("jquery");
 
@@ -17,7 +18,8 @@ require("jquery.animate-number");
 var utils      = require("./lib/utils.js"),
 	i18n       = require("./i18n.js"),
     intervals  = require("../data/intervals.json"),
-    tones      = require("./lib/tones.js");
+    tones      = require("./lib/tones.js"),
+    analyser   = require("./lib/spectrumAnalyser");
 
 // Partially applied function to get the names of pitches
 // @see {@link https://github.com/sunyatasattva/overtones/issues/30}
@@ -70,7 +72,6 @@ function frequencyToNoteDetails(frequency, tonic = "C") {
 	let noteNumber = utils.getEqualTemperedNoteNumber( frequency,
 					{ referencePoint: MIDI_A4, round: false } ),
 		noteName   = utils.MIDIToName( noteNumber, PITCH_SET(tonic) );
-	console.log(noteNumber);
 	
 	noteName.centsDifference = utils.decimalsToCents(noteNumber);
 	noteName.accidentals     = utils.encodeAccidentals(noteName.name);
@@ -396,14 +397,19 @@ function playIntervalOnAxis(interval, tone) {
  *
  * @return {bool}  The new option state
  */
-function toggleOption(option) {
-	App.options[option] = !App.options[option];
-	$("[data-option=" + option + "]").toggleClass("off");
-	$(document).trigger({
+function toggleOption(option, originalEvent) {
+	var event;
+	
+    App.options[option] = !App.options[option];
+    $("[data-option=" + option + "]").toggleClass("off");
+	
+	event = new jQuery.Event(originalEvent, {
 		type: "overtones:options:change",
 		details: { optionName: option, optionValue: App.options[option] }
 	});
-	
+
+	$(document).trigger(event);
+
 	return App.options[option];
 }
 
@@ -433,10 +439,10 @@ function updateBaseFrequency(val, mute) {
 	App.baseTone      = tones.createSound(val, { weigh: true });
 	App.baseTone.name = frequencyToNoteDetails(val).name;
 	
-	$("#base, #base-detail").val(val);
-	
-	if( !mute && !App.options.sustain )
-		$("#overtone-1").click();
+    $("#base, #base-detail").val(val);
+    
+    if( !mute && !App.options.sustain )
+        $("#overtone-1").click();
 	
 	$(document).trigger({
 		type: "overtones:options:change",
@@ -892,10 +898,141 @@ function init() {
 	});
 	
 	$(document).on("overtones:options:change", function(e){
-		if( e.details.optionName === "sustain" && e.details.optionValue === false )
+		if( e.details.optionName === "sustain" && 
+		    e.details.optionValue === false )
 			stopAllPlayingSounds();
+		if(e.details.optionName === "microphone") {
+			if(e.details.optionValue === true) {
+				activateMicrophoneStream(e.originalEvent.altKey);
+			}
+			else {
+				toggleInput('#base');
+				toggleInput('#base-detail');
+				analyser.stop();
+				microphoneStream.stop();
+			}
+		}
 	});
 }
+
+/*
+ * Toggles an input between enabled and disabled.
+ *
+ * @param  {String}  selector  The selector of the input.
+ *
+ * @return void
+ * 
+ */
+function toggleInput(selector) {
+	var $wrapper = $(selector + '-wrapper'),
+		$input   = $(selector);
+	
+	$wrapper.toggleClass('disabled');
+	$input.attr( 'disabled', !$input.attr('disabled') );
+}
+
+/*
+ * Ask the user for permission to access the microphone stream.
+ *
+ * @param  {bool}  debug  Whether to activate debug mode.
+ *
+ * @todo  Implement better degradation and clear up UI.
+ *
+ * @return void
+ */
+function activateMicrophoneStream(debug) {
+	if(navigator.getUserMedia) {
+		navigator.getUserMedia(
+			{ audio: true },
+			function(stream) {
+				microphoneStream = stream.getAudioTracks()[0];
+				gotStream(stream, debug);
+			},
+			noStream
+		);
+	}
+	else {
+		alert('Sorry, your browser does not support getUserMedia');
+	}
+}
+
+/*
+ * Slowly animate and highlight the overtone circles.
+ *
+ * @param  {jQuery}  $overtone  The overtone element.
+ * @param  {Number}  k          The intensity of the highlight.
+ *
+ * @return void
+ */
+function highlightOvertone($overtone, k) {
+	let fillColor = "#FFE08D",
+		$spaces   = $overtone.find('.spaces');
+
+	$overtone.velocity(
+		{ scale: utils.clamp(1.5 * k, 1, 1.5) }, 
+		{ duration: 15 }
+	);
+
+	$spaces.velocity(
+		{ fillBlue: 1/( 1/255 * Math.max(1, k * 2) ) },
+		{ duration: 15 }
+	);
+}
+
+/*
+ * Shows the visual representation of an overtone spectrum.
+ *
+ * @param  {Object}  spectrum  The overtone spectrum.
+ * @param  {Number}  spectrum.fundamental  The frequency fundamental.
+ * @param  {Array}   spectrum.spectrum     A spectrum of intensity (from 0 to 1) of 
+ *                                         overtones from 0 to 16.
+ *
+ * @return void
+ */
+function updateOvertones(spectrum) {
+	if(!spectrum.fundamental)
+		return;
+	Overtones.updateBaseFrequency(spectrum.fundamental, true);
+
+	spectrum.spectrum.forEach((partial, i) => {
+	  let $overtone        = jQuery(".overtone").eq(i),
+		  adjustedLoudness = partial * utils.logBase(8, i + 2);
+
+		highlightOvertone($overtone, adjustedLoudness);
+	});
+}
+
+/*
+ * Callback for when we get the microphone audio stream.
+ *
+ * Initializes the analyzer and the updating loop. Updates the overtones if there
+ * is at least a confidence level of 2. See {@link module:spectrumAnalyser.update}.
+ *
+ * @param  {MediaStream}  stream  The audio stream.
+ * @param  {bool}         debug   Whether to run the analyser in debug mode.
+                                  See {@link module:spectrumAnalyser.init}
+ *
+ * @return void
+ */
+function gotStream(stream, debug){
+	toggleInput('#base');
+	toggleInput('#base-detail');
+
+	analyser.init( stream, { debug: debug } );
+	analyser.update((promise) => {
+		promise.then((spectrum) => {
+			if(spectrum.confidence > 2)
+				updateOvertones(spectrum);
+		});
+	});
+}
+
+/*
+ * Callback for when no stream is available.
+ *
+ * @todo implement
+ */
+function noStream(stream){} 
 
 var App = {
 	/**
@@ -930,7 +1067,8 @@ var App = {
 	* @type {object}
 	*/
 	tunings: {
-	}
+	},
+    updateBaseFrequency: updateBaseFrequency
 };
 
 module.exports = App;

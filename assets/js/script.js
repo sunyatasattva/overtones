@@ -1,3 +1,5 @@
+/* globals Overtones */
+
 "use strict";
 
 var jQuery    = require("jquery"),
@@ -9,10 +11,16 @@ var jQuery    = require("jquery"),
 window.Tones     = require("./lib/tones");
 window.Overtones = require("./overtones");
 
+navigator.getUserMedia = (navigator.getUserMedia ||
+                          navigator.webkitGetUserMedia ||
+                          navigator.mozGetUserMedia || 
+                          navigator.msGetUserMedia);
+
+
 jQuery(document).ready(function($){
-	tour.init();
-	window.Overtones.init();
+    tour.init();
+    Overtones.init();
 	analytics($);
-	
+
 	easterEgg.init();
 });
