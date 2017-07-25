@@ -44,6 +44,43 @@ body > footer {
 	bottom:     0;
 	left:       0;
 	
+	.language-switcher {
+		display: inline-block;
+		font-size: 12px;
+		text-transform: uppercase;
+		margin-left: 25px;
+		margin-right: 20px;
+		letter-spacing: 0.6px;
+		
+		a {
+			color: #ccc;
+		}
+		
+		.language {
+			color: rgba(255, 255, 255, 0.35);
+			transition: color 0.15s ease-out;
+			
+			&:hover {
+				color: #fff;
+			}
+		}
+		
+		.languages-list {
+			bottom: 25px;
+			left: 0;
+			
+			.language {
+				background-color: rgba(64, 64, 64, 0.1);
+				display:          block;
+				padding:          15px;
+				
+				&:hover {
+					background-color: rgba(64, 64, 64, 0.25);
+				}
+			}
+		}
+	}
+	
 	.social {
 		line-height: 35px;
 		margin-top:  20px;
@@ -60,11 +97,62 @@ body > footer {
 	}
 }
 
-p.credits {
+.credits {
 	display:     inline-block;
 	font-size:   12px;
 	line-height: 35px;
-	margin-left: 50px;
+	margin-left: 25px;
+}
+
+.language-switcher {
+	position: relative;
+	
+	> .current-language {
+		&.is-active {
+			color: #fff;
+			
+			&::before {
+				transform: rotate(0);
+			}
+		}
+		
+		&::before {
+			content:   "\25BE";
+			cursor:    pointer;
+			display:   block;
+			transform: rotate(-180deg);
+			position:  absolute;
+			top:       0;
+			right:     -20px;
+			
+			transition: transform 0.2s ease-out;
+		}
+	}
+	
+	.languages-list {
+		list-style-type: none;
+		opacity:         0;
+		padding:         0;
+		z-index:         -1;
+		position:        absolute;
+		
+		transform: translateY(100px);
+		transition: opacity 0.5s ease-out,
+			        transform 0.5s cubic-bezier(1, 0, 1, 0);
+		
+		&.visible {
+			opacity: 1;
+			z-index: 3;
+			
+			transform: translateY(0);
+			transition: opacity 0.5s ease-out,
+			            transform 0.5s cubic-bezier(0, 1, 0, 1);
+		}
+		
+		.current-language {
+			color: #fff;
+		}
+	}
 }
 
 .version { margin-left: 1em; }

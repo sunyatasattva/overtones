@@ -1,37 +1,38 @@
 {
+	"credits": "Progettato e partorito con gioia da <a href=\"https://facebook.com/sunyatasattva\">Marco Lucio Giannotta</a> e <a href=\"https://www.facebook.com/skye.lofvander\">Skye Løfvander</a>. <span class=\"version\">Versione <a href=\"https://github.com/sunyatasattva/overtones/releases/\">1.1.3</a></span>",
 	"help": {
-		"STEP_0": ['Puoi cliccare su questo bottone in qualsiasi momento per avere un guida veloce di quello che vedi.'],
+		"STEP_0": ["Puoi cliccare su questo bottone in qualsiasi momento per avere un guida veloce di quello che vedi."],
 		"STEP_1": [
-			'Questa è una rappresentazione visiva di un suono fondamentale ed i suoi armonici',
-			'Ogni giro completo di spirale rappresenta un\'ottava.'
+			"Questa è una rappresentazione visiva di un suono fondamentale ed i suoi armonici.",
+			"Ogni giro completo di spirale rappresenta un\'ottava."
 		],
 		"STEP_2": [
-			'Il cerchio al centro della spirale rappresenta il tono fondamentale.',
-			'Ogni altro cerchio rappresenta i successivi armonici, fino al sedicesimo.',
-			'Clicca sul cerchio per ascoltarne il suono.'
+			"Il cerchio al centro della spirale rappresenta il tono fondamentale.",
+			"Ogni altro cerchio rappresenta i successivi armonici, fino al sedicesimo.",
+			"Clicca sul cerchio per ascoltarne il suono."
 		],
-		"STEP_3": ['Ecco delle informazioni sul suono che hai appena ascoltato.'],
-		"STEP_4": ['Puoi anche cliccare su altre parti della spirale, come ad esempio le linee viola che connettono due cerchi.'],
+		"STEP_3": ["Ecco delle informazioni sul suono che hai appena ascoltato."],
+		"STEP_4": ["Puoi anche cliccare su altre parti della spirale, come ad esempio le linee viola che connettono due cerchi."],
 		"STEP_5": [
-			'In questo caso stai vedendo le informazioni riguardo la relazione tra le note che hai appena sentito.',
-		   	'<small>Le componenti della spirale sono dunque rappresentazioni degli intervalli della serie armonica.</small>'
+			"In questo caso stai vedendo le informazioni riguardo la relazione tra le note che hai appena sentito.",
+		   	"<small>Le componenti della spirale sono dunque rappresentazioni degli intervalli della serie armonica.</small>"
 		],
 		"STEP_6": [
-			'Puoi modificare la frequenza della nota fondamentale usando questa barra.',
-		   	'<small>Puoi anche modificare direttamente il numero se vuoi un controllo più preciso!</small>'
+			"Puoi modificare la frequenza della nota fondamentale usando questa barra.",
+		   	"<small>Puoi anche modificare direttamente il numero se vuoi un controllo più preciso!</small>"
 		],
 		"STEP_7": [
-			'Puoi modificare il volume di tutti i suoni attraverso questa barra.',
-		   	'<small>Fai attenzione se stai indossando cuffie! Armonici più alti possono suonare parecchio forti.</small>'
+			"Puoi modificare il volume di tutti i suoni attraverso questa barra.",
+		   	"<small>Fai attenzione se stai indossando cuffie! Armonici più alti possono suonare parecchio forti.</small>"
 		],
-		"STEP_8": ['Se disattivi questa opziona, potrai udire le note di un intervallo separatamente.'],
-		"STEP_9": ['Se attivi questa opzione, tutti i suoni saranno riportati a frequenze entro un\'ottava dal tono fondamentale'],
+		"STEP_8": ["Se disattivi questa opziona, potrai udire le note di un intervallo separatamente."],
+		"STEP_9": ["Se attivi questa opzione, tutti i suoni saranno riportati a frequenze entro un\'ottava dal tono fondamentale"],
 		"STEP_10": [
-			'Se attivi questa opzione, i suoni continueranno finché non li fermi manualmente.',
-			'Puoi fermare i suoni manualmente cliccando nuovamente sul cerchio, disattivando questa opzione, o cambiando il tono fondamentale.',
-			'<small>Quando questa opzione è attiva, le informazioni mostrate saranno quelle dell\'intervallo tra il suono su cui è stato fatto il clic, e l\'ultimo suono attivo. Questo ti permette di esplorare tutti gli intervalli all\'interno della spirale.</small>'
+			"Se attivi questa opzione, i suoni continueranno finché non li fermi manualmente.",
+			"Puoi fermare i suoni manualmente cliccando nuovamente sul cerchio, disattivando questa opzione, o cambiando il tono fondamentale.",
+			"<small>Quando questa opzione è attiva, le informazioni mostrate saranno quelle dell\'intervallo tra il suono su cui è stato fatto il clic, e l\'ultimo suono attivo. Questo ti permette di esplorare tutti gli intervalli all\'interno della spirale.</small>"
 		],
-		"STEP_11": ['Questo è tutto! Divertiti!']
+		"STEP_11": ["Questo è tutto! Divertiti!"]
 	},
 	"intervals": {
 		"Perfect unison": "Unisono",

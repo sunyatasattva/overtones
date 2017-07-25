@@ -676,6 +676,25 @@ function keyboardHandler(e) {
 	}
 }
 
+function updateUILanguage(language) {
+	i18n.setLocale(language);
+
+	$("[data-translation-key]").each(function(){
+		var key = $(this).data("translation-key");
+		
+		// @todo Should escape html
+		$(this).html( i18n.t(key) );
+	});
+	
+	$(".languages-list .language")
+		.removeClass("current-language")
+		.filter(`[data-language="${language}"]`)
+		.addClass("current-language");
+	
+	$(".language-switcher > .current-language")
+		.text( i18n.getLanguageNameFromCode(language) );
+}
+
 /**
  * Initializes the application
  *
@@ -705,11 +724,23 @@ function init() {
 	$("#volume-control").on("change", function(){
 	  updateVolume( $(this).val() );
 	});
+	
+	$("[data-language]").on("click", function(){
+		updateUILanguage( $(this).data("language") );
+	});
 
 	$("[data-option]").on("click", function(){
 	  toggleOption( $(this).data("option") );
 	});
-
+	
+	$("[data-toggle]").on("click", function(){
+		var $this = $(this);
+		
+		$( $this.data("toggle") ).toggleClass("visible");
+		
+		$this.toggleClass("is-active");
+	});
+	
 	$(document).on("overtones:options:change", function(e){
 		if( e.details.optionName === "sustain" && e.details.optionValue === false )
 			stopAllPlayingSounds();

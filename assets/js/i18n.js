@@ -7,6 +7,22 @@ var $          = require("jquery"),
 	},
 	currentLocale = "en-US";
 
+const LANGUAGES = {
+	"en-US": "English",
+	"it-IT": "Italiano"
+};
+
+/*
+ * Returns a native name for a language from its code.
+ *
+ * @param  {String}  The current locale in ISO-639 / ISO-3166 format.
+ *
+ * @return {String}  The native name for the language.
+ */
+function getLanguageNameFromCode(code) {
+	return LANGUAGES[code];
+}
+
 /**
  * Gets the current application locale.
  *
@@ -49,12 +65,16 @@ function setLocale(locale) {
  */
 function translate(string, namespace, locale) {
 	var locale = locale || currentLocale,
-		path = [locale].concat(namespace);
+		path = namespace ? [locale].concat(namespace) : [locale];
 	
 	return get( dictionary, path.concat( [string] ) ) || string;
 }
 
 module.exports = {
+	/**
+	 * @alias module:i18n.getLanguageNameFromCode
+	 */
+	getLanguageNameFromCode: getLanguageNameFromCode,
 	/**
 	 * @alias module:i18n.getLocale
 	 */
