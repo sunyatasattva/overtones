@@ -82,23 +82,15 @@ a.option-button {
 a#group-notes {
 	background-image: url("../images/ico-link-broken.svg");
 	
-	&::after { content: "Group notes"; }
-	
 	&:not(.off) {
-	background-image: url("../images/ico-link.svg");
-	
-	&::after { content: "Ungroup notes"; }
+		background-image: url("../images/ico-link.svg");
 	}
 }
 
 a#reduce-to-octave {
 	background-image: url("../images/ico-octave-reduction.svg");
-	
-	&::after { content: "Reduce to octave"; }
 }
 
 a#sustain {
 	background-image: url("../images/ico-sustain.svg");
-	
-	&::after { content: "Sustain notes"; }
 }

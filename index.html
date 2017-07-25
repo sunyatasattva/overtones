@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
 <head>
 	<meta charset="utf-8">
 	<title>Overtone scale</title>
@@ -33,7 +33,7 @@
   	<!--=include components/_analytics.html -->
 	<script src="assets/js/webfont.js" async></script>
 	<div id="options">
-		<h2>Options</h2>
+			<h2 data-translation-key="Options">Options</h2>
 		<div class="section-content">
 			<div class="input-wrapper" id="base-wrapper">
 				<input type="range" min="100" max="1000" id="base" value="220" data-frequency="220Hz"/>
@@ -56,29 +56,35 @@
 	</div>
 	<div id="sound-details">
 		<div id="interval"
-			data-intro="The ratio between the two frequencies"
+			data-intro-en-US="The ratio between the two frequencies"
+			data-intro-it-IT="La proporzione tra le due frequenze"
 			data-position="left">
 			<sup></sup><span>&#8260;</span><sub></sub>
 		</div>
 		<div id="note"
-			data-intro="The note name in the <a href='https://en.wikipedia.org/wiki/Scientific_pitch_notation' target='_blank'>modern scientific pitch notation</a>"
+			data-intro-en-US="The note name in the <a href='https://en.wikipedia.org/wiki/Scientific_pitch_notation' target='_blank'>modern scientific pitch notation</a>"
+			data-intro-it-IT="Il nome della nota nel <a href='https://it.wikipedia.org/wiki/Solfeggio' target='_blank'>sistema di solfeggio</a>"
 			data-position="left">
 			<span id="note-name"></span><span id="note-accidentals" class="accidental"></span><sub></sub>
 		</div>
 		<div id="interval-name" class="note-detail"
-			data-intro="The name of the interval"
+			data-intro-en-US="The name of the interval"
+			data-intro-it-IT="Il nome dell'invervallo"
 			data-position="left"></div>
 		<div id="note-frequency" class="note-detail"
-			data-intro="The exact frequency"
+			data-intro-en-US="The exact frequency"
+			data-intro-it-IT="La frequenza esatta"
 			data-position="left">0 Hz</div>
 		<div class="cents-difference tuning"
-			data-intro="The difference in <a href='https://en.wikipedia.org/wiki/Cent_(music)' target='_blank'>cents</a> between the sound played and the note in <a href='https://en.wikipedia.org/wiki/Equal_temperament' target='_blank'>12 Equal Temperament</a>"
+			data-intro-en-US="The difference in <a href='https://en.wikipedia.org/wiki/Cent_(music)' target='_blank'>cents</a> between the sound played and the note in <a href='https://en.wikipedia.org/wiki/Equal_temperament' target='_blank'>12 Equal Temperament</a>"
+			data-intro-it-IT="La differenza in <a href='https://it.wikipedia.org/wiki/Cent_(musica)' target='_blank'>cent</a> tra il suono riprodotto e la nota nel <a href='https://it.wikipedia.org/wiki/Temperamento_equabilet' target='_blank'>Temperamento equabile</a>"
 			data-position="left">
 			<span class="cents">0</span>
 			<div class="cent-bar"></div>
 		</div>
 		<div class="cents-difference interval"
-			data-intro="The interval measured in cents"
+			data-intro-en-US="The interval measured in cents"
+			data-intro-it-IT="L'intervallo misurato in cent"
 			data-position="left">
 			<span class="cents">1200</span>
 			<div class="cent-bar"></div>
@@ -89,7 +95,10 @@
 	
 	<footer>
 		<button href="#" id="help">?</button>
-		<p class="credits">Designed and crafted with joy by <a href="https://facebook.com/sunyatasattva">Marco Lucio Giannotta</a> and <a href="https://www.facebook.com/skye.lofvander">Skye Løfvander</a>. <span class="version">Version <a href="https://github.com/sunyatasattva/overtones/releases/">1.1.3</a></span></p>
+		<!--=include components/_language-switcher.html -->
+		<p class="credits" data-translation-key="credits">
+			Designed and crafted with joy by <a href="https://facebook.com/sunyatasattva">Marco Lucio Giannotta</a> and <a href="https://www.facebook.com/skye.lofvander">Skye Løfvander</a>. <span class="version">Version <a href="https://github.com/sunyatasattva/overtones/releases/">1.1.3</a></span>
+		</p>
 		<div class="social">
 			<!--=include components/_facebook.html -->
 			<!--=include components/_twitter.html -->

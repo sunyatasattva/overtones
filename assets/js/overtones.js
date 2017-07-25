@@ -14,8 +14,8 @@ var $ = jQuery = require("jquery");
 require("velocity-animate");
 require("jquery.animate-number");
 
-var memoize    = require("lodash.memoize"),
-	utils      = require("./lib/utils.js"),
+var utils      = require("./lib/utils.js"),
+	i18n       = require("./i18n.js"),
     intervals  = require("../data/intervals.json"),
     tones      = require("./lib/tones.js");
 
@@ -165,6 +165,7 @@ function showIntervalDifferenceWithTuning(tone, tuning) {
 	var tuning = tuning || "12-TET", // @todo this doesn't do anything currently, placeholder
 
 	    note            = frequencyToNoteDetails(tone.frequency, App.baseTone.name),
+		localizedNote   = i18n.t( note.name, ["notes"] ),
 	    centsDifference = note.centsDifference;
 	
 	$("#note-frequency")
@@ -181,7 +182,7 @@ function showIntervalDifferenceWithTuning(tone, tuning) {
 	}, 200);
 
 		// Fills up the note name (disregarding the accidental)
-		$("#note-name").text( note.name[0] );
+		$("#note-name").text( localizedNote.replace(/[b#]/g, "") );
 		// Fills up the note accidentals
 		$("#note-accidentals").html( note.accidentals );
 		// Fills up the note octave
@@ -234,7 +235,7 @@ function getIntervalName(a, b) {
 		}
 	}
 	
-	return intervalName;
+	return i18n.t(intervalName, ["intervals"]);
 }
 
 /**
@@ -792,6 +793,30 @@ function soundDetailsHandler(e) {
 	}
 }
 
+function updateUILanguage(language) {
+	i18n.setLocale(language);
+
+	$("[data-translation-key]").each(function(){
+		var key  = $(this).data("translation-key"),
+			path = key.split(".");
+		
+		// @todo Should escape html
+		// @todo refactor to i18n module, also data-key API is backwards like this
+		if(path.length > 1)
+			$(this).html( i18n.t( path[0], path.slice(1) ) );
+		else
+			$(this).html( i18n.t(key) );
+	});
+	
+	$(".languages-list .language")
+		.removeClass("current-language")
+		.filter(`[data-language="${language}"]`)
+		.addClass("current-language");
+	
+	$(".language-switcher > .current-language")
+		.text( i18n.getLanguageNameFromCode(language) );
+}
+
 /**
  * Initializes the application
  *
@@ -841,11 +866,31 @@ function init() {
 	$("#volume-control").on("change", function(){
 	  updateVolume( $(this).val() );
 	});
+	
+	$("[data-language]").on("click", function(){
+		updateUILanguage( $(this).data("language") );
+		
+		$(this)
+			.closest(".language-switcher")
+				.find(".is-active")
+					.removeClass("is-active")
+				.end()
+				.find(".visible")
+					.removeClass("visible");
+	});
 
 	$("[data-option]").on("click", function(){
 	  toggleOption( $(this).data("option") );
 	});
-
+	
+	$("[data-toggle]").on("click", function(){
+		var $this = $(this);
+		
+		$( $this.data("toggle") ).toggleClass("visible");
+		
+		$this.toggleClass("is-active");
+	});
+	
 	$(document).on("overtones:options:change", function(e){
 		if( e.details.optionName === "sustain" && e.details.optionValue === false )
 			stopAllPlayingSounds();
@@ -862,6 +907,7 @@ var App = {
 	*/
 	baseTone: tones.createSound( $("#base").val(), { weigh: true } ),
 	init:     init,
+	i18n:     i18n,
 	/**
 	* @alias module:overtones.options
 	*
