@@ -11,14 +11,42 @@ html:lang(it) {
 		@include has-tooltip("Spiegami cosa sto vedendo!", top);
 	}
 	
+	#microphone {
+		&::after { content: "Attiva Microfono"; }
+
+    	&:not(.off) {
+        	&::after { content: "Disattiva Microfono"; }
+    	}
+	}
+	
 	#note {
 		font-size:      96px;
 		line-height:    185px;
 		text-transform: none;
 	}
 	
+	#play-sequence {
+		&::after { content: "Riproduci la sequenza registrata"; }
+	}
+	
+	#record {
+		&.off {
+			&::after  { content: "Registra sequenza"; }
+		}
+		
+		&::after { content: "Ferma la registrazione"; }
+	}
+	
 	#reduce-to-octave {
 		&::after { content: "Riduci all'ottava"; }
+	}
+	
+	#sequence-next {
+		&::after { content: "Avanti di un passo"; }
+	}
+	
+	#sequence-prev {
+		&::after { content: "Indietro di un passo"; }
 	}
 	
 	#sustain {

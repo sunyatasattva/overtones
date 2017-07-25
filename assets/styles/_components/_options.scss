@@ -74,7 +74,7 @@ a#sequence-prev {
 	opacity:       0;
 	text-align:    center;
 	z-index:       3;
-	width:         40px;
+	width:         50px;
 	position:      absolute;
 	bottom:        75px;
 	left:          20px;
@@ -151,8 +151,8 @@ a#sequence-prev {
 	margin:              0 0 10px;
 	opacity:             0.3;
 	padding:             2px;
-	width:               20px;
-	height:              20px;
+	width:               22px;
+	height:              22px;
 	
 	&:hover,
 	&.is-active {
@@ -162,7 +162,7 @@ a#sequence-prev {
 
 #volume-control-wrapper {
 	&::before {
-	background-image: url("../images/ico-sound.svg");
+		background-image: url("../images/ico-sound.svg");
 	}
 }
 
@@ -179,11 +179,13 @@ a.option-button {
 	background-size: 60%;
 	border-radius:   20px;
 	display:         inline-block;
-	margin-right:    10px;
+	margin-right:    4px;
 	text-decoration: none;
-	width:           35px;
-	height:          35px;
+	width:           33px;
+	height:          33px;
 	position:        relative;
+	
+	&:last-child { margin: 0; }
 	
 	&:not(.off) { background-color: #d4d4d4; }
 }
@@ -198,12 +200,6 @@ a#group-notes {
 
 a#microphone {
     background-image: url("../images/ico-microphone.svg");
-
-    &::after { content: "Activate Microphone"; }
-
-    &:not(.off) {
-        &::after { content: "Deactivate Microphone"; }
-    }
 }
 
 a#play-sequence {
@@ -211,7 +207,6 @@ a#play-sequence {
 	margin: 0;
 	
 	&::after {
-		content: "Play recorded sequence";
 		top:     -25px;
 		bottom:  auto;
 	}
@@ -219,19 +214,16 @@ a#play-sequence {
 
 a#record {
 	&.off {
-		&::after  { content: "Record sequence"; }
 		&::before { background-color: #222; }
 	}
-	
-	&::after { content: "Stop recording"; }
 	
 	&::before {
 		background-color: firebrick;
 		border-radius:    10px;
 		content:          "";
 		display:          block;
-		width:            15px;
-		height:           15px;
+		width:            13px;
+		height:           13px;
 		position:         absolute;
 		top:              10px;
 		left:             10px;
@@ -245,19 +237,13 @@ a#reduce-to-octave {
 a#sequence-next {
 	background-image: url("../images/ico-skip-forward.svg");
 	
-	&::after { 
-		content: "Forward one step";
-		left:    0;
-	}
+	&::after { left: 0; }
 }
 
 a#sequence-prev {
 	background-image: url("../images/ico-skip-backwards.svg");
 	
-	&::after { 
-		content: "Back one step";
-		right:   0;
-	}
+	&::after { right:   0; }
 }
 
 a#sustain {

@@ -11,8 +11,36 @@ html:lang(en) {
 		@include has-tooltip("Explain me what I'm seeing", top);
 	}
 	
+	#microphone {
+		&::after { content: "Activate Microphone"; }
+
+    	&:not(.off) {
+        	&::after { content: "Deactivate Microphone"; }
+    	}
+	}
+	
+	#play-sequence {
+		&::after { content: "Play recorded sequence"; }
+	}
+	
+	#record {
+		&.off {
+			&::after  { content: "Record sequence"; }
+		}
+		
+		&::after { content: "Stop recording"; }
+	}
+	
 	#reduce-to-octave {
 		&::after { content: "Reduce to octave"; }
+	}
+	
+	#sequence-next {
+		&::after { content: "Forward one step"; }
+	}
+	
+	#sequence-prev {
+		&::after { content: "Back one step"; }
 	}
 	
 	#sustain {
