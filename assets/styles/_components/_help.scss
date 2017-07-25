@@ -147,6 +147,75 @@
 		}
 	}
 	
+	.language-switcher {
+		line-height: 39px;
+		margin-left: 45px;
+		
+		.languages-list {
+			box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
+			
+			.language {
+				background-color: #232323;
+				
+				&:hover {
+					background-color: #171717;
+				}
+			}
+		}
+	}
+	
+	.old-language-switcher {
+		opacity:        0.35;
+		padding-bottom: 20px;
+		z-index:        4;
+		position:       absolute;
+		top:            9px;
+		right:          0;
+
+		transition: opacity 0.15s ease-out;
+
+		&:hover {
+			opacity: 1;
+		}
+
+		&::before {
+			content: "\25BE";
+			display: block;
+			position: absolute;
+			left: -20px;
+			top: -4px;
+		}
+
+		.language {
+			background-position: center;
+			background-repeat:   no-repeat;
+			background-size:     25px 15px;
+			color:               transparent;
+			display:             block;
+			width:               25px;
+			height:              15px;
+		}
+
+		.language-en { background-image: url("../images/ico-flag-gb.svg"); }
+		.language-it { background-image: url("../images/ico-flag-it.svg"); }
+
+		.languages-list {
+			display:         none;
+			list-style-type: none;
+			position:        absolute;
+			top:             10px;
+			right:           0;
+
+			&.visible {
+				display: block;
+			}
+
+			li {
+				padding: 5px 0 5px;
+			}
+		}
+	}
+	
 	* { box-sizing: border-box; }
 	
 	.shepherd-content {

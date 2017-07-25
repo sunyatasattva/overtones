@@ -1,7 +1,16 @@
 {
 	"credits": "Progettato e partorito con gioia da <a href=\"https://facebook.com/sunyatasattva\">Marco Lucio Giannotta</a> e <a href=\"https://www.facebook.com/skye.lofvander\">Skye Løfvander</a>. <span class=\"version\">Versione <a href=\"https://github.com/sunyatasattva/overtones/releases/\">1.1.3</a></span>",
 	"help": {
-		"STEP_0": ["Puoi cliccare su questo bottone in qualsiasi momento per avere un guida veloce di quello che vedi."],
+		"buttons": {
+			"CANCEL": "No, grazie, faccio da me",
+			"NEXT": "Avanti",
+			"SHOW_AROUND": "Fammi fare un giro!",
+			"THANKS": "Grazie!"
+		},
+		"STEP_0": {
+			"TITLE": "Confuso da ciò che vedi?",
+			"CONTENT": ["Puoi cliccare su questo bottone in qualsiasi momento per avere un guida veloce di quello che vedi."]
+		},
 		"STEP_1": [
 			"Questa è una rappresentazione visiva di un suono fondamentale ed i suoi armonici.",
 			"Ogni giro completo di spirale rappresenta un\'ottava."
@@ -92,5 +101,6 @@
 		"A#": "La#",
 		"Bb": "Sib",
 		"B": "Si"
-	}
+	},
+	"Options": "Opzioni"
 }

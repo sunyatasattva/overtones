@@ -44,43 +44,6 @@ body > footer {
 	bottom:     0;
 	left:       0;
 	
-	.language-switcher {
-		display: inline-block;
-		font-size: 12px;
-		text-transform: uppercase;
-		margin-left: 25px;
-		margin-right: 20px;
-		letter-spacing: 0.6px;
-		
-		a {
-			color: #ccc;
-		}
-		
-		.language {
-			color: rgba(255, 255, 255, 0.35);
-			transition: color 0.15s ease-out;
-			
-			&:hover {
-				color: #fff;
-			}
-		}
-		
-		.languages-list {
-			bottom: 25px;
-			left: 0;
-			
-			.language {
-				background-color: rgba(64, 64, 64, 0.1);
-				display:          block;
-				padding:          15px;
-				
-				&:hover {
-					background-color: rgba(64, 64, 64, 0.25);
-				}
-			}
-		}
-	}
-	
 	.social {
 		line-height: 35px;
 		margin-top:  20px;
@@ -105,6 +68,12 @@ body > footer {
 }
 
 .language-switcher {
+	display:        inline-block;
+	font-size:      12px;
+	letter-spacing: 0.6px;
+	margin-left:    25px;
+	margin-right:   20px;
+	text-transform: uppercase;
 	position: relative;
 	
 	> .current-language {
@@ -129,7 +98,22 @@ body > footer {
 		}
 	}
 	
+	a {
+		color: #ccc;
+	}
+	
+	.language {
+		color: rgba(255, 255, 255, 0.35);
+		transition: color 0.15s ease-out;
+			
+		&:hover {
+			color: #fff;
+		}
+	}
+	
 	.languages-list {
+		bottom: 25px;
+			left: 0;
 		list-style-type: none;
 		opacity:         0;
 		padding:         0;
@@ -151,6 +135,16 @@ body > footer {
 		
 		.current-language {
 			color: #fff;
+		}
+		
+		.language {
+			background-color: rgba(64, 64, 64, 0.1);
+			display:          block;
+			padding:          15px;
+				
+			&:hover {
+				background-color: rgba(64, 64, 64, 0.25);
+			}
 		}
 	}
 }

@@ -680,10 +680,15 @@ function updateUILanguage(language) {
 	i18n.setLocale(language);
 
 	$("[data-translation-key]").each(function(){
-		var key = $(this).data("translation-key");
+		var key  = $(this).data("translation-key"),
+			path = key.split(".");
 		
 		// @todo Should escape html
-		$(this).html( i18n.t(key) );
+		// @todo refactor to i18n module, also data-key API is backwards like this
+		if(path.length > 1)
+			$(this).html( i18n.t( path[0], path.slice(1) ) );
+		else
+			$(this).html( i18n.t(key) );
 	});
 	
 	$(".languages-list .language")
@@ -727,6 +732,14 @@ function init() {
 	
 	$("[data-language]").on("click", function(){
 		updateUILanguage( $(this).data("language") );
+		
+		$(this)
+			.closest(".language-switcher")
+				.find(".is-active")
+					.removeClass("is-active")
+				.end()
+				.find(".visible")
+					.removeClass("visible");
 	});
 
 	$("[data-option]").on("click", function(){

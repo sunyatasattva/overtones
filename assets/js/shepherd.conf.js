@@ -14,11 +14,38 @@ window.jQuery = $;
 
 require('chardin.js');
 
+// @todo temporary hack
+function _translateStep(step) {
+	var titleTranslationKey = step.options.translationKey;
+	
+	if(step.options.buttons.length) {
+		step.options.buttons.forEach(function(button){
+			var key = button.translationKey;
+			
+			button.text = i18n.t( key[0], key.slice(1) );
+		});
+	}
+	
+	if(titleTranslationKey) {
+		step.options.title = i18n.t(
+			'TITLE', 
+			titleTranslationKey
+		);
+	}
+}
+
 // `Sheperd.on` is sadly not chainable
 Shepherd.on('show', function(tour){
 	var step      = tour.step,
 	    stepIndex = tour.tour.steps.indexOf(step) + 1;
 
+	try {
+		_translateStep(tour.step);
+	}
+	catch(e) {
+		console.error("Couldn't translate the step", e);
+	}
+	
 	$(document).trigger({ type: "overtones:help:show", idx:  stepIndex });
 });
 
@@ -36,12 +63,18 @@ Shepherd.on('complete', function(tour){
 	$(document).trigger({ type: "overtones:help:complete" });
 });
 
-mainTour = new Shepherd.Tour({
-	defaults: {
-		classes: 'shepherd-theme-dark main-tour',
-		showCancelLink: true
-	}
-});
+mainTour = new Shepherd.Tour();
+mainTour.options.defaults = {
+	classes: 'shepherd-theme-dark main-tour',
+	showCancelLink: true,
+	buttons: [
+		{
+			text: 'Next',
+			translationKey: ['NEXT', 'help', 'buttons'],
+			action: mainTour.next
+		}
+	]
+}
 
 mainTour
 .addStep('overtone-spiral', {
@@ -82,9 +115,9 @@ mainTour
 	attachTo: '#sound-details bottom',
 	title: '3/11',
 	when: {
-		show: function() {
+		show: function(tour) {
 			$('body').chardinJs({
-				attribute: `data-intro-${window.currentLanguage}`,
+				attribute: `data-intro-${i18n.getLocale()}`,
 				method:    'start'
 			});
 			$('#overtone-1').addClass('shepherd-enabled');
@@ -117,9 +150,9 @@ mainTour
 	attachTo: '#sound-details bottom',
 	title: '5/11',
 	when: {
-		show: function() {
+		show: function(tour) {
 			$('body').chardinJs({
-				attribute: `data-intro-${window.currentLanguage}`,
+				attribute: `data-intro-${i18n.getLocale()}`,
 				method:    'start'
 			});
 			$('.spiral-piece').eq(1).addClass('shepherd-enabled');
@@ -197,7 +230,7 @@ mainTour
 		{
 			text: 'Thank you!',
 			action: mainTour.next,
-			classes: 'button-thank-you'
+			translationKey: ['THANKS', 'help', 'buttons'],
 		}
 	]
 });
@@ -212,14 +245,14 @@ newbieTour = new Shepherd.Tour({
 	}
 });
 
-
 newbieTour
 .addStep('newbie-help', {
 	text: function() {
-		return i18n.t('STEP_0', ['help']);
+		return i18n.t('CONTENT', ['help', 'STEP_0']);
 	},
 	attachTo: '#help right',
 	title: 'Confused by what you see?',
+	translationKey: ['help', 'STEP_0'],
 	buttons: [
 		{
 			text: 'No, thanks, I\'m good',
@@ -231,7 +264,8 @@ newbieTour
 					idx: 0
 				});
 			},
-			classes: "button-cancel"
+			classes: "button-cancel",
+			translationKey: ['CANCEL', 'help', 'buttons']
 		},
 		{
 			text: 'Show me around!',
@@ -244,11 +278,26 @@ newbieTour
 					idx: 0
 				});
 			},
-			classes: "button-show-around"
+			translationKey: ['SHOW_AROUND', 'help', 'buttons']
 		}
-	]
+	],
+	when: {
+		'show': function() {
+			var selector = '.newbie-tour .language-switcher';
+			
+			if( $(selector).length )
+				return;
+			else {
+				$('.language-switcher')
+					.clone(true, true)
+					.data('toggle', selector)
+					.appendTo('.newbie-tour header');
+			}
+		}
+	}
 });
 
+window.newbieTour = newbieTour;
 module.exports = {
 	mainTour: mainTour,
 	init: function(){
@@ -278,6 +327,8 @@ module.exports = {
 		});
 		
 		$(document).on("i18n:localeChange", function() {
+			var activeTour = Shepherd.activeTour;
+			
 			newbieTour.steps.forEach((step) => {
 				step.destroy();
 			});
@@ -285,6 +336,9 @@ module.exports = {
 			mainTour.steps.forEach((step) => {
 				step.destroy();
 			});
+			
+			if(activeTour)
+				activeTour.start();
 		});
 	},
 };

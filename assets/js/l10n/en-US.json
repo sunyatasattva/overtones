@@ -1,7 +1,16 @@
 {
 	"credits": "Designed and crafted with joy by <a href=\"https://facebook.com/sunyatasattva\">Marco Lucio Giannotta</a> and <a href=\"https://www.facebook.com/skye.lofvander\">Skye Løfvander</a>. <span class=\"version\">Version <a href=\"https://github.com/sunyatasattva/overtones/releases/\">1.1.3</a></span>",
 	"help": {
-		"STEP_0": ['You can click this button at any time to have a quick rundown of what\'s going on.'],
+		"buttons": {
+			"CANCEL": "No, thanks, I\'m good",
+			"NEXT": "Next",
+			"SHOW_AROUND": "Show me around!",
+			"THANKS": "Thank you!"
+		},
+		"STEP_0": {
+			"TITLE": "Confused by what you see?",
+			"CONTENT": ["You can click this button at any time to have a quick rundown of what\'s going on."]
+		},
 		"STEP_1": [
 			'This is a visual representation of a fundamental sound and its overtones.',
 			'Each complete spiral revolution represents an octave.'
@@ -33,5 +42,5 @@
 			'<small>When this option is on, the information displayed is the interval between the sound you play and the last active sound. This allows you to explore all the intervals within the spiral.</small>'
 		],
 		"STEP_11": ['That is all! Enjoy!']
-	}
+	},
 }
