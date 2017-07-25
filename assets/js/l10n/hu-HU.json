@@ -24,7 +24,7 @@
 		"STEP_4": ["Más részeire is kattinthatsz a spirálnak, mint például a két kört összekötő lila elemre."],
 		"STEP_5": [
             "Ebben az esetben a két hang közötti kapcsolatról olvashatsz információt.",
-            "<small>Ebből következik az, hogy a spirál részei a felhangsor akkordjainak felelnek meg.</small>",
+            "<small>Ebből következik az, hogy a spirál részei a felhangsor akkordjainak felelnek meg.</small>"
 		],
 		"STEP_6": [
 			"Meg tudod változtatni az alaphang magasságát a csúszka mozgatásával.",
@@ -42,5 +42,5 @@
 			"<small>Amíg ez az opció be van kapcsolva, addig az éppen lenyomott és a legutóbbi hang által képzett akkordról fog megjelenni információ. Ezzel be tudod járni az összes hangközt a spirálon.</small>"
 		],
 		"STEP_11": ["Ennyiről lenne szó! Jó szórakozást!"]
-	},
+	}
 }
