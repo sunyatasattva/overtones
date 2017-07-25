@@ -15,8 +15,9 @@ var $ = jQuery = require("jquery");
 require("velocity-animate");
 require("jquery.animate-number");
 
-var utils      = require("./lib/utils.js"),
-	i18n       = require("./i18n.js"),
+var ls         = require("local-storage"),
+	utils      = require("./lib/utils.js"),
+    i18n       = require("./i18n.js"),
     intervals  = require("../data/intervals.json"),
     tones      = require("./lib/tones.js"),
     analyser   = require("./lib/spectrumAnalyser");
@@ -125,9 +126,13 @@ function animateOvertone(el, duration) {
 	// If there are no inner circles, the animation only fills the spaces
 	// with the fillColor
 	if( !numbersOfCircles ) {
-		$.Velocity( $spacesGroup, {
+		$.Velocity(
+			$spacesGroup,
+			{
 			fill: fillColor
-		}, { duration: duration.attack * 1000 } )
+			}, 
+			{ duration: duration.attack * 1000 + duration.sustain * 1000 }
+		)
 			.then( function(spaces){
 			$.Velocity( spaces, { fill: originalFill });
 			el.classList.remove("active");
@@ -137,11 +142,16 @@ function animateOvertone(el, duration) {
 	// them progressively
 	else {
 		$circles.each(function(i){
+			var delay = i * (
+				(duration.attack * 1000 / numbersOfCircles) + 
+				(duration.sustain * 1000 / numbersOfCircles)
+			);
+			
 			$.Velocity( this, {
 				fill: fillColor
 			}, {
-				delay:    i * (duration.attack * 1000 / numbersOfCircles),
-				duration: duration.attack * 1000,
+				delay:    delay,
+				duration: duration.attack * 1000 + duration.sustain * 1000,
 			} )
 				.then( function(circle){
 				$.Velocity( circle, { fill: originalFill });
@@ -439,10 +449,10 @@ function updateBaseFrequency(val, mute) {
 	App.baseTone      = tones.createSound(val, { weigh: true });
 	App.baseTone.name = frequencyToNoteDetails(val).name;
 	
-    $("#base, #base-detail").val(val);
-    
-    if( !mute && !App.options.sustain )
-        $("#overtone-1").click();
+	$("#base, #base-detail").val(val);
+	
+	if( !mute && !App.options.sustain && !App.options.record )
+		$("#overtone-1").click();
 	
 	$(document).trigger({
 		type: "overtones:options:change",
@@ -510,6 +520,10 @@ function overtoneClickHandler() {
 	
 	if( App.options.octaveReduction && tone.frequency !== App.baseTone.frequency )
 		tone.reduceToSameOctaveAs(App.baseTone);
+	
+	if( App.options.record ) {
+		recordSound(tone);
+	}
 	
 	if( App.options.sustain ){
 		let lastSoundPlaying = utils.findLast(tones.sounds, function(){ return this.isPlaying; }, 1);
@@ -735,6 +749,150 @@ function keyboardHandler(e) {
 }
 
 /*
+ * Plays a sequence of overtones.
+ *
+ * It updates the fundamental frequency and optionally it animates the overtones
+ * while playing them. The sequence is always played of copies of sounds, so the
+ * originals are preserved.
+ *
+ * An optional options object can be passed to modify every single sound in the
+ * sequence. Particularly implements a `speed` option to modify the speed of each
+ * of the sounds in the sequence.
+ *
+ * @param  {Array.<{sound:Sound, base:Sound}>}  sequence  An array of objects
+ *                                                        containing the sounds and
+ *                                                        their relative base.
+ * @param  {Object}  [opts]  Options to apply to each sound.
+ *                           See {@link Sound.prototype.duplicate}
+ * @param  {Number}  [opts.speed]    The relative speed of playback of each sound.
+ * @param  {bool}    [opts.animate]  Whether to activate the overtone circle
+ *                                   animation at each sound.
+ *
+ * @return {Promise}  A Promise resolving when the sequence of sounds is done.
+ */
+function playSequence(sequence, opts) {
+    var _sequence = Promise.resolve(),
+    _sounds   = sequence.map(function(sound) {
+                             var copy = sound.sound.duplicate(opts);
+                             
+                             if(opts.speed) {
+                             copy.modifySpeed(opts.speed);
+                             }
+                             
+                             return copy;
+                             });
+    
+    sequence.forEach(function(sound, i) {
+                     _sequence = _sequence.then(function() {
+                                                if(sound.base.frequency !== App.baseTone.frequency)
+                                                updateBaseFrequency(sound.base.frequency, true);
+                                                
+                                                if(opts.animate)
+                                                animateOvertone( $(".overtone").get(sound.overtone - 1), _sounds[i].envelope );
+                                                
+                                                return _sounds[i].play();
+                                                });
+                     });
+    
+    return _sequence;
+}
+
+/*
+ * Moves the recorded sequence forwards or backwards and plays it.
+ *
+ * @param  {Number}  step  The number of steps to move the sequence (negative
+ *                         to move the sequence back).
+ *
+ * @return void
+ */
+function controlSequence(step) {
+    var i     = App.sequence.current + step,
+    speed = +$("#sequence-speed").val(),
+    sound = App.sequence.sounds[i];
+    
+    if(sound) {
+        playSequence([sound], { animate: true, speed: speed });
+        
+        App.sequence.current += step;
+    }
+}
+
+/*
+ * Records a sound to the current saved sequence.
+ *
+ * It adds the recorded sound with infromation on which overtone number it is and
+ * its relative fundamental frequency to the recorded sequence and saves it to
+ * local storage.
+ *
+ * @param  {Sound}  sound  The sound to record.
+ *
+ * @return {Number} The new length of the sequence.
+ */
+function recordSound(sound) {
+    var soundCopy = sound.duplicate(),
+    sequence;
+    
+    sequence = App.sequence.sounds.push({
+                                        overtone: Math.floor(sound.frequency / App.baseTone.frequency),
+                                        sound:    soundCopy,
+                                        base:     App.baseTone
+                                        });
+    
+    ls.set("overtone-sequence", App.sequence.sounds);
+    
+    // @todo Ideally we don't duplicate this code and we have a custom setter
+    // but we might as well refactor the whole thing, really…
+    $(document).trigger({
+                        type: "sequence:change",
+                        details: { sequence: App.sequence.sounds }
+                        });
+    
+    return sequence;
+}
+
+/*
+ * Loads a sequence from a JSON object.
+ *
+ * Initializes each sound in the JSON as a Sound object and loads it into
+ * the current sequence.
+ *
+ * @param  {Object}  json  The JSON object.
+ *
+ * @return void
+ */
+function loadSequence(json) {
+    var sounds;
+    
+    if(json.length) {
+        sounds = json.map(function(sound) {
+                          if(sound.sound) {
+                          sound.sound = tones.duplicateSound(sound.sound);
+                          }
+                          
+                          return sound;
+                          });
+    }
+    
+    App.sequence.sounds = sounds || [];
+    
+    $(document).trigger({ 
+                        type: "sequence:change", 
+                        details: { sequence: App.sequence.sounds }
+                        });
+}
+
+/*
+ * Loads a sequence from local storage.
+ *
+ * @return void
+ */
+function loadSequenceFromLocalStorage() {
+    var sequence = ls.get("overtone-sequence");
+    
+    loadSequence(sequence);
+}
+
+/*
  * Handles clicks on the piano keys.
  *
  * @param  {Event}  e  The event object.
@@ -834,10 +992,57 @@ function updateUILanguage(language) {
 function init() {
 	updateVolume( $("#volume-control").val(), true );
 	App.baseTone.name = frequencyToNoteDetails(App.baseTone.frequency).name;
+    
+    // @todo dirty
+    hideNoteDetailsWhenIdle = hideElementWhenIdle( $("#sound-details") ),
+    hideKeyboardWhenIdle    = hideElementWhenIdle( $("#keyboard-container") );
 	
-	// @todo dirty
-	hideNoteDetailsWhenIdle = hideElementWhenIdle( $("#sound-details") ),
-	hideKeyboardWhenIdle    = hideElementWhenIdle( $("#keyboard-container") );
+	$(document)
+		.on("keydown", keyboardHandler)
+    	.on("mouseup", function(e) {
+			var $soundDetails = $("#sound-details");
+
+			if( !$soundDetails.is(":hover") && $soundDetails.data("isPlaying") )
+			soundDetailsHandler.call($soundDetails, e);
+        })
+    	.on("overtones:options:change", function(e){
+        	if( e.details.optionName === "sustain" &&
+        	   e.details.optionValue === false )
+        		stopAllPlayingSounds();
+        	if(e.details.optionName === "microphone") {
+        		if(e.details.optionValue === true) {
+        		activateMicrophoneStream(e.originalEvent.altKey);
+        		}
+        		else {
+        			toggleInput('#base');
+        			toggleInput('#base-detail');
+        			analyser.stop();
+        			microphoneStream.stop();
+        		}
+        	}
+        	if( e.details.optionName === "record" && e.details.optionValue === true ) {
+        		App.sequence = { current: 0, sounds: [] };
+        	
+        		$(document).trigger({
+        	    	type: "sequence:change",
+        	    	details: { sequence: App.sequence.sounds }
+        	    });
+        	}
+        })
+		.on("sequence:change", function(e) {
+			console.log(e.details);
+			if(e.details.sequence.length)
+				$("#play-panel").addClass("visible");
+			else
+				$("#play-panel").removeClass("visible");
+		});
+	
+	try {
+		loadSequenceFromLocalStorage();
+	}
+	catch(e) {
+		console.error(e);
+	}
 	
 	$(".overtone")
 		.on("click", overtoneClickHandler)
@@ -845,15 +1050,6 @@ function init() {
 	$(".spiral-piece").on("click", spiralPieceClickHandler);
 	$(".axis").on("click", axisClickHandler);
 
-    $(document)
-		.on("keydown", keyboardHandler)
-		.on("mouseup", function(e) {
-			var $soundDetails = $("#sound-details");
-		
-			if( !$soundDetails.is(":hover") && $soundDetails.data("isPlaying") )
-				soundDetailsHandler.call($soundDetails, e);
-		});
-	
 	$("#base-detail").on("keydown", baseInputHandler);
 
 	$("#base, #base-detail").on("change", function(){
@@ -897,21 +1093,31 @@ function init() {
 		$this.toggleClass("is-active");
 	});
 	
-	$(document).on("overtones:options:change", function(e){
-		if( e.details.optionName === "sustain" && 
-		    e.details.optionValue === false )
-			stopAllPlayingSounds();
-		if(e.details.optionName === "microphone") {
-			if(e.details.optionValue === true) {
-				activateMicrophoneStream(e.originalEvent.altKey);
-			}
-			else {
-				toggleInput('#base');
-				toggleInput('#base-detail');
-				analyser.stop();
-				microphoneStream.stop();
-			}
-		}
+	
+	$("#play-sequence").on("click", function(){
+		var speed = +$("#sequence-speed").val(),
+			$this = $(this);
+		
+		if( !$this.is(".off") )
+			return;
+		
+		$this.removeClass("off");
+		
+		playSequence(App.sequence.sounds, { 
+			animate: true,
+			speed:   speed
+		})
+		.then(function(){
+			$this.addClass("off");
+		});
+	});
+	
+	$("#sequence-next").on("click", function(){
+		controlSequence(1)
+	});
+	
+	$("#sequence-prev").on("click", function(){
+		controlSequence(-1)
 	});
 }
 
@@ -1058,6 +1264,10 @@ var App = {
 	options: {
 		groupNotes:      true,
 		octaveReduction: false
+	},
+	sequence: {
+		current: -1,
+		sounds: [],
 	},
 	/**
 	* Frequency data for various tunings
