@@ -32,80 +32,89 @@
 <body>
   	<!--=include components/_analytics.html -->
 	<script src="assets/js/webfont.js" async></script>
-	<div id="options">
-			<h2 data-translation-key="Options">Options</h2>
-		<div class="section-content">
-			<div class="input-wrapper" id="base-wrapper">
-				<input type="range" min="100" max="1000" id="base" value="220" data-frequency="220Hz"/>
-				<div class="input-wrapper" id="base-detail-wrapper">
-					<input type="number" id="base-detail" value="220" min="100" max="1000">
-					<span>Hz</span>
+	<header id="main-header">
+		<a href="//www.suonoterapia.org">
+			<!--=include assets/images/logo.svg -->
+		</a>
+		<a href="https://www.facebook.com/suonoterapia">
+			<!--=include assets/images/ico-facebook.svg -->
+		</a>
+	</header>
+	<main>
+		<div id="options">
+				<h2 data-translation-key="Options">Options</h2>
+			<div class="section-content">
+				<div class="input-wrapper" id="base-wrapper">
+					<input type="range" min="100" max="1000" id="base" value="220" data-frequency="220Hz"/>
+					<div class="input-wrapper" id="base-detail-wrapper">
+						<input type="number" id="base-detail" value="220" min="100" max="1000">
+						<span>Hz</span>
+					</div>
+				</div>
+				<div class="input-wrapper" id="volume-control-wrapper">
+					<input type="range" min="0" max="50" id="volume-control" value="25"/>
+				</div>
+				<!-- @todo Refactor those as hidden checkboxes with labels -->
+				<div class="options-buttons">
+					<a href="#" id="group-notes" class="option-button grouped" data-option="groupNotes"></a>
+					<a href="#" id="reduce-to-octave" class="option-button off" data-option="octaveReduction"></a>
+					<a href="#" id="sustain" class="option-button off" data-option="sustain"></a>
+		                <a href="#" id="record" class="option-button off" data-option="record"></a>
+		                <a href="#" id="microphone" class="option-button off" data-option="microphone"></a>
 				</div>
 			</div>
-			<div class="input-wrapper" id="volume-control-wrapper">
-				<input type="range" min="0" max="50" id="volume-control" value="25"/>
+			<!--=include components/_keyboard.html -->
+		</div>
+		<div id="sound-details">
+			<div id="interval"
+				data-intro-en-US="The ratio between the two frequencies"
+				data-intro-it-IT="La proporzione tra le due frequenze"
+				data-position="left">
+				<sup></sup><span>&#8260;</span><sub></sub>
 			</div>
-			<!-- @todo Refactor those as hidden checkboxes with labels -->
-			<div class="options-buttons">
-				<a href="#" id="group-notes" class="option-button grouped" data-option="groupNotes"></a>
-				<a href="#" id="reduce-to-octave" class="option-button off" data-option="octaveReduction"></a>
-				<a href="#" id="sustain" class="option-button off" data-option="sustain"></a>
-                <a href="#" id="record" class="option-button off" data-option="record"></a>
-                <a href="#" id="microphone" class="option-button off" data-option="microphone"></a>
+			<div id="note"
+				data-intro-en-US="The note name in the <a href='https://en.wikipedia.org/wiki/Scientific_pitch_notation' target='_blank'>modern scientific pitch notation</a>"
+				data-intro-it-IT="Il nome della nota nel <a href='https://it.wikipedia.org/wiki/Solfeggio' target='_blank'>sistema di solfeggio</a>"
+				data-position="left">
+				<span id="note-name"></span><span id="note-accidentals" class="accidental"></span><sub></sub>
+			</div>
+			<div id="interval-name" class="note-detail"
+				data-intro-en-US="The name of the interval"
+				data-intro-it-IT="Il nome dell'invervallo"
+				data-position="left"></div>
+			<div id="note-frequency" class="note-detail"
+				data-intro-en-US="The exact frequency"
+				data-intro-it-IT="La frequenza esatta"
+				data-position="left">0 Hz</div>
+			<div class="cents-difference tuning"
+				data-intro-en-US="The difference in <a href='https://en.wikipedia.org/wiki/Cent_(music)' target='_blank'>cents</a> between the sound played and the note in <a href='https://en.wikipedia.org/wiki/Equal_temperament' target='_blank'>12 Equal Temperament</a>"
+				data-intro-it-IT="La differenza in <a href='https://it.wikipedia.org/wiki/Cent_(musica)' target='_blank'>cent</a> tra il suono riprodotto e la nota nel <a href='https://it.wikipedia.org/wiki/Temperamento_equabilet' target='_blank'>Temperamento equabile</a>"
+				data-position="left">
+				<span class="cents">0</span>
+				<div class="cent-bar"></div>
+			</div>
+			<div class="cents-difference interval"
+				data-intro-en-US="The interval measured in cents"
+				data-intro-it-IT="L'intervallo misurato in cent"
+				data-position="left">
+				<span class="cents">1200</span>
+				<div class="cent-bar"></div>
 			</div>
 		</div>
-		<!--=include components/_keyboard.html -->
-	</div>
-	<div id="sound-details">
-		<div id="interval"
-			data-intro-en-US="The ratio between the two frequencies"
-			data-intro-it-IT="La proporzione tra le due frequenze"
-			data-position="left">
-			<sup></sup><span>&#8260;</span><sub></sub>
-		</div>
-		<div id="note"
-			data-intro-en-US="The note name in the <a href='https://en.wikipedia.org/wiki/Scientific_pitch_notation' target='_blank'>modern scientific pitch notation</a>"
-			data-intro-it-IT="Il nome della nota nel <a href='https://it.wikipedia.org/wiki/Solfeggio' target='_blank'>sistema di solfeggio</a>"
-			data-position="left">
-			<span id="note-name"></span><span id="note-accidentals" class="accidental"></span><sub></sub>
-		</div>
-		<div id="interval-name" class="note-detail"
-			data-intro-en-US="The name of the interval"
-			data-intro-it-IT="Il nome dell'invervallo"
-			data-position="left"></div>
-		<div id="note-frequency" class="note-detail"
-			data-intro-en-US="The exact frequency"
-			data-intro-it-IT="La frequenza esatta"
-			data-position="left">0 Hz</div>
-		<div class="cents-difference tuning"
-			data-intro-en-US="The difference in <a href='https://en.wikipedia.org/wiki/Cent_(music)' target='_blank'>cents</a> between the sound played and the note in <a href='https://en.wikipedia.org/wiki/Equal_temperament' target='_blank'>12 Equal Temperament</a>"
-			data-intro-it-IT="La differenza in <a href='https://it.wikipedia.org/wiki/Cent_(musica)' target='_blank'>cent</a> tra il suono riprodotto e la nota nel <a href='https://it.wikipedia.org/wiki/Temperamento_equabilet' target='_blank'>Temperamento equabile</a>"
-			data-position="left">
-			<span class="cents">0</span>
-			<div class="cent-bar"></div>
-		</div>
-		<div class="cents-difference interval"
-			data-intro-en-US="The interval measured in cents"
-			data-intro-it-IT="L'intervallo misurato in cent"
-			data-position="left">
-			<span class="cents">1200</span>
-			<div class="cent-bar"></div>
-		</div>
-	</div>
-	<div id="play-panel">
-		<a href="#" id="settings-button" data-toggle="#play-panel .panel"></a>
-		<a href="#" id="play-sequence" class="option-button off"></a>
-		<div class="panel">
-			<div class="input-wrapper" id="sequence-speed-wrapper">
-				<input type="range" min="0.20" max="1" step="0.05" id="sequence-speed" value="1" />
+		<div id="play-panel">
+			<a href="#" id="settings-button" data-toggle="#play-panel .panel"></a>
+			<a href="#" id="play-sequence" class="option-button off"></a>
+			<div class="panel">
+				<div class="input-wrapper" id="sequence-speed-wrapper">
+					<input type="range" min="0.20" max="1" step="0.05" id="sequence-speed" value="1" />
+				</div>
+				
+				<a href="#" id="sequence-prev" class="option-button off"></a>
+				<a href="#" id="sequence-next" class="option-button off"></a>
 			</div>
-			
-			<a href="#" id="sequence-prev" class="option-button off"></a>
-			<a href="#" id="sequence-next" class="option-button off"></a>
 		</div>
-	</div>
-	
-	<!--=include assets/images/overtone-spiral.svg -->
+		<!--=include assets/images/overtone-spiral.svg -->
+	</main>
 	
 	<footer>
 		<button href="#" id="help">?</button>
