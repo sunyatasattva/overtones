@@ -1,3 +1,11 @@
+const DEFAULT_LOCALE = "en-US",
+	  LANGUAGES = {
+		"en-US": "English",
+		"it-IT": "Italiano"
+	  },
+	  SUPPORTED_LANGUAGES = ["en-US", "it-IT"];
+	  
+
 var $          = require("jquery"),
 	get        = require("lodash.get"),
 	extend     = require("lodash.assign"),
@@ -5,12 +13,7 @@ var $          = require("jquery"),
 		"en-US": require("./l10n/en-US.json"),
 		"it-IT": require("./l10n/it-IT.json")
 	},
-	currentLocale = "en-US";
-
-const LANGUAGES = {
-	"en-US": "English",
-	"it-IT": "Italiano"
-};
+	currentLocale = DEFAULT_LOCALE;
 
 /*
  * Returns a native name for a language from its code.
@@ -30,6 +33,36 @@ function getLanguageNameFromCode(code) {
  */
 function getLocale() {
 	return currentLocale;
+}
+
+function getPreferredSupportedLocale() {
+	var preferredLocales = getUserLanguages(),
+		locale;
+	
+	if(preferredLocales) {
+		locale = preferredLocales.reduce(function(set, lang) {
+			if(set)
+				return set;
+			
+			if( SUPPORTED_LANGUAGES.includes(lang) )
+				return lang;
+			else {
+				return SUPPORTED_LANGUAGES.find(function(supportedLanguage) {
+					return supportedLanguage.split("-")[0] === lang;
+				});
+			}
+			
+			return false;
+		}, false);
+	}
+	
+	return locale;
+}
+
+function getUserLanguages() {
+	return navigator.languages ?
+		navigator.languages :
+		[navigator.language || navigator.userLanguage]
 }
 
 /**
@@ -70,6 +103,17 @@ function translate(string, namespace, locale) {
 	return get( dictionary, path.concat( [string] ) ) || string;
 }
 
+function trySettingLocaleToPreferred(fallbackToDefault) {
+	var locale = getPreferredSupportedLocale();
+	
+	if(locale)
+		setLocale(locale);
+	else if(fallbackToDefault)
+		setLocale(DEFAULT_LOCALE);
+	
+	return locale;
+}
+
 module.exports = {
 	/**
 	 * @alias module:i18n.getLanguageNameFromCode
@@ -79,6 +123,14 @@ module.exports = {
 	 * @alias module:i18n.getLocale
 	 */
 	getLocale: getLocale,
+	/**
+	 * @alias module:i18n.getPreferredSupportedLocale
+	 */
+	getPreferredSupportedLocale: getPreferredSupportedLocale,
+	/*
+	 * @alias module:i18n.getUserLanguages
+	 */
+	getUserLanguages: getUserLanguages,
 	/*
 	 * @alias module:i18n.setLocale
 	 */
@@ -86,5 +138,9 @@ module.exports = {
 	/*
 	 * @alias module:i18n.translate
 	 */
-	t:         translate
+	t: translate,
+	/*
+	 * @alias module:i18n.trySettingLocaleToPreferred
+	 */
+	trySettingLocaleToPreferred: trySettingLocaleToPreferred
 }

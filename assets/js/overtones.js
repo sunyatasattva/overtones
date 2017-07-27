@@ -997,6 +997,7 @@ function updateUILanguage(language) {
 function init() {
 	updateVolume( $("#volume-control").val(), true );
 	App.baseTone.name = frequencyToNoteDetails(App.baseTone.frequency).name;
+	updateUILanguage( i18n.trySettingLocaleToPreferred() );
     
     // @todo dirty
     hideNoteDetailsWhenIdle = hideElementWhenIdle( $("#sound-details") ),

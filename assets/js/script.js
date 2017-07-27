@@ -18,8 +18,8 @@ navigator.getUserMedia = (navigator.getUserMedia ||
 
 
 jQuery(document).ready(function($){
-    tour.init();
-    Overtones.init();
+	Overtones.init();
+	tour.init();
 	analytics($);
 
 	easterEgg.init();
