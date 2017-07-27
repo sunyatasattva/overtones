@@ -76,6 +76,12 @@ body > footer {
 	font-size: 12px;
 }
 
+.hide-on-small {
+	@media (max-width: 1024px) {
+		display: none;
+	}
+}
+
 .label {
 	background-color: #0080a3;
 	border-radius:    5px;
@@ -91,10 +97,10 @@ body > footer {
 	display:        inline-block;
 	font-size:      12px;
 	letter-spacing: 0.6px;
-	margin-left:    25px;
+	margin-left:    35px;
 	margin-right:   20px;
 	text-transform: uppercase;
-	position: relative;
+	position:       relative;
 	
 	> .current-language {
 		&.is-active {
@@ -132,21 +138,23 @@ body > footer {
 	}
 	
 	.languages-list {
-		bottom: 25px;
-			left: 0;
 		list-style-type: none;
 		opacity:         0;
 		padding:         0;
 		z-index:         -1;
 		position:        absolute;
+		bottom:          75px;
+		left:            0;
 		
 		transform: translateY(100px);
 		transition: opacity 0.5s ease-out,
-			        transform 0.5s cubic-bezier(1, 0, 1, 0);
+			        transform 0.5s cubic-bezier(1, 0, 1, 0),
+				    bottom 0.5s cubic-bezier(1, 0, 1, 0);
 		
 		&.visible {
 			opacity: 1;
 			z-index: 3;
+			bottom:  25px;
 			
 			transform: translateY(0);
 			transition: opacity 0.5s ease-out,
