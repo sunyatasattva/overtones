@@ -213,20 +213,10 @@ a#play-sequence {
 }
 
 a#record {
-	&.off {
-		&::before { background-color: #222; }
-	}
+	background-image: url("../images/ico-record.svg");
 	
-	&::before {
-		background-color: firebrick;
-		border-radius:    10px;
-		content:          "";
-		display:          block;
-		width:            13px;
-		height:           13px;
-		position:         absolute;
-		top:              10px;
-		left:             10px;
+	&.off {
+		background-image: url("../images/ico-record-off.svg");
 	}
 }
 
