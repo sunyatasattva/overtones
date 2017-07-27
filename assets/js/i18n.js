@@ -15,7 +15,7 @@ var $          = require("jquery"),
 	},
 	currentLocale = DEFAULT_LOCALE;
 
-/*
+/**
  * Returns a native name for a language from its code.
  *
  * @param  {String}  The current locale in ISO-639 / ISO-3166 format.
@@ -35,6 +35,12 @@ function getLocale() {
 	return currentLocale;
 }
 
+/**
+ * See which of the supported locales is the best for the user settings.
+ *
+ * @return  {String|undefined}  The locale in ISO-639 / ISO-3166 format 
+ *                              or `undefined`.
+ */
 function getPreferredSupportedLocale() {
 	var preferredLocales = getUserLanguages(),
 		locale;
@@ -59,6 +65,15 @@ function getPreferredSupportedLocale() {
 	return locale;
 }
 
+/**
+ * Gets the user preferred languages array from the browser.
+ *
+ * The browser can't really be trusted, but this is a good approximation.
+ *
+ * @return  {Array}  An array of locale strings. There is no guarantee that those
+ *                   strings include the country code, and that they are
+ *                   actually ordered by preference.
+ */
 function getUserLanguages() {
 	return navigator.languages ?
 		navigator.languages :
@@ -103,6 +118,18 @@ function translate(string, namespace, locale) {
 	return get( dictionary, path.concat( [string] ) ) || string;
 }
 
+/**
+ * Tries to set the current locale to the user preferences.
+ *
+ * If no preferred locale is supported, it will either fallback to setting the
+ * locale to the default one, or do nothing.
+ *
+ * @param  {bool}  fallbackToDefault  If `true` and no preferred supported locale is
+ *                                    found, will set the locale to the default one.
+ *
+ * @return {String|undefined}  The locale in ISO-639 / ISO-3166 format
+ *                              or `undefined`.
+ */
 function trySettingLocaleToPreferred(fallbackToDefault) {
 	var locale = getPreferredSupportedLocale();
 	

@@ -1,5 +1,10 @@
 {
 	"credits": "<span class=\"hide-on-small\">Progettato e partorito con gioia da</span> <a href=\"https://facebook.com/sunyatasattva\">Marco Lucio Giannotta</a> e <a href=\"https://www.facebook.com/skye.lofvander\">Skye Løfvander</a>. <span class=\"hide-on-small version\">Versione <a href=\"https://github.com/sunyatasattva/overtones/releases/\">1.1.3</a></span>",
+	"easter_egg": {
+		"SUBTITLE": "Spiacente! Nessun pentolone d'oro. Ma è il percorso che conta, no?",
+		"TEXT": "Perché non condividi con i tuoi amici l'amore per il mondo degli Armonici e vedi se anche loro riescono a trovare l'arcobaleno?",
+		"TITLE": "Hai trovato l'arcobaleno segreto!"
+	},
 	"help": {
 		"buttons": {
 			"CANCEL": "No, grazie, faccio da me",
@@ -124,5 +129,6 @@
 		"Bb": "Sib",
 		"B": "Si"
 	},
-	"Options": "Opzioni"
+	"Options": "Opzioni",
+	"Share": "Condividi"
 }
