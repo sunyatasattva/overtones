@@ -31,10 +31,11 @@
 }
 
 .chardinjs-helper-layer {
-	color:      #fff;
-	transition: all 0.3s ease-out;
-	z-index:    4;
-	position:   absolute;
+	color:          #fff;
+	pointer-events: none;
+	transition:     all 0.3s ease-out;
+	z-index:        4;
+	position:       absolute;
 	
 	&.chardinjs-left {
 		border-left: solid #fff 1px;
@@ -338,6 +339,12 @@
 				
 				&:last-child { margin-bottom: 0; }
 			}
+			
+			strong {
+				display:    block;
+				margin-top: 1.5rem;
+				text-align: center;
+			}
 		}
 	}
 	
@@ -507,7 +514,11 @@ body.shepherd-active {
 		padding:          10px;
 	}
 	
+	#help,
 	#options,
+	#play-panel,
+	.credits,
+	.social,
 	.spiral-piece,
 	.axis,
 	.overtone {
@@ -526,6 +537,10 @@ body.shepherd-active {
 		}
 	}
 	
+	.language-switcher > .current-language {
+		color: #fff;
+	}
+	
 	.shepherd-enabled { opacity: 1 !important; }
 	
 	.thank-you-button {
@@ -537,6 +552,23 @@ body.shepherd-active {
 		.spiral-piece,
 		.axis,
 		.overtone { opacity: 1 !important; }
+	}
+	
+	&[data-shepherd-step=play-panel] {
+		#play-panel {
+			opacity: 1;
+			
+			.panel {
+				opacity:    1;
+				transform:  translateX(0);
+				transition: transform 0.25s cubic-bezier(0, 1, 0, 1), 
+					        opacity 0.25s ease-in-out;
+			}
+		}
+		
+		#settings-button {
+			opacity: 0.8;
+		}
 	}
 	
 	&[data-shepherd-step=spiral-pieces] {
@@ -556,6 +588,20 @@ body.shepherd-active {
 			h2,
 			.input-wrapper,
 			.option-button { opacity: 0.4; }
+		}
+		
+		.option-button.shepherd-enabled {
+			background-color: #d4d4d4;
+			
+			&::before {
+				color:     #c3c3c3;
+				content:   "\25BE";
+				display:   block;
+				transform: rotate(180deg);
+				position:  absolute;
+				bottom:    -21px;
+				left:      11px;
+			}
 		}
 	}
 	

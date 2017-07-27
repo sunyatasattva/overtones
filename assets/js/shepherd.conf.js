@@ -36,9 +36,13 @@ function _translateStep(step) {
 
 // `Sheperd.on` is sadly not chainable
 Shepherd.on('show', function(tour){
-	var step      = tour.step,
-	    stepIndex = tour.tour.steps.indexOf(step) + 1;
+	var step        = tour.step,
+	    stepIndex   = tour.tour.steps.indexOf(step) + 1,
+		stepsLength = tour.tour.steps.length;
 
+	if(!step.options.title)
+		step.options.title = `${stepIndex}/${stepsLength}`;
+	
 	try {
 		_translateStep(tour.step);
 	}
@@ -111,19 +115,27 @@ mainTour
 		return i18n.t('STEP_NOTE_DETAILS', ['help']);
 	},
 	attachTo: '#sound-details bottom',
-	title: '3/11',
+	buttons: [],
 	when: {
 		show: function(tour) {
 			$('body').chardinJs({
 				attribute: `data-intro-${i18n.getLocale()}`,
 				method:    'start'
 			});
+			
+			$('#sound-details').addClass('is-active visible');
+			
 			$('#overtone-1').addClass('shepherd-enabled');
 		},
 		hide: function() {
 			$('body').chardinJs('stop');
 			$('#overtone-1').removeClass('shepherd-enabled');
+			$('#sound-details').removeClass('visible is-active');
 		}
+	},
+	advanceOn: {
+		selector: '#sound-details, #sound-details *',
+		event: 'mouseup'
 	},
 	tetherOptions: {
 		offset: '-20px 70px'
@@ -134,7 +146,6 @@ mainTour
 		return i18n.t('STEP_SPIRAL_PIECES', ['help']);
 	},
 	attachTo: '.spiral-piece:nth-of-type(2) bottom',
-	title: '4/11',
 	buttons: {},
 	advanceOn: {
 		selector: '.spiral-piece',
@@ -146,7 +157,6 @@ mainTour
 		return i18n.t('STEP_INTERVAL_DETAILS', ['help']);
 	},
 	attachTo: '#sound-details bottom',
-	title: '5/11',
 	when: {
 		show: function(tour) {
 			$('body').chardinJs({
@@ -158,6 +168,7 @@ mainTour
 		hide: function() {
 			$('body').chardinJs('stop');
 			$('.spiral-piece').eq(1).removeClass('shepherd-enabled');
+			$('#sound-details').removeClass('visible');
 		}
 	},
 	tetherOptions: {
@@ -169,7 +180,6 @@ mainTour
 		return i18n.t('STEP_OPTIONS_BASE', ['help']);
 	},
 	attachTo: '#base-wrapper right',
-	title: '6/11',
 	advanceOn: {
 		selector: '#base',
 		event: 'change'
@@ -221,17 +231,19 @@ mainTour
 		return i18n.t('STEP_OPTIONS_OCTAVE', ['help']);
 	},
 	attachTo: '#reduce-to-octave bottom',
-	title: '9/11',
 	tetherOptions: {
 		offset: '-20px 0'
 	}
 })
 .addStep('options-sustain', {
 	text: function() {
-		return i18n.t('STEP_10', ['help']);
+		return i18n.t('STEP_OPTIONS_SUSTAIN', ['help']);
 	},
 	attachTo: '#sustain bottom',
-	title: '10/11',
+	tetherOptions: {
+		offset: '-20px 0'
+	}
+})
 .addStep('options-record', {
 	text: function() {
 		return i18n.t('STEP_OPTIONS_RECORD', ['help']);
@@ -263,7 +275,6 @@ mainTour
 	text: function() {
 		return i18n.t('STEP_END', ['help']);
 	},
-	title: '11/11',
 	buttons: [
 		{
 			text: 'Thank you!',
@@ -345,28 +356,34 @@ module.exports = {
 		
 		$('#help').on('click', function(e){
 			e.preventDefault();
-			mainTour.start();
+			
+			if( !$("body").hasClass("shepherd-active") )
+				mainTour.start();
 		});
 		
-		$(".spiral-piece, .overtone, .axis").on("click", function(e){
+		// Deny UI parts when help is active
+		$(".spiral-piece, .overtone, .axis, .option-button, #settings-button").on("click", function(e){
 			var $body       = $("body"),
 			    currentStep = mainTour.currentStep,
 			    idx         = currentStep ? currentStep.tour.steps.indexOf(currentStep) + 1 : 0;
 
-		if( $body.hasClass("shepherd-active") && !$(e.delegateTarget).hasClass("shepherd-enabled") ){
-			e.stopImmediatePropagation();
+			if( $body.hasClass("shepherd-active") && !$(e.delegateTarget).hasClass("shepherd-enabled") ){
+				e.stopImmediatePropagation();
 
-				$(document).trigger({
-					type: "overtones:help:denied",
-					target: e.target,
-					idx: idx
-				});
+					$(document).trigger({
+						type: "overtones:help:denied",
+						target: e.target,
+						idx: idx
+					});
 			}
 		});
 		
+		
+		// Re-inizializes the steps on locale change
 		$(document).on("i18n:localeChange", function() {
 			var activeTour = Shepherd.activeTour;
 			
+			$('body').chardinJs('stop');
 			newbieTour.steps.forEach((step) => {
 				step.destroy();
 			});

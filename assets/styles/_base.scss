@@ -71,6 +71,22 @@ body > footer {
 	margin-left: 25px;
 }
 
+.footnote {
+	color:     #666;
+	font-size: 12px;
+}
+
+.label {
+	background-color: #0080a3;
+	border-radius:    5px;
+	display:          inline-block;
+	font-size:        12px;
+	line-height:      24px;
+	margin-right:     12px;
+	padding:          0 12px;
+	vertical-align:   text-bottom;
+}
+
 .language-switcher {
 	display:        inline-block;
 	font-size:      12px;
