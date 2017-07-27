@@ -909,7 +909,7 @@ function loadSequenceFromLocalStorage() {
  * @return void
  */
 function pianoKeysHandler(e) {
-	var n = $(this).index() + 1;
+	var n = $(this).index();
 	
 	playSoundFromKeyboardPosition(n, e.shiftKey);
 }
