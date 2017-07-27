@@ -778,26 +778,30 @@ function keyboardHandler(e) {
 function playSequence(sequence, opts) {
     var _sequence = Promise.resolve(),
     _sounds   = sequence.map(function(sound) {
-                             var copy = sound.sound.duplicate(opts);
-                             
-                             if(opts.speed) {
-                             copy.modifySpeed(opts.speed);
-                             }
-                             
-                             return copy;
-                             });
+		var copy = sound.sound.duplicate(opts);
+
+		if(opts.speed) {
+			copy.modifySpeed(opts.speed);
+		}
+
+		return copy;
+	});
     
     sequence.forEach(function(sound, i) {
-                     _sequence = _sequence.then(function() {
-                                                if(sound.base.frequency !== App.baseTone.frequency)
-                                                updateBaseFrequency(sound.base.frequency, true);
-                                                
-                                                if(opts.animate)
-                                                animateOvertone( $(".overtone").get(sound.overtone - 1), _sounds[i].envelope );
-                                                
-                                                return _sounds[i].play();
-                                                });
-                     });
+		_sequence = _sequence.then(function() {
+			if(sound.base.frequency !== App.baseTone.frequency)
+				updateBaseFrequency(sound.base.frequency, true);
+
+			if(opts.animate) {
+				animateOvertone(
+					$(".overtone").get(sound.overtone - 1),
+					_sounds[i].envelope
+				);
+			}
+
+			return _sounds[i].play();
+		});
+	 });
     
     return _sequence;
 }

@@ -346,7 +346,6 @@ newbieTour
 	}
 });
 
-window.newbieTour = newbieTour;
 module.exports = {
 	mainTour: mainTour,
 	init: function(){

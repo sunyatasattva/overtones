@@ -479,6 +479,25 @@ function playFrequency(frequency, opts) {
 }
 
 /*
+ * Simple way to play a sequence of frequencies.
+ *
+ * @see {@link createSound} and {@link playSequence}.
+ * @alias module:tones.playFrequenciesSequence
+ *
+ * @param  {Array}  frequencies  An array of frequencies to be played.
+ * @param  {Object} [opts]  Options for the sounds and the sequence.
+ *
+ * @return {Promise}  The sequence promise.
+ */
+function playFrequenciesSequence(frequencies, opts) {
+	var sounds = frequencies.map(function(frequency) {
+		return createSound(frequency, opts);
+	});
+	
+	return playSequence(sounds, opts);
+}
+
+/*
  * Plays a sequence of overtones.
  *
  * It updates the fundamental frequency and optionally it animates the overtones
@@ -489,17 +508,31 @@ function playFrequency(frequency, opts) {
  * sequence. Particularly implements a `speed` option to modify the speed of each
  * of the sounds in the sequence.
  *
+ * @alias module:tones.playSequence
+ *
+ * @param  {Array.<Sound>}  sounds  An array of sounds to be played.
+ * @param  {Object}  [opts]  Options to apply to each sound.
+ *                           See {@link createSound}
+ * @param  {Number}  [opts.speed]  The relative speed of playback of each sound.
+ * @param  {bool}    [opts.copy]   Whether to create a copy of those sounds before
+ *                                 playing them.
+ *
+ * @return {Promise} The sequence promise.
+ *
  */
 function playSequence(sounds, opts) {
 	var sequence = Promise.resolve();
 	
 	if(opts.copy) {
 		sounds = sounds.map(function(sound) {
-			return sound.duplicate();
+			return sound.duplicate(opts);
 		});
 	}
 	
 	sounds.forEach(function(sound) {
+		if(opts.speed)
+			sound.modifySpeed(opts.speed);
+
 		sequence = sequence.then(function() {
 			return sound.play();
 		}); 
@@ -562,13 +595,14 @@ module.exports = {
 	 * The Master Gain node that is attached to the output device
 	 * @type  {GainNode}
 	 */
-	masterGain:         masterGain,
-	playFrequency:      playFrequency,
-	playSequence:       playSequence,
-	reduceToSameOctave: reduceToSameOctave,
+	masterGain:              masterGain,
+	playFrequency:           playFrequency,
+	playFrequenciesSequence: playFrequenciesSequence,
+	playSequence:            playSequence,
+	reduceToSameOctave:      reduceToSameOctave,
 	/**
 	 * A list of currently active sounds for manipulation
 	 * @type  {array}
 	 */
-	sounds:             sounds,
+	sounds: sounds,
 };
