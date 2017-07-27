@@ -7,41 +7,63 @@
 			"SHOW_AROUND": "Fammi fare un giro!",
 			"THANKS": "Grazie!"
 		},
-		"STEP_0": {
+		"NEWBIE_HELP": {
 			"TITLE": "Confuso da ciò che vedi?",
 			"CONTENT": ["Puoi cliccare su questo bottone in qualsiasi momento per avere un guida veloce di quello che vedi."]
 		},
-		"STEP_1": [
-			"Questa è una rappresentazione visiva di un suono fondamentale ed i suoi armonici.",
-			"Ogni giro completo di spirale rappresenta un\'ottava."
-		],
-		"STEP_2": [
+		"STEP_END": ["Questo è tutto! Divertiti!"],
+		"STEP_FIRST_PARTIAL": [
 			"Il cerchio al centro della spirale rappresenta il tono fondamentale.",
-			"Ogni altro cerchio rappresenta i successivi armonici, fino al sedicesimo.",
-			"Clicca sul cerchio per ascoltarne il suono."
+			"<small>Ogni altro cerchio rappresenta i successivi armonici, fino al sedicesimo.</small>",
+			"<strong>Clicca sul cerchio per ascoltarne il suono.</strong>"
 		],
-		"STEP_3": ["Ecco delle informazioni sul suono che hai appena ascoltato."],
-		"STEP_4": ["Puoi anche cliccare su altre parti della spirale, come ad esempio le linee viola che connettono due cerchi."],
-		"STEP_5": [
+		"STEP_INTERVAL_DETAILS": [
 			"In questo caso stai vedendo le informazioni riguardo la relazione tra le note che hai appena sentito.",
 		   	"<small>Le componenti della spirale sono dunque rappresentazioni degli intervalli della serie armonica.</small>"
 		],
-		"STEP_6": [
+		"STEP_NOTE_DETAILS": [
+			"Ecco delle informazioni sul suono che hai appena ascoltato.",
+			"Puoi cliccare sul riquadro delle informazioni per ascoltare la nota di riferimento."
+		],
+		"STEP_OVERTONE_SPIRAL": [
+			"Questa è una rappresentazione visiva di un suono fondamentale ed i suoi armonici.",
+			"Ogni giro completo di spirale rappresenta un\'ottava."
+		],
+		"STEP_OPTIONS_BASE": [
 			"Puoi modificare la frequenza della nota fondamentale usando questa barra.",
 		   	"<small>Puoi anche modificare direttamente il numero se vuoi un controllo più preciso!</small>"
 		],
-		"STEP_7": [
-			"Puoi modificare il volume di tutti i suoni attraverso questa barra.",
-		   	"<small>Fai attenzione se stai indossando cuffie! Armonici più alti possono suonare parecchio forti.</small>"
+		"STEP_OPTIONS_GROUP": ["Disattivando questa opzione, potrai udire le note di un intervallo separatamente."],
+		"STEP_OPTIONS_KEYBOARD": [
+			"Puoi cambiare la frequenza della nota fondamentale anche usando questa tastiera, che ti permette di accedere velocemente alle note che troveresti in un comune pianoforte.",
+			"Ogni tasto del pianoforte è associato ad un tasto della tua tastiera; o puoi anche semplicemente premere i tasti direttamente, se preferisci.",
+			"<small>Puoi mostrare questa tastiera cliccando sull\'icona accanto alla barra della frequenza fondamentale che abbiamo appena visto.</small>"
 		],
-		"STEP_8": ["Se disattivi questa opziona, potrai udire le note di un intervallo separatamente."],
-		"STEP_9": ["Se attivi questa opzione, tutti i suoni saranno riportati a frequenze entro un\'ottava dal tono fondamentale"],
-		"STEP_10": [
-			"Se attivi questa opzione, i suoni continueranno finché non li fermi manualmente.",
+		"STEP_OPTIONS_MICROPHONE": [
+			"<span class='label'>Beta</span>Attivando questa opzione, puoi visualizzare lo spettro armonico della tua voce, o di qualsiasi altro suono attraverso il tuo microfono.",
+			"I cerchi crescono e reagiscono riflettendo l\'intensità dei singoli armonici presenti nel suono, e la frequenza fondamentale cambierà automaticamente per riflettere quella del suono emesso.",
+			"<small>Ricordati di accordarci il permesso al tuo microfono dopo aver attivato questa opzione.</small>"
+		],
+		"STEP_OPTIONS_OCTAVE": ["Attivando questa opzione, tutti i suoni saranno riportati a frequenze entro un\'ottava dal tono fondamentale"],
+		"STEP_OPTIONS_RECORD": [
+			"Attivando questa opzione, potrai registrare una sequenza di suoni armonici. Anche i cambiamenti di suono fondamentale verranno registrati.",
+			"<small>Attenzione: puoi registrare solo una sequenza alla volta; l'ultima sequenza registrata verrà cancellata all'attivazione di questa opzione</small>",
+			"<small>Le sequenze vengono salvate sul tuo browser fin quando non cancelli i dati di navigazione: quindi puoi chiudere la finestra, o anche spegnere il computer ed al tuo ritorno troverai la tua registrazione.</small>"
+		],
+		"STEP_OPTIONS_SUSTAIN": [
+			"Attivando questa opzione, i suoni continueranno finché non li fermi manualmente.",
 			"Puoi fermare i suoni manualmente cliccando nuovamente sul cerchio, disattivando questa opzione, o cambiando il tono fondamentale.",
 			"<small>Quando questa opzione è attiva, le informazioni mostrate saranno quelle dell\'intervallo tra il suono su cui è stato fatto il clic, e l\'ultimo suono attivo. Questo ti permette di esplorare tutti gli intervalli all\'interno della spirale.</small>"
 		],
-		"STEP_11": ["Questo è tutto! Divertiti!"]
+		"STEP_OPTIONS_VOLUME": [
+			"Puoi modificare il volume di tutti i suoni attraverso questa barra.",
+		   	"<small>Fai attenzione se stai indossando cuffie! Armonici più alti possono suonare parecchio forti.</small>"
+		],
+		"STEP_PLAY_PANEL": [
+			"Qui puoi riprodurre la sequenza registrata, regolandone la velocità, o riproducendo una nota alla volta, avanti o indietro.",
+			"<small>Questo riquadro è disponibile quando una sequenza è stata registrata.</small>"
+		],
+		"STEP_SPIRAL_PIECES": ["Puoi anche cliccare su altre parti della spirale, come ad esempio le linee viola che connettono due cerchi."]
 	},
 	"intervals": {
 		"Perfect unison": "Unisono",

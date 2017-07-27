@@ -79,10 +79,9 @@ mainTour.options.defaults = {
 mainTour
 .addStep('overtone-spiral', {
 	text: function() {
-		return i18n.t('STEP_1', ['help']);
+		return i18n.t('STEP_OVERTONE_SPIRAL', ['help']);
 	},
 	attachTo: '#Overtone-Spiral right',
-	title: '1/11',
 	tetherOptions: {
 		offset: '0 -220px'
 	},
@@ -96,12 +95,11 @@ mainTour
 		}
 	}
 })
-.addStep('fundamental-overtone', {
+.addStep('first-partial', {
 	text: function() {
-		return i18n.t('STEP_2', ['help']);
+		return i18n.t('STEP_FIRST_PARTIAL', ['help']);
 	},
 	attachTo: '#overtone-1 bottom',
-	title: '2/11',
 	buttons: {},
 	advanceOn: {
 		selector: '.overtone, .space',
@@ -110,7 +108,7 @@ mainTour
 })
 .addStep('note-details', {
 	text: function() {
-		return i18n.t('STEP_3', ['help']);
+		return i18n.t('STEP_NOTE_DETAILS', ['help']);
 	},
 	attachTo: '#sound-details bottom',
 	title: '3/11',
@@ -133,7 +131,7 @@ mainTour
 })
 .addStep('spiral-pieces', {
 	text: function() {
-		return i18n.t('STEP_4', ['help']);
+		return i18n.t('STEP_SPIRAL_PIECES', ['help']);
 	},
 	attachTo: '.spiral-piece:nth-of-type(2) bottom',
 	title: '4/11',
@@ -145,7 +143,7 @@ mainTour
 })
 .addStep('interval-details', {
 	text: function() {
-		return i18n.t('STEP_5', ['help']);
+		return i18n.t('STEP_INTERVAL_DETAILS', ['help']);
 	},
 	attachTo: '#sound-details bottom',
 	title: '5/11',
@@ -168,7 +166,7 @@ mainTour
 })
 .addStep('options-base', {
 	text: function() {
-		return i18n.t('STEP_6', ['help']);
+		return i18n.t('STEP_OPTIONS_BASE', ['help']);
 	},
 	attachTo: '#base-wrapper right',
 	title: '6/11',
@@ -180,30 +178,47 @@ mainTour
 		offset: '-20px 0'
 	}
 })
+.addStep('options-keyboard', {
+	text: function() {
+		return i18n.t('STEP_OPTIONS_KEYBOARD', ['help']);
+	},
+	attachTo: '#keyboard-container right',
+	when: {
+		show: function() {
+			$('#base-wrapper').addClass('shepherd-enabled');
+			$('#keyboard-container').addClass('visible is-active');
+		},
+		hide: function() {
+			$('#base-wrapper').removeClass('shepherd-enabled');
+			$('#keyboard-container').removeClass('visible is-active');
+		}
+	},
+	tetherOptions: {
+		offset: '0 -240px'
+	}
+})
 .addStep('options-volume', {
 	text: function() {
-		return i18n.t('STEP_7', ['help']);
+		return i18n.t('STEP_OPTIONS_VOLUME', ['help']);
 	},
 	attachTo: '#volume-control-wrapper right',
 	advanceOn: {
 		selector: '#volume-control',
 		event: 'change'
-	},
-	title: '7/11'
+	}
 })
 .addStep('options-group', {
 	text: function() {
-		return i18n.t('STEP_8', ['help']);
+		return i18n.t('STEP_OPTIONS_GROUP', ['help']);
 	},
 	attachTo: '#group-notes bottom',
-	title: '8/11',
 	tetherOptions: {
 		offset: '-20px 0'
 	}
 })
 .addStep('options-octave', {
 	text: function() {
-		return i18n.t('STEP_9', ['help']);
+		return i18n.t('STEP_OPTIONS_OCTAVE', ['help']);
 	},
 	attachTo: '#reduce-to-octave bottom',
 	title: '9/11',
@@ -217,13 +232,36 @@ mainTour
 	},
 	attachTo: '#sustain bottom',
 	title: '10/11',
+.addStep('options-record', {
+	text: function() {
+		return i18n.t('STEP_OPTIONS_RECORD', ['help']);
+	},
+	attachTo: '#record bottom',
+	tetherOptions: {
+		offset: '-20px 0'
+	}
+})
+.addStep('play-panel', {
+	text: function() {
+		return i18n.t('STEP_PLAY_PANEL', ['help']);
+	},
+	attachTo: '#play-panel top',
+	tetherOptions: {
+		offset: '20px 0' 
+	}
+})
+.addStep('options-microphone', {
+	text: function() {
+		return i18n.t('STEP_OPTIONS_MICROPHONE', ['help']);
+	},
+	attachTo: '#microphone bottom',
 	tetherOptions: {
 		offset: '-20px 0'
 	}
 })
 .addStep('end-tour', {
 	text: function() {
-		return i18n.t('STEP_11', ['help']);
+		return i18n.t('STEP_END', ['help']);
 	},
 	title: '11/11',
 	buttons: [
@@ -248,11 +286,11 @@ newbieTour = new Shepherd.Tour({
 newbieTour
 .addStep('newbie-help', {
 	text: function() {
-		return i18n.t('CONTENT', ['help', 'STEP_0']);
+		return i18n.t('CONTENT', ['help', 'NEWBIE_HELP']);
 	},
 	attachTo: '#help right',
 	title: 'Confused by what you see?',
-	translationKey: ['help', 'STEP_0'],
+	translationKey: ['help', 'NEWBIE_HELP'],
 	buttons: [
 		{
 			text: 'No, thanks, I\'m good',

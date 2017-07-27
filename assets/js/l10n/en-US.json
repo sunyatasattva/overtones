@@ -7,40 +7,62 @@
 			"SHOW_AROUND": "Show me around!",
 			"THANKS": "Thank you!"
 		},
-		"STEP_0": {
+		"NEWBIE_HELP": {
 			"TITLE": "Confused by what you see?",
 			"CONTENT": ["You can click this button at any time to have a quick rundown of what\'s going on."]
 		},
-		"STEP_1": [
-			'This is a visual representation of a fundamental sound and its overtones.',
-			'Each complete spiral revolution represents an octave.'
+		"STEP_END": ["That is all! Enjoy!"],
+		"STEP_FIRST_PARTIAL": [
+			"The circle at the center of the spiral represents the fundamental tone, first partial of the harmonic series.",
+			"<small>Each other circle represents the following partials, up to the 16th.</small>",
+		   	"<strong>Click on the circle to hear the sound.</strong>"
 		],
-		"STEP_2": [
-			'The circle at the center of the spiral represents the fundamental tone, first partial of the harmonic series.',
-			'Each other circle represents the following partials, up to the 16th.',
-		   	'Click on the circle to hear the sound.'
+		"STEP_INTERVAL_DETAILS": [
+			"In this case you see the information about the relationship between the notes you just heard.",
+		   	"<small>The spiral pieces are thus representations of intervals in the harmonic series.</small>"
 		],
-		"STEP_3": ['Here you can see information about the sound you just heard'],
-		"STEP_4": ['You can also click on other places of the spiral, such as the purple pieces connecting two circles.'],
-		"STEP_5": [
-			'In this case you see the information about the relationship between the notes you just heard.',
-		   	'<small>The spiral pieces are thus representations of intervals in the harmonic series.</small>'
+		"STEP_NOTE_DETAILS": [
+			"Here you can see information about the sound you just heard.",
+			"You can click on the details box to hear the reference note."
 		],
-		"STEP_6": [
-			'You can change the frequency of the fundamental note by using this slider.',
-		   	'<small>You can also directly change the number if you want finer tuning!</small>'
+		"STEP_OVERTONE_SPIRAL": [
+			"This is a visual representation of a fundamental sound and its overtones.",
+			"Each complete spiral revolution represents an octave."
 		],
-		"STEP_7": [
-			'You can change the volume of all the sounds through this slider.',
-		   	'<small>Be careful if you are wearing headphones! Higher overtones especially are going to sound piercing loud.</small>'
+		"STEP_OPTIONS_BASE": [
+			"You can change the frequency of the fundamental note by using this slider.",
+		   	"<small>You can also directly change the number if you want finer tuning!</small>"
 		],
-		"STEP_8": ['If you turn this option off, you will hear notes separately when playing intervals.'],
-		"STEP_9": ['If you turn this option on, all the sounds will be played on frequencies within one octave of the fundamental tone.'],
-		"STEP_10": [
-			'If you turn this option on, the sounds will play continuously until manually stopped.',
-			'You can manually stop the sounds by clicking again on the circle, turning this option off, or changing the base tone',
-			'<small>When this option is on, the information displayed is the interval between the sound you play and the last active sound. This allows you to explore all the intervals within the spiral.</small>'
+		"STEP_OPTIONS_GROUP": ['If you turn this option off, you will hear notes separately when playing intervals.'],
+		"STEP_OPTIONS_KEYBOARD": [
+			"You can also change the fundamental note using this keyboard, which allows you to quickly access notes that you would find on a common piano.",
+			"Each key on the piano corresponds to a key on your keyboard; or you can just directly press the keys, if you so prefer.",
+			"<small>You can bring this keyboard up by clicking the icon next to the fundamental frequency slider which we just saw.</small>"
 		],
-		"STEP_11": ['That is all! Enjoy!']
+		"STEP_OPTIONS_MICROPHONE": [
+			"<span class=\"label\">Beta</span>If you turn this option on, you can see the overtone spectrum of your own voice, or any other sound through your microphone.",
+			"The circles will grow and react to reflect how strong are the individual overtones in the sound, and the base frequency will change to match the base of the sound.",
+			"<small>Remember to grant us permission to your microphone after you activate this option.</small>"
+		],
+		"STEP_OPTIONS_OCTAVE": ["If you turn this option on, all the sounds will be played on frequencies within one octave of the fundamental tone."],
+		"STEP_OPTIONS_RECORD": [
+			"If you turn this option on, the overtones you will play will be recorded until you stop. You can also change the fundamental note while recording.",
+			"<small>Please note: you can record only one sequence at the time; once you hit this button, you override the last sequence you recorded.</small>",
+			"<small>Sequences are saved on your browser until you erase your browsing data: therefore, you can close the window, or even turn your computer off, and your recording will still be there.</small>"
+		],
+		"STEP_OPTIONS_SUSTAIN": [
+			"If you turn this option on, the sounds will play continuously until manually stopped.",
+			"You can manually stop the sounds by clicking again on the circle, turning this option off, or changing the base tone",
+			"<small>When this option is on, the information displayed is the interval between the sound you play and the last active sound. This allows you to explore all the intervals within the spiral.</small>"
+		],
+		"STEP_OPTIONS_VOLUME": [
+			"You can change the volume of all the sounds through this slider.",
+		   	"<small>Be careful if you are wearing headphones! Higher overtones especially are going to sound piercing loud.</small>"
+		],
+		"STEP_PLAY_PANEL": [
+			"Here you can play the sequence all at once, adjust its playback speed, or play one note at the time, forwards and backwards.",
+			"<small>This panel is available when a sequence has been recorded.</small>"
+		],
+		"STEP_SPIRAL_PIECES": ["You can also click on other places of the spiral, such as the purple pieces connecting two circles."]
 	},
 }
