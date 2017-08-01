@@ -1,4 +1,8 @@
 html:lang(it) {
+	[data-hide-lang*="it"] {
+		display: none;
+	}
+	
 	#group-notes {
 		&::after { content: "Raggruppa note"; }
 		
