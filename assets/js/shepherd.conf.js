@@ -280,6 +280,14 @@ mainTour
 			text: 'Thank you!',
 			action: mainTour.next,
 			translationKey: ['THANKS', 'help', 'buttons'],
+		},
+		{
+			text: 'No, wait, tell me more!',
+			action: function() {
+				mainTour.next();
+				$('#info').click();
+			},
+			translationKey: ['TELL_MORE', 'help', 'buttons']
 		}
 	]
 });

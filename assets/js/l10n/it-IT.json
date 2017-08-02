@@ -1,15 +1,68 @@
 {
+	"Books": "Libri",
 	"credits": "<span class=\"hide-on-small\">Progettato e partorito con gioia da</span> <a href=\"https://facebook.com/sunyatasattva\">Marco Lucio Giannotta</a> e <a href=\"https://www.facebook.com/skye.lofvander\">Skye Løfvander</a>. <span class=\"hide-on-small version\">Versione <a href=\"https://github.com/sunyatasattva/overtones/releases/\">1.1.3</a></span>",
 	"easter_egg": {
 		"SUBTITLE": "Spiacente! Nessun pentolone d'oro. Ma è il percorso che conta, no?",
 		"TEXT": "Perché non condividi con i tuoi amici l'amore per il mondo degli Armonici e vedi se anche loro riescono a trovare l'arcobaleno?",
 		"TITLE": "Hai trovato l'arcobaleno segreto!"
 	},
+	"guide": {
+		"DIFFERENCE": {
+			"HEADER": "Vabbé, su, ho cliccato il riquadro ma non suona poi così tanto diverso. È veramente così importante?",
+			"CONTENT": "<p>Beh&hellip; è opinabile.</p><p>Anzi, faccio il supponente su questo: sì, lo è. Le Armonie Perfette hanno una magia e forza e colore che quelle temperate non possono mai sperare di ottenere.</p><p>Inoltre, quando uniformiamo tutti i toni su un'unica misura, perdiamo quelle belle differenze di carattere che possono completamente cambiare l'animo di un pezzo. E questo è una tra le cose che la <a href=\"https://it.wikipedia.org/wiki/Musica_classica_indiana\" target=\"_blank\">Musica classica indiana</a>, per esempio, azzecca per bene.</p>",
+			"TRY": "<p>Se non sei ancora convinto che questa differenza sia udibile, prova questo: attiva le opzioni &#8220;Riduci all'Ottava&#8221; e &#8220;Sustain&#8221; (la seconda e la terza da sinistra nel pannello delle opzioni) e clicca sulla settima parziale. Adesso tieni premuto sul riquadro informativo per qualche attimo.</p><p>L'hai sentito?! Uuuh, osceno!</p><p>Quello che hai appena sentito si chiama <a href=\"https://it.wikipedia.org/wiki/Battimenti_(musica)\" target=\"_blank\">battimento</a>, ed è quello che succede quando due note sono vicine, ma non esattamente uguali.</p><p>Ti immagini tutti i battimenti tra gli armonici di due note temperate?</p>"
+		},
+		"ET": {
+			"HEADER": "Ho provato a leggere l'articolo sul <em>Temperamente Equabile</em> linkato nella introduzione, ma continuo a non capire cosa sia e cosa c'entra con tutto questo.</span>",
+			"CONTENT": "<p>D'accordo, è una questione parecchio complicata, ma cercherò di spiegarla in parole povere.</p><p>Ricordi quando abbiamo detto che rapporti più semplici suonano più armonici? Salta fuori che <em>usare praticamente</em> questi suoni per fare musica non è così semplice.</p><p>Questo non è il posto giusto per entrare nei dettagli, ma in pratica: dato che, come sappiamo, il cerchio si ripete uguale ad ogni Ottava (cioé multipli di due), dobbiamo trovare un modo di dividere questo spazio tra l'uno (tonica) ed il due (ottava) in gradini armonici che possiamo usare per fare musica.</p><p>Tuttavia, non vogliamo soltanto che la relazione tra questi gradini e la tonica sia armoniosa, ma vogliamo anche che questi gradini siano armonici tra loro. E, idealmente, nella musica Occidentale vorremmo pure poter prendere uno qualsiasi di questi suoni e renderlo la nostra tonica (cioé il centro del nostro brano musicale).</p><p>Ah! E vogliamo anche avere strumenti che sono molto facili da riaccordare sul posto (o impossibili): come il pianoforte, l'organo o anche un flauto.</p><p>Soddisfare tutti questi requisiti è matematicamente impossibile (credimi!), ed è stata la croce di compositori, musicisti ed artigiani di strumenti per secoli, tanto che <a href=\"https://it.wikipedia.org/wiki/Temperamento_(musica)\">sono stati sviluppati molti sistemi con compromessi differenti</a>.</p><p>Ad un certo punto, in Occidente (in realtà i Cinesi sono arrivati prima, ma lasciamo stare&hellip;), abbiamo deciso di fare questo compromesso: prendi l'ottava e dividila in dodici pezzi uguali; <em>tada!</em> Adesso tutte le relazioni tra le note sono uguali!</p><p><em>&#8220;Aspetta un minuto!&#8221;</em> ti sento dire <em>&#8220;Questo non vuol forse dire che nessuna nota sta in un rapporto semplice ed armonioso con un'altra?&#8221;</em></p><p>Esatto.</p><p>Ma abbiamo deciso che ci sta bene così, e che se iniziamo a mettere un sacco di note una sull'altra e facciamo un gran fracasso, speriamo che nessuno se ne accorga!</p>"
+		},
+		"EXPLAIN": {
+			"HEADER": "Vabbé, tutto ciò è molto carino, ma mi puoi spiegare in parole povere a conti fatti che cosa significa?",
+			"CONTENT": "<p>Questo è molto semplificato, però in breve: la maggiorparte dei suoni in natura sono in realtà formati da una serie di suoni più piccoli e semplici, chiamati <em>parziali</em>.</p><p>In genere, tendiamo ad udire la più bassa di queste parziali come il <em>tono fondamentale</em> del suono (è il cerchio nel centro), mentre il resto creano il particolare <em>color</em> (o <em><a href=\"https://it.wikipedia.org/wiki/Timbro_(musica)\" target=\"_blank\">timbro</a></em>) del suono.</p><p>La disposizione specifica di questi suoni parziali, è quello che ci permette quindi di distinguere la stessa nota suonata su due strumenti differenti.</p><p>Nella maggior parte dei suoni che noi consideriamo <em>musicali</em>&#xFEFF;&mdash;come il suono di una corda di chitarra&#xFEFF;&mdash;questi suoni parziali sono in un rapporto matematico specifico e semplice tra loro.</p><p>Quando questo accade, li chiamiamo <em>armonici</em>, che è quello che vedi rappresentato qui.</p>"
+		},
+		"INTERVAL": {
+			"HEADER": "Cosa significa <em>intervallo</em>?",
+			"CONTENT": "<p>Un <em>intervallo</em> è la relazione matematica ed armonica tra due note.</p><p>Gli diamo dei nomi&#xFEFF;&mdash;come <em>Ottava</em>, <em>Quinta</em> etc.&#xFEFF;&mdash;in modo che sia più facile parlarne.</p><p>In genere, un intervallo suona più consonante più è semplice il rapporto matematico che connette i due suoni.</p>",
+			"TRY": "<p>Puoi sperimentarlo da te cliccando sulle connessioni viola tra due cerchi: noterai che le connessioni più basse suonano più piacevoli di quelle più alte.</p>"
+		},
+		"MORE": {
+			"HEADER": "Avete fatto altre cose di questo tipo? Come posso mostrarvi il mio supporto?",
+			"CONTENT": "<p>Beh, per prima cosa, puoi <a href=\"https://www.facebook.com/sharer/sharer.php?u=http%3A//www.suonoterapia.org/overtones\" target=\"_blank\">condividere questa pagina con i tuoi amici</a> sul tuo canale preferito.</p><p>Abbiamo assolutamente intenzione di fare più cose di questo tipo se c'è sufficiente interesse. C'è moltissimo da sapere ed una mancanza di strumenti per comprendere, esplorare ed insegnare. <a href=\"https://facebook.com/suonoterapia\" target=\"_blank\">Seguici su Facebook</a> per restare aggiornato su cose del genere.</p><p>Se vuoi mostrare un supporto economico per le centinaia di ore che ci vogliono a creare questo tipo di strumenti e farli fruire gratuitamente, puoi <a href=\"https://paypal.me/sunyatasattva\" target=\"_blank\">donare alla nostra causa</a>.</p>"
+		},
+		"OUT_TUNE": {
+			"HEADER": "Aspé, stai insinuando che tutto è stonato?",
+			"CONTENT": "Esatto. Beh, tutto eccetto l'ottava. E anche la quinta è abbastanza buona!",
+			"TRY": "<p>Puoi vedere da te di quanto sia stonata ogni nota Occidentale nel riquadro che appare sulla destra quando clicchi su un cerchio. È il numero in basso, espresso in in <a href=\"https://it.wikipedia.org/wiki/Cent_(musica)\">cent</a>.</p><p>Puoi anche cliccare il riquadro per sentire il suono della nota nella nostra intonazione Occidentale.</p>"
+		},
+		"OVERTONES": {
+			"HEADER": "What are <em>overtones</em>, then?",
+			"CONTENT": "<em>Overtones</em> is just the name for any partial above the fundamental one."
+		},
+		"PITCH_CLASS": {
+			"HEADER": "Perché tutti i cerchi sulle assi arancioni hanno lo stesso nome?",
+			"CONTENT": "<p>Questi armonici sono tutti in una relazione di <em>Ottava</em> l'un con l'altro (sarebbe a dire: due a uno): Per le ragioni che abbiamo spiegato sopra, questa è la relazione più armoniosa possibile (ed è praticamente universale nell'esperienza umana, indipendentemente dalla cultura).</p><p>In realtà è così armoniosa che percepiamo quei suoni come praticamente la stessa cosa.</p>"
+		},
+		"RESOURCES": {
+			"HEADER": "Tutto questo è molto ganzo, c'è qualcos'altro da sapere?",
+			"CONTENT": "Questa è solo la punta dell'iceberg. Ecco una lista di risorse che ti possono mettere sulla giusta strada per comprendere di più."
+		},
+		"VOICE": {
+			"HEADER": "Le parziali della mia voce sono armoniche?",
+			"CONTENT": "<p>Assolutamente! Di fatti, a seconda di come moduli il tratto vocale, puoi modificare quali armonici sono più forti e quali più deboli.</p><p>Alcune tecniche&#xFEFF;&mdash;collettivamente chiamate <em><a href=\"https://it.wikipedia.org/wiki/Canto_armonico\" target=\"_blank\">Canto armonico</a></em>&#xFEFF;&mdash;sfruttano questo fatto per creare della bellissima musica. Queste tecniche sono molto comuni in culture come quella <a href=\"https://www.youtube.com/watch?v=RxK4pQgVvfg\" title=\"Huun-Huur-Tu, gruppo di musica tradizionale Tuvana, dimostrano lo stile Sygyt\">Tuvana</a>, ma sta diventando <a href=\"https://www.youtube.com/watch?v=sQkA3__50aE\" title=\"Nory Jacoby parla della sua composizione per canto armonico polifonico\">più comune</a> anche <a href=\"https://www.youtube.com/watch?v=s4BJ3wng6Mk\" title=\"Il brano Ritus dei Supersonus, con il canto armonico polifonico di Anna-Maria Hefele\">in Occidente</a>!</p><p>Anche certi strumenti, come il <a href=\"https://it.wikipedia.org/wiki/Scacciapensieri\" target=\"_blank\">marranzanu</a> ed il <a href=\"https://it.wikipedia.org/wiki/Didgeridoo\" target=\"_blank\">didgeridoo</a> creano musica controllata attraverso gli armonici del tratto vocale.</p><p>Lo sapevi che di fatti questo è il modo in cui distinguiamo una vocale dall'altra in una lingua? Ogni vocale ha una particolare composizione armonica.</p>",
+			"TRY": "<p>Prova questo: attiva il bottone del microfono in alto a sinistra, e canta una nota sostenuta, un po' nasale, con il suono <em>&#8220;u&#8221;</em>, e poi cambia verso una <em>&#8220;i&#8221;</em>, dovresti vedere armonici diversi venire evidenziati nella spirale.</p>"
+		},
+		"WHY_HARMONY": {
+			"HEADER": "Ganzo! Perché è così?",
+			"CONTENT": "<p>Principalmente per due ragioni:</p><p>La prima è che il nostro cervello deve spendere meno energia a processare due note che hanno un rapporto fra loro più semplice, perché i loro cicli di vibrazione <em>ritornano insieme</em> più spesso. Sarebbe a dire che un suono che vibra alla metà della velocità di un altro, ha esattamente un picco ogni due picchi dell'altro.</p><p>Ma forse questo sarebbe il tema di un'altra visualizzazione.</p><p>In secondo luogo, più e semplice la relazione tra due suoni, più armonici avranno in comune.</p>",
+			"TRY": "<p>Puoi provare questo: scegli una nota fondamentale, per esempio 220 Hz (puoi premere <kbd>z</kbd> sulla tua tastiera per farlo) ed esplora una manciata di armonici e tieni nota delle loro frequenze. Poi cambia la nota fondamentale a 440 Hz con il controllo in alto a sinistra (e puoi semplicemente premere <kbd>&#x21E7; Maiuscole</kbd> + <kbd>z</kbd>).</p><p>Potrai notare che è come se avessimo mosso tutti gli armonici una rivoluzione di spirale in basso: vale a dire che il secondo è adesso il primo, il sesto è corrisponde al terzo e così via.</p>"
+		}
+	},
 	"help": {
 		"buttons": {
 			"CANCEL": "No, grazie, faccio da me",
 			"NEXT": "Avanti",
 			"SHOW_AROUND": "Fammi fare un giro!",
+			"TELL_MORE": "No, aspetta, dimmi di più!",
 			"THANKS": "Grazie!"
 		},
 		"NEWBIE_HELP": {
@@ -110,6 +163,7 @@
 		"Perfect octave": "Ottava giusta",
 		"Unknown interval": "Intervallo sconosciuto"
 	},
+	"Music": "Musica",
 	"notes": {
 		"C": "Do",
 		"C#": "Do#",
@@ -129,6 +183,7 @@
 		"Bb": "Sib",
 		"B": "Si"
 	},
+	"Online": "Sulla rete",
 	"Options": "Opzioni",
 	"Overtones Spiral": "Spirale Armonica",
 	"Share": "Condividi"

@@ -15,6 +15,10 @@ html:lang(it) {
 		@include has-tooltip("Spiegami cosa sto vedendo!", top);
 	}
 	
+	#info {
+		&::after { content: "Voglio saperne di più"; }
+	}
+	
 	#microphone {
 		&::after { content: "Attiva Microfono"; }
 
