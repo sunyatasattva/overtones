@@ -76,8 +76,8 @@ a#sequence-prev {
 	z-index:       3;
 	width:         50px;
 	position:      absolute;
-	bottom:        75px;
-	left:          10px;
+	bottom:        80px;
+	left:          17px;
 	
 	transition:    opacity 0.2s ease-in-out;
 	
@@ -195,6 +195,19 @@ a#group-notes {
 	
 	&:not(.off) {
 		background-image: url("../images/ico-link.svg");
+	}
+}
+
+a#info {
+	background-image: url("../images/ico-info.svg");
+	background-size:  15px;
+	margin-right:     25px;
+	opacity:          0.5;
+	transition:       opacity 0.2s ease-out;
+
+	&:hover,
+	&.is-active {
+		opacity: 1;
 	}
 }
 

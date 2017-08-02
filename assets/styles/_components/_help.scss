@@ -128,7 +128,7 @@
 	font-size:  1em;
 	max-height: 100%;
 	max-width:  100%;
-	max-width:  24em;
+	max-width:  27em;
 	z-index:    4;
 	position:   absolute;
 	
@@ -540,6 +540,10 @@ body.shepherd-active {
 	
 	.language-switcher > .current-language {
 		color: #fff;
+	}
+	
+	.main-tour[data-id="end-tour"] {
+		text-align: center;
 	}
 	
 	.shepherd-enabled { opacity: 1 !important; }

@@ -1,4 +1,8 @@
 html:lang(en) {
+	[data-hide-lang*="en"] {
+		display: none;
+	}
+	
 	#group-notes {
 		&::after { content: "Group notes"; }
 		
@@ -9,6 +13,10 @@ html:lang(en) {
 	
 	#help {
 		@include has-tooltip("Explain me what I'm seeing", top);
+	}
+	
+	#info {
+		&::after { content: "More information"; }
 	}
 	
 	#microphone {

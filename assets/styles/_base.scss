@@ -4,8 +4,9 @@
 
 body {
 	background-color: #222;
-	color:            #fff;
+	color:            #f3f3f3;
 	font-family:      $baseFontFamily;
+	margin:           0;
 }
 
 h2 {
@@ -22,12 +23,29 @@ a {
 	}
 }
 
+kbd {
+	background-color: #e1e3e5;
+	border:           1px solid #adb3b9;
+	border-radius:    3px;
+	box-shadow:       0 1px 0 rgba(12,13,14,0.2), 0 0 0 2px #FFF inset;
+	color:            #242729;
+	display:          inline-block;
+	font-family:      Arial,"Helvetica Neue",Helvetica,sans-serif;
+	font-size:        11px;
+	line-height:      1.4;
+	margin:           0 .1em;
+	padding:          .1em .6em;
+	text-shadow:      0 1px 0 #FFF;
+	white-space:      nowrap;
+}
+
 img {
 	max-width: 100%;
 }
 
 main {
-	margin-top: 120px;
+	margin-top: 100px;
+	padding:    20px 8px 8px 8px;
 	position:   relative;
 }
 
@@ -99,13 +117,20 @@ body > footer {
 	}
 }
 
-#facebook-link {
-	opacity:  0.5;
-	width:    30px;
-	height:   30px;
+.header-buttons {
 	position: absolute;
 	top:      33px;
 	right:    20px;
+	
+	> a {
+		display: inline-block;
+	}
+}
+
+#facebook-link {
+	opacity:  0.5;
+	width:    31px;
+	height:   31px;
 	
 	transition: opacity 0.2s ease-out;
 	
@@ -191,6 +216,7 @@ body > footer {
 		list-style-type: none;
 		opacity:         0;
 		padding:         0;
+		pointer-events:  none;
 		z-index:         -1;
 		position:        absolute;
 		bottom:          75px;
@@ -202,9 +228,10 @@ body > footer {
 				    bottom 0.5s cubic-bezier(1, 0, 1, 0);
 		
 		&.visible {
-			opacity: 1;
-			z-index: 3;
-			bottom:  25px;
+			opacity:        1;
+			pointer-events: all;
+			z-index:        3;
+			bottom:         25px;
 			
 			transform: translateY(0);
 			transition: opacity 0.5s ease-out,
@@ -225,6 +252,10 @@ body > footer {
 			}
 		}
 	}
+}
+
+.nowrap {
+	white-space: nowrap;
 }
 
 .version { margin-left: 1em; }

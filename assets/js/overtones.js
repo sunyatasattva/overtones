@@ -1096,9 +1096,13 @@ function init() {
 	});
 	
 	$("[data-toggle]").on("click", function(){
-		var $this = $(this);
+		var $this    = $(this),
+			selector = $this.data("toggle");
 		
-		$( $this.data("toggle") ).toggleClass("visible");
+		if(selector[0] === "&")
+			$this.find( selector.substr(1) ).toggleClass("visible");
+		else
+			$(selector).toggleClass("visible");
 		
 		$this.toggleClass("is-active");
 	});
