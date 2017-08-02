@@ -74,18 +74,12 @@ body > footer {
 	left:       0;
 	
 	.social {
+		font-size:   0;
 		line-height: 35px;
-		margin-top:  20px;
 		height:      35px;
 		position:    absolute;
-		top:         0;
+		top:         22px;
 		right:       10px;
-		
-		> * {
-			line-height:    20px;
-			margin-right:   10px;
-			vertical-align: middle;
-		}
 	}
 }
 
@@ -115,6 +109,105 @@ body > footer {
 	> a:first-child {
 		display: inline-block;
 		height:  100%;
+	}
+}
+
+.donate-button,
+.facebook-button,
+.twitter-button,
+.feedback-button {
+	-webkit-font-smoothing: antialiased;
+	-webkit-user-select:    none;
+	border:                 1px solid transparent;
+	border-radius:          3px;
+	color:                  #fff;
+	display:                inline-block;
+	font-family:            Helvetica, Arial, sans-serif;
+	font-size:              11px;
+	font-weight:            bold;
+	line-height:            16px;
+	margin:                 0;
+	margin-right:           10px;
+	padding:                2px 5px;
+	vertical-align:         middle;
+	white-space:            nowrap;
+	
+	transition: background-color 0.2s ease-in-out,
+		        color 0.2s ease-in-out;
+	
+	&:hover {
+		color:  #fff;
+	}
+	
+	span {
+		padding-left:  4px;
+		padding-right: 2px;
+		position:      relative;
+		top:           1px;
+	}
+	
+	svg {
+		display:        inline-block;
+		vertical-align: middle;
+		width:          12px;
+		height:         12px;
+		
+		transition: fill 0.2s ease-in-out;
+	}
+	
+	.btn-count {
+		font-weight:  normal;
+		padding-left: 0;
+	}
+}
+
+.donate-button {
+	path {
+		transition: fill 0.2s ease-in-out;
+	}
+	
+	&:hover {
+		background-color: #fa9900;
+		border-color:     #e58c00;
+		color:            #222;
+		
+		#bottom-p {
+			fill: #009ad9;
+		}
+
+		#top-p {
+			fill: #243982;
+		}
+
+		#intersection {
+			fill: #212b67;
+		}
+	}
+}
+
+.facebook-button {
+	&:hover {
+		background-color: #4065b4;
+		border-color:     #314e8d;
+	}
+}
+
+.feedback-button {
+	&:hover {
+		background-color: #eff3f6;
+		border-color:     #d6d6d6;
+		color:            #222;
+		
+		svg {
+			fill: #222;
+		}
+	}
+}
+
+.twitter-button {
+	&:hover {
+		background-color: #0693e3;
+		border-color:     #187cb5;
 	}
 }
 
@@ -152,8 +245,14 @@ body > footer {
 	font-size: 12px;
 }
 
+.hide-on-medium {
+	@media (max-width: 1100px) {
+		display: none;
+	}
+}
+
 .hide-on-small {
-	@media (max-width: 1024px) {
+	@media (max-width: 960px) {
 		display: none;
 	}
 }
