@@ -1,5 +1,57 @@
 {
 	"Books": "Könyvek",
 	"credits": "<span class=\"hide-on-small\">Örömmel készítette</span> <a href=\"https://facebook.com/sunyatasattva\">Marco Lucio Giannotta</a> és <a href=\"https://www.facebook.com/skye.lofvander\">Skye Løfvander</a>. <span class=\"version hide-on-medium\">Verzió: <a href=\"https://github.com/sunyatasattva/overtones/releases/\">1.1.3</a></span>",
-	"Donate": "Támogatás"
+	"Donate": "Támogatás",
+	"easter_egg": {
+		"SUBTITLE": "Sajnos csak ennyi a jutalom. De végülis a megtett út a fontos, nem?",
+		"TEXT": "Oszd meg az Overtones világa iránti rajongásaidat barátaiddal és nézd meg, hogy ők is megtalálják-e ezt a szivárványt! ",
+		"TITLE": "Megtaláltad a titkos szivárványt!"
+	},
+	"guide": {
+
+	},
+	"help": {
+
+	},
+	"intervals": {
+		"Perfect unison": "Tiszta prím",
+		"Augmented unison": "Bővített prím",
+		"Minor second": "Kis szekund",
+		"Major second": "Nagy szekund",
+		"Minor third": "Kis terc",
+		"Major third": "Nagy terc",
+		"Perfect fourth": "Tiszta kvart",
+		"Augmented fourth": "Bővített kvart",
+		"Diminished fifth": "Szűkített kvint",
+		"Perfect fifth": "Tiszta kvint",
+		"Major sixth": "Nagy szext",
+		"Minor seventh": "Kis szeptim",
+		"Major seventh": "Nagy szeptim",
+		"Perfect octave": "Tiszta oktáv",
+		"Unknown interval": "Ismeretlen hangköz"
+	},
+	"Music": "Zene",
+	"notes": {
+		"C": "C",
+		"C#": "Cisz",
+		"Db": "Desz",
+		"D": "D",
+		"D#": "Disz",
+		"Eb": "Esz",
+		"E": "E",
+		"F": "F",
+		"F#": "Fisz",
+		"Gb": "Gesz",
+		"G": "G",
+		"G#": "Gisz",
+		"Ab": "Asz",
+		"A": "A",
+		"A#": "Aisz",
+		"Bb": "B",
+		"B": "H"
+	},
+	"Online": "",
+	"Options": "Beállítások",
+	"Overtones Spiral": "",
+	"Share": "Megosztás"
 }
