@@ -48,11 +48,13 @@
 			"HEADER": "All of this is very cool, is there more to know?",
 			"CONTENT": "We just barely scratched the surface. Here are some resources you can pick up to get more into it."
 		},
+		*/
 		"VOICE": {
-			"HEADER": "Are the overtones in my voice harmonics?",
-			"CONTENT": "<p>Absolutely! In fact, depending on how you shape your vocal tract, you can change which harmonics are louder and which are quieter.</p><p>Some techniques&#xFEFF;&mdash;collectively called <em><a href=\"//en.wikipedia.org/wiki/Overtone_singing\" target=\"_blank\">Overtone singing</a></em>&#xFEFF;&mdash;exploit this fact to create beautiful music. This is very prominent in some cultures like the <a href=\"https://www.youtube.com/watch?v=RxK4pQgVvfg\" title=\"Traditional Tuvan band Huun Huur Tu demonstrate Sygyt Throat singing style\">Tuvan one</a>, but is becoming <a href=\"https://www.youtube.com/watch?v=sQkA3__50aE\" title=\"Nory Jacoby talks about his composition for Polyphonic Overtone singing\">more common</a> in <a href=\"https://www.youtube.com/watch?v=s4BJ3wng6Mk\" title=\"Supersonus performing Ritus, featuring Anna Maria Hefele polyphonic overtone singing\">the west too</a>!</p><p>Certain instruments, such as the <a href=\"https://en.wikipedia.org/wiki/Jew%27s_harp\" target=\"_blank\">jew's harp</a> and the <a href=\"https://en.wikipedia.org/wiki/Didgeridoo\" target=\"_blank\">didgeridoo</a> also create music controlled through the overtones in your vocal tract.</p><p>Did you know that this is, in fact, the way we can distinguish a vowel from another in language? Each vowel has a particular overtone composition.</p>",
+			"HEADER": "A saját hangom is tartalmaz felharmonikusokat?",
+			"CONTENT": "<p>Sőt, mi több, attól függően, hogy hogyan formálod a hangképző szerveidet, tudod szabályozni, hogy mely harmonikusok legyenek hangosabbak, vagy halkabbak.</p><p>Some techniques&#xFEFF;&mdash;collectively called <em><a href=\"//en.wikipedia.org/wiki/Overtone_singing\" target=\"_blank\">Overtone singing</a></em>&#xFEFF;&mdash;exploit this fact to create beautiful music. This is very prominent in some cultures like the <a href=\"https://www.youtube.com/watch?v=RxK4pQgVvfg\" title=\"Traditional Tuvan band Huun Huur Tu demonstrate Sygyt Throat singing style\">Tuvan one</a>, but is becoming <a href=\"https://www.youtube.com/watch?v=sQkA3__50aE\" title=\"Nory Jacoby talks about his composition for Polyphonic Overtone singing\">more common</a> in <a href=\"https://www.youtube.com/watch?v=s4BJ3wng6Mk\" title=\"Supersonus performing Ritus, featuring Anna Maria Hefele polyphonic overtone singing\">the west too</a>!</p><p>Certain instruments, such as the <a href=\"https://en.wikipedia.org/wiki/Jew%27s_harp\" target=\"_blank\">jew's harp</a> and the <a href=\"https://en.wikipedia.org/wiki/Didgeridoo\" target=\"_blank\">didgeridoo</a> also create music controlled through the overtones in your vocal tract.</p><p>Did you know that this is, in fact, the way we can distinguish a vowel from another in language? Each vowel has a particular overtone composition.</p>",
 			"TRY": "<p>Try this: activate the microphone button on the top left, sing a sustained, somewhat nasal, note on a <em>&#8220;oo&#8221;</em> sound, and then switch to a <em>&#8220;ee&#8221;</em> sound, you should see different overtones being highlighted in the spiral.</p>"
 		},
+		/*
 		"WHY_HARMONY": {
 			"HEADER": "Neat! Why is that?",
 			"CONTENT": "<p>Mainly for two reasons:</p><p>First, our brain needs to do less processing when two notes have a simpler ratio relationship between each other, because their cycles <em>come together</em> more often. I.e. a sound that vibrates at half the speed of another, has one peak every exactly two peaks of the other.</p><p>But, perhaps, this is the topic for a different visualization.</p><p>Secondly, the simpler the relationship between two sounds, the more overtones they will have in common.</p>",
@@ -96,26 +98,20 @@
 		],
 		"STEP_OPTIONS_GROUP": ["Ha ezt az opciót kikapcsolod, akkor az akkordok hangjai külön fognak szólni."],
 		"STEP_OPTIONS_KEYBOARD": [
-			/*
-			"You can also change the fundamental note using this keyboard, which allows you to quickly access notes that you would find on a common piano.",
-			"Each key on the piano corresponds to a key on your keyboard; or you can just directly press the keys, if you so prefer.",
-			"<small>You can bring this keyboard up by clicking the icon next to the fundamental frequency slider which we just saw.</small>"
-			*/
+			"Meg tudod változtatni az alaphangot a billentyűzettel is, amivel gyorsan megtalálod azokat a hangokat, amik bármely átlag zongorán is megtalálhatóak.",
+			"Minden hang a zongorán megfelel egy gombnak a billentyűzeteden; vagy közvetlenül meg is nyomhatod a gombokat, ha úgy jobban tetszik.",
+			"<small>Ezt a billentyűzetet elő tudod hozni, ha rákattintasz az alaphang csúszkája melletti ikonra.</small>"
 		],
 		"STEP_OPTIONS_MICROPHONE": [
-			/*
-			"<span class=\"label\">Beta</span>If you turn this option on, you can see the overtone spectrum of your own voice, or any other sound through your microphone.",
-			"The circles will grow and react to reflect how strong are the individual overtones in the sound, and the base frequency will change to match the base of the sound.",
-			"<small>Remember to grant us permission to your microphone after you activate this option.</small>"
-			*/
+			"<span class=\"label\">Béta</span>Ha ezt az opciót bekapcsolod, akkor a saját hangod, vagy a mikrofonba küldött bármilyen hang felharmonikusait láthatod.",
+			"A körök megnőnek és reagálnak, hogy megmutassák, mennyire erős az egyes felharmonikusai a hangodnak, valamint az alaphang is meg fog változni, hogy egyezzen a hangodéval.",
+			"<small>Ne felejtsd el engedélyezni a mikrofont, miután bekapcsoltad ezt az opciót.</small>"
 		],
 		"STEP_OPTIONS_OCTAVE": ["Ha ezt az opciót bekapcsolod, akkor az összes hang olyan frekvenciákon fog szólni, amik az alaphanghoz képest egy oktávon belül vannak."],
 		"STEP_OPTIONS_RECORD": [
-			/*
-			"If you turn this option on, the overtones you will play will be recorded until you stop. You can also change the fundamental note while recording.",
-			"<small>Please note: you can record only one sequence at the time; once you hit this button, you override the last sequence you recorded.</small>",
-			"<small>Sequences are saved on your browser until you erase your browsing data: therefore, you can close the window, or even turn your computer off, and your recording will still be there.</small>"
-			*/
+			"Ha ezt az opciót bekapcsolod, akkor az általad játszott felharmonikusokból felvételt készítünk, amíg le nem állítod. Az alaphangot természetesen meg tudod változtatni felvétel közben.",
+			"<small>Figyelem: egyszerre csak egy szekvenciát tudsz rögzíteni; amint ezt a gombot megnyomod, az előző felvételt törlöd.</small>",
+			"<small>A felvételt a böngésződben addig tároljuk, amíg ki nem törlöd az böngészési adatokat: vagyis be is zárhatod ezt az ablakot és ki is kapcsolhatod  gépet, a felvételed megmarad.</small>"
 		],
 		"STEP_OPTIONS_SUSTAIN": [
 			"Ha ezt az opciót bekapcsolod, akkor a hangok addig szólnak, amíg manuálisan le nem állítod.",
@@ -127,10 +123,8 @@
 			"<small>Vigyázz, ha fejhallgatót használsz! A magasabb felharmonikusok lényegesen hangosabbak.</small>"
 		],
 		"STEP_PLAY_PANEL": [
-			/*
-			"Here you can play the sequence all at once, adjust its playback speed, or play one note at the time, forwards and backwards.",
-			"<small>This panel is available when a sequence has been recorded.</small>"
-			*/
+			"Itt le tudod játszani a szekvenciádat, beállíthatod a sebességet, vagy hangonkként játszatod le, akár visszafele is.",
+			"<small>Ez a panel akkor érhető el, ha van rögzített felvételed</small>"
 		],
 		"STEP_SPIRAL_PIECES": ["Más részeire is kattinthatsz a spirálnak, mint például a két kört összekötő lila elemre."]
 	},
