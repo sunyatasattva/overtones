@@ -86,7 +86,7 @@
 		],
 		"STEP_OVERTONE_SPIRAL": [
 			"Questa è una rappresentazione visiva di un suono fondamentale ed i suoi armonici.",
-			"Ogni giro completo di spirale rappresenta un\'ottava."
+			"Ogni giro completo di spirale rappresenta un'ottava."
 		],
 		"STEP_OPTIONS_BASE": [
 			"Puoi modificare la frequenza della nota fondamentale usando questa barra.",
@@ -96,14 +96,14 @@
 		"STEP_OPTIONS_KEYBOARD": [
 			"Puoi cambiare la frequenza della nota fondamentale anche usando questa tastiera, che ti permette di accedere velocemente alle note che troveresti in un comune pianoforte.",
 			"Ogni tasto del pianoforte è associato ad un tasto della tua tastiera; o puoi anche semplicemente premere i tasti direttamente, se preferisci.",
-			"<small>Puoi mostrare questa tastiera cliccando sull\'icona accanto alla barra della frequenza fondamentale che abbiamo appena visto.</small>"
+			"<small>Puoi mostrare questa tastiera cliccando sull'icona accanto alla barra della frequenza fondamentale che abbiamo appena visto.</small>"
 		],
 		"STEP_OPTIONS_MICROPHONE": [
 			"<span class='label'>Beta</span>Attivando questa opzione, puoi visualizzare lo spettro armonico della tua voce, o di qualsiasi altro suono attraverso il tuo microfono.",
-			"I cerchi crescono e reagiscono riflettendo l\'intensità dei singoli armonici presenti nel suono, e la frequenza fondamentale cambierà automaticamente per riflettere quella del suono emesso.",
+			"I cerchi crescono e reagiscono riflettendo l'intensità dei singoli armonici presenti nel suono, e la frequenza fondamentale cambierà automaticamente per riflettere quella del suono emesso.",
 			"<small>Ricordati di accordarci il permesso al tuo microfono dopo aver attivato questa opzione.</small>"
 		],
-		"STEP_OPTIONS_OCTAVE": ["Attivando questa opzione, tutti i suoni saranno riportati a frequenze entro un\'ottava dal tono fondamentale"],
+		"STEP_OPTIONS_OCTAVE": ["Attivando questa opzione, tutti i suoni saranno riportati a frequenze entro un'ottava dal tono fondamentale"],
 		"STEP_OPTIONS_RECORD": [
 			"Attivando questa opzione, potrai registrare una sequenza di suoni armonici. Anche i cambiamenti di suono fondamentale verranno registrati.",
 			"<small>Attenzione: puoi registrare solo una sequenza alla volta; l'ultima sequenza registrata verrà cancellata all'attivazione di questa opzione</small>",
@@ -112,7 +112,7 @@
 		"STEP_OPTIONS_SUSTAIN": [
 			"Attivando questa opzione, i suoni continueranno finché non li fermi manualmente.",
 			"Puoi fermare i suoni manualmente cliccando nuovamente sul cerchio, disattivando questa opzione, o cambiando il tono fondamentale.",
-			"<small>Quando questa opzione è attiva, le informazioni mostrate saranno quelle dell\'intervallo tra il suono su cui è stato fatto il clic, e l\'ultimo suono attivo. Questo ti permette di esplorare tutti gli intervalli all\'interno della spirale.</small>"
+			"<small>Quando questa opzione è attiva, le informazioni mostrate saranno quelle dell'intervallo tra il suono su cui è stato fatto il clic, e l'ultimo suono attivo. Questo ti permette di esplorare tutti gli intervalli all'interno della spirale.</small>"
 		],
 		"STEP_OPTIONS_VOLUME": [
 			"Puoi modificare il volume di tutti i suoni attraverso questa barra.",
@@ -156,6 +156,7 @@
 		"Diminished fifth": "Quinta diminuita",
 		"Undecimal subfifth": "",
 		"Perfect fifth": "Quinta giusta",
+		"Minor sixth": "Sesta minore",
 		"Neutral sixth": "Sesta neutrale",
 		"Major sixth": "Sesta maggiore",
 		"Harmonic seventh": "Settima armonica",

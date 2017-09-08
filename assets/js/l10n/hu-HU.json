@@ -8,23 +8,168 @@
 		"TITLE": "Megtaláltad a titkos szivárványt!"
 	},
 	"guide": {
-
+		/*
+		"DIFFERENCE": {
+			"HEADER": "Okay, come on, I clicked the box, and it really didn't sound so different. Is that such a big deal?",
+			"CONTENT": "<p>Well&hellip; arguably.</p><p>Actually, I'm going to be opinionated on this: yes, it is. Perfect harmonies have a magic and power and color that the tempered ones cannot ever hope to achieve.</p><p>Furthermore, when all the tones are <em>created equal</em>, you lose beautiful differences in character that can completely change the mood of a piece. That is, for example, what <a href=\"https://en.wikipedia.org/wiki/Indian_classical_music\">Indian classical music</a> does right.</p>",
+			"TRY": "<p>Also, if you are not convinced that the difference can be heard, try this: activate the &#8220;Reduce to Octave&#8221; and &#8220;Sustain&#8221; options (second and third from the left on the options panel) and press on the seventh partial. Now click on the box for as long as you want.</p><p>Did you hear that?! Wow, nasty!</p><p>What you just heard is called <a href=\"https://en.wikipedia.org/wiki/Beat_(acoustics)\">beating</a>, and that's what happens when two notes are close, but not actually overlapping.</p><p>Can you imagine all the beating between the overtones?</p>"
+		},
+		"ET": {
+			"HEADER": "I tried reading the linked Wikipedia article, but I still didn't understand what <em>12 Tone Equal Temperament</em> is, and how it relates to all of this.</span>",
+			"CONTENT": "<p>Alright, this is a complicated question, but I'll try to boil it down.</p><p>Remember when we said that simpler ratios sound more harmonious? Turns out that <em>actually using them</em> to make music, is not so simple.</p><p>This is not the place to get into the details of it, but since, as we know, the circle repeats the same at every Octave (i.e. every multiple of two), we have to figure out a way to divide the space between one (tonic) and two (octave) into harmonious steps that we can use to make music.</p><p>However, we do not only want the relationship between those sounds and the tonic to be harmonious, we also want them to be harmonious to each other. And, ideally, in Western music, we also want to take any of those sounds and make it the tonic (i.e. the center of our musical piece).</p><p>Oh! And we also want instruments that are really impractical (or impossible) to retune on the fly: such as the piano, the organ or even just a flute.</p><p>To satisfy all these requirements is mathematically impossible (trust me!), and has been the crux of composers, musicians and instrument builders for centuries, and <a href=\"https://en.wikipedia.org/wiki/Musical_temperament\">many systems with different compromises have been devised</a>.</p><p>At some point, in the West (actually the Chinese came first, but that's a story for another time&hellip;), we decided to compromise this way: take the octave and divide it into twelve equal pieces; <em>tada!</em> Now all the relationships between the notes are equal!</p><p><em>&#8220;But wait!&#8221;</em> I hear you say <em>&#8220;Doesn't this mean that no note is in a simple harmonious relationship with another anymore?&#8221;</em></p><p>Yep.</p><p>But we decided it was good enough, and that if we start stacking a lot of notes on top of each other and make a huge noise, we hoped that no one would notice!</p>"
+		},
+		"EXPLAIN": {
+			"HEADER": "Okay, all of this is very fun, but can you explain in simple words what this actually means?",
+			"CONTENT": "<p>In a nutshell, and mind you this is simplified: most sounds in nature are actually made up of a plethora of smaller, simpler components, called <em>partials</em>.</p><p>Generally, we tend to hear the lowest of this partials as the <em>fundamental tone</em> of the sound (that's the circle in the middle), while the rest create the particular <em>color</em> (or <em><a href=\"//en.wikipedia.org/wiki/Timbre\" target=\"_blank\">timbre</a></em>) of the sound.</p><p>The particular arrangement of these partial sounds, is therefore how we can distinguish the same note played on two different instruments.</p><p>In most sounds that we consider <em>musical</em>&#xFEFF;&mdash;such as the sound of a plucked string on a guitar&#xFEFF;&mdash;these partial sounds are in a specific, simple, mathematical relationship with one another.</p><p>When this happens, they are called <em>harmonics</em>, and that's what you see depicted here.</p>"
+		},
+		"INTERVAL": {
+			"HEADER": "What does <em>interval</em> mean?",
+			"CONTENT": "<p>An <em>interval</em> is the mathematical and harmonic relationship between two notes.</p><p>We give them names&#xFEFF;&mdash;such as <em>Octave</em>, <em>Fifth</em> etc.&#xFEFF;&mdash;so it's easier to speak about them.</p><p>Generally, an interval sounds more pleasing to our ear the simpler the mathematical ratio connecting the two sounds.</p>",
+			"TRY": "<p>You can try that yourself by clicking on the purple spiral pieces connecting the circles: you'll notice that the lower connections will sound more pleasing than the higher ones.</p>"
+		},
+		"MORE": {
+			"HEADER": "Are there more of these? What can I do to show my support?",
+			"CONTENT": "<p>Well, for one thing, you can <a href=\"https://www.facebook.com/sharer/sharer.php?u=http%3A//www.suonoterapia.org/overtones\" target=\"_blank\">share this with your friends</a> on your favorite channel.</p><p>We're definitely going to make more of this if there is enough interest. There is much to know and a big space for tools to understand, explore and teach. <a href=\"https://facebook.com/suonoterapia\" target=\"_blank\">Follow us on Facebook</a> to stay updated with new things like this.</p><p>If you want to give some financial support for the hundreds of hours that go into making these kind of freely available tools, you can <a href=\"https://paypal.me/sunyatasattva\" target=\"_blank\">donate to our cause</a>. Every <em>cent</em> counts (pun intended)!</p>"
+		},
+		"OUT_TUNE": {
+			"HEADER": "Wait, are you implying that everything is out of tune?",
+			"CONTENT": "Yea. Well, everything except the octave. And the fifth is pretty good too!",
+			"TRY": "<p>You can see by how much each of our Western notes are out of tune in the box that appears on the right when you click on a circle. It's the number at the bottom, expressed in <a href=\"https://en.wikipedia.org/wiki/Cent_(music)\">cents</a>.</p><p>You can click on the box to hear how the note sounds in our Western tuning.</p>"
+		},
+		"OVERTONES": {
+			"HEADER": "What are <em>overtones</em>, then?",
+			"CONTENT": "<em>Overtones</em> is just the name for any partial above the fundamental one."
+		},
+		"PITCH_CLASS": {
+			"HEADER": "Why do all circles on the same orange axis have the same name?",
+			"CONTENT": "<p>Those overtones are all in an <em>Octave</em> relationship with each other (i.e. two to one): for the reasons explained above, that makes it the most harmonious relationship possible (pretty much cross-culturally universal in human experience).</p><p>It is actually so harmonious that we perceive those sounds as being <em>essentially</em> the same.</p>"
+		},
+		"RESOURCES": {
+			"HEADER": "All of this is very cool, is there more to know?",
+			"CONTENT": "We just barely scratched the surface. Here are some resources you can pick up to get more into it."
+		},
+		"VOICE": {
+			"HEADER": "Are the overtones in my voice harmonics?",
+			"CONTENT": "<p>Absolutely! In fact, depending on how you shape your vocal tract, you can change which harmonics are louder and which are quieter.</p><p>Some techniques&#xFEFF;&mdash;collectively called <em><a href=\"//en.wikipedia.org/wiki/Overtone_singing\" target=\"_blank\">Overtone singing</a></em>&#xFEFF;&mdash;exploit this fact to create beautiful music. This is very prominent in some cultures like the <a href=\"https://www.youtube.com/watch?v=RxK4pQgVvfg\" title=\"Traditional Tuvan band Huun Huur Tu demonstrate Sygyt Throat singing style\">Tuvan one</a>, but is becoming <a href=\"https://www.youtube.com/watch?v=sQkA3__50aE\" title=\"Nory Jacoby talks about his composition for Polyphonic Overtone singing\">more common</a> in <a href=\"https://www.youtube.com/watch?v=s4BJ3wng6Mk\" title=\"Supersonus performing Ritus, featuring Anna Maria Hefele polyphonic overtone singing\">the west too</a>!</p><p>Certain instruments, such as the <a href=\"https://en.wikipedia.org/wiki/Jew%27s_harp\" target=\"_blank\">jew's harp</a> and the <a href=\"https://en.wikipedia.org/wiki/Didgeridoo\" target=\"_blank\">didgeridoo</a> also create music controlled through the overtones in your vocal tract.</p><p>Did you know that this is, in fact, the way we can distinguish a vowel from another in language? Each vowel has a particular overtone composition.</p>",
+			"TRY": "<p>Try this: activate the microphone button on the top left, sing a sustained, somewhat nasal, note on a <em>&#8220;oo&#8221;</em> sound, and then switch to a <em>&#8220;ee&#8221;</em> sound, you should see different overtones being highlighted in the spiral.</p>"
+		},
+		"WHY_HARMONY": {
+			"HEADER": "Neat! Why is that?",
+			"CONTENT": "<p>Mainly for two reasons:</p><p>First, our brain needs to do less processing when two notes have a simpler ratio relationship between each other, because their cycles <em>come together</em> more often. I.e. a sound that vibrates at half the speed of another, has one peak every exactly two peaks of the other.</p><p>But, perhaps, this is the topic for a different visualization.</p><p>Secondly, the simpler the relationship between two sounds, the more overtones they will have in common.</p>",
+			"TRY": "<p>You can try this: play one note, for example 220 Hz (you can press <kbd>z</kbd> on your keyboard to do that) and explore a few overtones and their frequencies. Then change the fundamental frequency to 440 Hz  with the control on the top left (or, you can press <kbd>&#x21E7; Shift</kbd> + <kbd>z</kbd>).</p><p>You will notice that it is as if we moved all the overtones one spiral revolution down: what was the second is now the first, and what was the sixth is now the third.</p>"
+		}
+		*/
 	},
 	"help": {
-
+		"buttons": {
+			"CANCEL": "Köszönöm, boldogulok",
+			"NEXT": "Következő",
+			"SHOW_AROUND": "Vezess körbe!",
+			"TELL_MORE": "Várj, erről mondj többet!",
+			"THANKS": "Köszönöm!"
+		},
+		"NEWBIE_HELP": {
+			"TITLE": "Nem egyértelmű, amit látsz?",
+			"CONTENT": ["Erre a gombra kattintva bármikor kérhetsz egy körbevezetést, hogy megtudd, mi is történik itt."]
+		},
+		"STEP_END": ["Ennyi volna! Jó szórakozást!"],
+		"STEP_FIRST_PARTIAL": [
+			"A spirál közepén álló kör reprezentálja az alaphangot, a felhangsor első eleme.",
+			"<small>Minden más kör a soron következő felharmonikust reprezentálja, a 16-ikig bezárólag.</small>",
+			"<strong>Kattints a körre, hogy halld a hangját.</strong>"
+		],
+		"STEP_INTERVAL_DETAILS": [
+			"Ebben az esetben a két hang közötti kapcsolatról olvashatsz információt.",
+			"<small>Ebből következik az, hogy a spirál részei a felhangsor akkordjainak felelnek meg.</small>"
+		],
+		"STEP_NOTE_DETAILS": [
+			"Itt találsz információt arról a hangról, amit hallottál.",
+			"Rákattinthatsz a részletekre, hogy halld a referencia hangot."
+		],
+		"STEP_OVERTONE_SPIRAL": [
+			"Ez a vizuális reprezentációja egy alaphangnak és a hozzátartozó felharmonikusoknak.",
+			"Minden egyes csavar a spirálon egy oktávot reprezentál."
+		],
+		"STEP_OPTIONS_BASE": [
+			"Meg tudod változtatni az alaphang magasságát a csúszka mozgatásával.",
+			"<small>A számot közvetlenül tudod szerkeszteni a precízebb hangolás érdekében!</small>"
+		],
+		"STEP_OPTIONS_GROUP": ["Ha ezt az opciót kikapcsolod, akkor az akkordok hangjai külön fognak szólni."],
+		"STEP_OPTIONS_KEYBOARD": [
+			/*
+			"You can also change the fundamental note using this keyboard, which allows you to quickly access notes that you would find on a common piano.",
+			"Each key on the piano corresponds to a key on your keyboard; or you can just directly press the keys, if you so prefer.",
+			"<small>You can bring this keyboard up by clicking the icon next to the fundamental frequency slider which we just saw.</small>"
+			*/
+		],
+		"STEP_OPTIONS_MICROPHONE": [
+			/*
+			"<span class=\"label\">Beta</span>If you turn this option on, you can see the overtone spectrum of your own voice, or any other sound through your microphone.",
+			"The circles will grow and react to reflect how strong are the individual overtones in the sound, and the base frequency will change to match the base of the sound.",
+			"<small>Remember to grant us permission to your microphone after you activate this option.</small>"
+			*/
+		],
+		"STEP_OPTIONS_OCTAVE": ["Ha ezt az opciót bekapcsolod, akkor az összes hang olyan frekvenciákon fog szólni, amik az alaphanghoz képest egy oktávon belül vannak."],
+		"STEP_OPTIONS_RECORD": [
+			/*
+			"If you turn this option on, the overtones you will play will be recorded until you stop. You can also change the fundamental note while recording.",
+			"<small>Please note: you can record only one sequence at the time; once you hit this button, you override the last sequence you recorded.</small>",
+			"<small>Sequences are saved on your browser until you erase your browsing data: therefore, you can close the window, or even turn your computer off, and your recording will still be there.</small>"
+			*/
+		],
+		"STEP_OPTIONS_SUSTAIN": [
+			"Ha ezt az opciót bekapcsolod, akkor a hangok addig szólnak, amíg manuálisan le nem állítod.",
+			"Le tudod állítani a hangokat manuálisan, ha rákattintasz ismét a körre, kikapcsolod ezt az opciót, vagy az alap frekvenciát megváltoztatod.",
+			"<small>Amíg ez az opció be van kapcsolva, addig az éppen lenyomott és a legutóbbi hang által képzett akkordról fog megjelenni információ. Ezzel be tudod járni az összes hangközt a spirálon.</small>"
+		],
+		"STEP_OPTIONS_VOLUME": [
+			"Az összes hang erejét tudod változtatni ezzel a csúszkával.",
+			"<small>Vigyázz, ha fejhallgatót használsz! A magasabb felharmonikusok lényegesen hangosabbak.</small>"
+		],
+		"STEP_PLAY_PANEL": [
+			/*
+			"Here you can play the sequence all at once, adjust its playback speed, or play one note at the time, forwards and backwards.",
+			"<small>This panel is available when a sequence has been recorded.</small>"
+			*/
+		],
+		"STEP_SPIRAL_PIECES": ["Más részeire is kattinthatsz a spirálnak, mint például a két kört összekötő lila elemre."]
 	},
 	"intervals": {
 		"Perfect unison": "Tiszta prím",
+		"Schisma": "Schisma",
+		"Syntonic comma": "Szintonikus komma",
+		"Pythagorean comma": "Pitagoraszi komma",
+		"Enharmonic diesis": "Enharmonikus diézis",
 		"Augmented unison": "Bővített prím",
+		"Limma": "Limma",
+		"Chromatic semitone": "Kromatikus félhang",
+		"Small septendecimal semitone": "",
+		"Large septendecimal semitone": "",
 		"Minor second": "Kis szekund",
+		"Apotome": "Nagy pitagoraszi félhang",
+		"Septimal diatonic semitone": "",
+		"Supraminor second": "",
+		"Large limma": "Nagy limma",
+		"Small neutral second": "Kis neutrális szekund",
+		"Neutral second": "Neutrális szekund",
+		"Submajor second": "",
+		"Minor tone": "Kis fél hangköz",
 		"Major second": "Nagy szekund",
+		"Supermajor second": "",
+		"Subminor third": "",
 		"Minor third": "Kis terc",
+		"Tridecimal neutral third": "",
 		"Major third": "Nagy terc",
 		"Perfect fourth": "Tiszta kvart",
+		"Superfourth": "",
 		"Augmented fourth": "Bővített kvart",
 		"Diminished fifth": "Szűkített kvint",
+		"Undecimal subfifth": "",
 		"Perfect fifth": "Tiszta kvint",
+		"Minor sixth": "Kis szext",
+		"Neutral sixth": "Neutrális szext",
 		"Major sixth": "Nagy szext",
+		"Harmonic seventh": "Harmonikus szeptim",
 		"Minor seventh": "Kis szeptim",
 		"Major seventh": "Nagy szeptim",
 		"Perfect octave": "Tiszta oktáv",
@@ -50,8 +195,8 @@
 		"Bb": "B",
 		"B": "H"
 	},
-	"Online": "",
+	"Online": "Online",
 	"Options": "Beállítások",
-	"Overtones Spiral": "",
+	"Overtones Spiral": "Felharmonikus Spirál",
 	"Share": "Megosztás"
 }

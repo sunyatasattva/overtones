@@ -58,7 +58,7 @@
 	},
 	"help": {
 		"buttons": {
-			"CANCEL": "No, thanks, I\'m good",
+			"CANCEL": "No, thanks, I'm good",
 			"NEXT": "Next",
 			"SHOW_AROUND": "Show me around!",
 			"TELL_MORE": "No, wait, tell me more!",
@@ -66,7 +66,7 @@
 		},
 		"NEWBIE_HELP": {
 			"TITLE": "Confused by what you see?",
-			"CONTENT": ["You can click this button at any time to have a quick rundown of what\'s going on."]
+			"CONTENT": ["You can click this button at any time to have a quick rundown of what's going on."]
 		},
 		"STEP_END": ["That is all! Enjoy!"],
 		"STEP_FIRST_PARTIAL": [
@@ -90,7 +90,7 @@
 			"You can change the frequency of the fundamental note by using this slider.",
 		   	"<small>You can also directly change the number if you want finer tuning!</small>"
 		],
-		"STEP_OPTIONS_GROUP": ['If you turn this option off, you will hear notes separately when playing intervals.'],
+		"STEP_OPTIONS_GROUP": ["If you turn this option off, you will hear notes separately when playing intervals."],
 		"STEP_OPTIONS_KEYBOARD": [
 			"You can also change the fundamental note using this keyboard, which allows you to quickly access notes that you would find on a common piano.",
 			"Each key on the piano corresponds to a key on your keyboard; or you can just directly press the keys, if you so prefer.",
@@ -121,5 +121,5 @@
 			"<small>This panel is available when a sequence has been recorded.</small>"
 		],
 		"STEP_SPIRAL_PIECES": ["You can also click on other places of the spiral, such as the purple pieces connecting two circles."]
-	},
+	}
 }
