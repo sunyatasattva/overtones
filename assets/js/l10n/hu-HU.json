@@ -9,8 +9,8 @@
 	},
 	"guide": {
 		"DIFFERENCE": {
+			"HEADER": "Oké, rákattintottam a dobozra és nem is hangzott annyira különbözőnek. Ez lenne a nagy szám?"
 			/*
-			"HEADER": "Okay, come on, I clicked the box, and it really didn't sound so different. Is that such a big deal?",
 			"CONTENT": "<p>Well&hellip; arguably.</p><p>Actually, I'm going to be opinionated on this: yes, it is. Perfect harmonies have a magic and power and color that the tempered ones cannot ever hope to achieve.</p><p>Furthermore, when all the tones are <em>created equal</em>, you lose beautiful differences in character that can completely change the mood of a piece. That is, for example, what <a href=\"https://en.wikipedia.org/wiki/Indian_classical_music\">Indian classical music</a> does right.</p>",
 			"TRY": "<p>Also, if you are not convinced that the difference can be heard, try this: activate the &#8220;Reduce to Octave&#8221; and &#8220;Sustain&#8221; options (second and third from the left on the options panel) and press on the seventh partial. Now click on the box for as long as you want.</p><p>Did you hear that?! Wow, nasty!</p><p>What you just heard is called <a href=\"https://en.wikipedia.org/wiki/Beat_(acoustics)\">beating</a>, and that's what happens when two notes are close, but not actually overlapping.</p><p>Can you imagine all the beating between the overtones?</p>"
 			*/
