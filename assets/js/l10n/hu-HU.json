@@ -15,36 +15,20 @@
 		},
 		"ET": {
 			"HEADER": "Próbáltam elolvasni a belinkelt wikipédia cikket, de még mindig nem értem mi az, hogy <em>12 fokú temperált hangsor</em> és hogyan kapcsolódik mindehez.",
-			"CONTENT": ""
-			/*
-			"CONTENT": "<p>Alright, this is a complicated question, but I'll try to boil it down.</p><p>Remember when we said that simpler ratios sound more harmonious? Turns out that <em>actually using them</em> to make music, is not so simple.</p><p>This is not the place to get into the details of it, but since, as we know, the circle repeats the same at every Octave (i.e. every multiple of two), we have to figure out a way to divide the space between one (tonic) and two (octave) into harmonious steps that we can use to make music.</p><p>However, we do not only want the relationship between those sounds and the tonic to be harmonious, we also want them to be harmonious to each other. And, ideally, in Western music, we also want to take any of those sounds and make it the tonic (i.e. the center of our musical piece).</p><p>Oh! And we also want instruments that are really impractical (or impossible) to retune on the fly: such as the piano, the organ or even just a flute.</p><p>To satisfy all these requirements is mathematically impossible (trust me!), and has been the crux of composers, musicians and instrument builders for centuries, and <a href=\"https://en.wikipedia.org/wiki/Musical_temperament\">many systems with different compromises have been devised</a>.</p><p>At some point, in the West (actually the Chinese came first, but that's a story for another time&hellip;), we decided to compromise this way: take the octave and divide it into twelve equal pieces; <em>tada!</em> Now all the relationships between the notes are equal!</p><p><em>&#8220;But wait!&#8221;</em> I hear you say <em>&#8220;Doesn't this mean that no note is in a simple harmonious relationship with another anymore?&#8221;</em></p><p>Yep.</p><p>But we decided it was good enough, and that if we start stacking a lot of notes on top of each other and make a huge noise, we hoped that no one would notice!</p>"
-			*/
+			"CONTENT": "<p>Ez egy elég komplikált kérdés, de megpróbálom levezetni.</p><p>Emlékszel, amikor azt mondtuk, hogy az egyszerűbb arányok harmonikusabbak? Kiderült, hogy <em>ténylegesen felhasználni őket</em> zenékhez nem is annyira egyszerű.</p><p>Nem fogok túlzottan belemenni a részletekbe, de mivel tudjuk, hogy egy kör oktávonként ismétlődik (vagyis mindegyik duplázódásnál), a feladat adott, hogy felosszuk a köztes szakaszt harmonikus lépésekre, amikkel aztán zenét tudunk alkotni</p><p>De persze nem csak az alaphang és az oktáv között szeretnénk, ha jól hangoznának ezek a hangok, hanem egymáshoz képest is. És, ideális esetben, a nyugati zenében, mindegyik hangnál szeretnénk, ha az lehetne az alaphang (vagyis a zenénk közepe).</p><p>Apropó! Még azt is szeretnénk, hogy nehezen, vagy egyáltalán nem hangolható hangszereket bármikor áthangolhassunk: ilyen például a zongora, az orgona, vagy csak simán a furulya.</p><p>Matematikailag lehetetlen (hidd el!) kielégíteni az előbb felsorolt összes igényt kielégíteni, és ez a zeneszerők, zenészek és hangszerkészítők keresztje volt évszázadokig, és <a href=\"https://hu.wikipedia.org/wiki/Hangol%C3%A1s\">sok rendszer lett feltalálva eltérő kompromisszumokkal</a>.</p><p>Egy ponton azonban a nyugati kultúrában (igazából a kínaiak voltak az elsők, de arról majd máskor&hellip;), elhatároztuk, hogy az alábbi kompromisszumot hozzuk: vedd az oktávot és oszd el tizenkét egyenlő részre; <em>és íme!</em> Most már minden hangközünk egyforma!</p><p><em>&#8220;Várj!&#8221;</em> szinte hallom, ahogy mondod <em>&#8220;Ez nem azt jelenti, hogy így nincs olyan hangköz, ahol a hangok harmonikus kapcsolatban állnának egymással?&#8221;</em></p><p>De.</p><p>De úgy döntöttünk, hogy jó ez így és majd ha sok hangot egymásra pakolunk, hogy nagy zajjá álljon össze, akkor remélhetőleg senki se fogja ezt észrevenni!</p>"
 		},
 		"EXPLAIN": {
 			"HEADER": "Rendben, ez mind nagyon jópofa, de el tudnád mondani egyszerűbben, hogy ez most mit is jelent?",
-			"CONTENT": ""
-			/*
-			"CONTENT": "<p>In a nutshell, and mind you this is simplified: most sounds in nature are actually made up of a plethora of smaller, simpler components, called <em>partials</em>.</p><p>Generally, we tend to hear the lowest of this partials as the <em>fundamental tone</em> of the sound (that's the circle in the middle), while the rest create the particular <em>color</em> (or <em><a href=\"//en.wikipedia.org/wiki/Timbre\" target=\"_blank\">timbre</a></em>) of the sound.</p><p>The particular arrangement of these partial sounds, is therefore how we can distinguish the same note played on two different instruments.</p><p>In most sounds that we consider <em>musical</em>&#xFEFF;&mdash;such as the sound of a plucked string on a guitar&#xFEFF;&mdash;these partial sounds are in a specific, simple, mathematical relationship with one another.</p><p>When this happens, they are called <em>harmonics</em>, and that's what you see depicted here.</p>"
-			*/
+			"CONTENT": "<p>Dióhéjban és erősen leegyszerűsítve: a természetben található hangok többsége egy halom kisebb komponensből áll össze, <em>harmonikusokból</em>.</p><p>Általában ezekből a legmélyebbet halljuk meg, ami az <em>alaphang</em> (ez lenne a spirál közepén álló kör), míg a többi csak bizonyos <em>színt</em> (vagy <em><a href=\"//en.wikipedia.org/wiki/Timbre\" target=\"_blank\">csengést</a></em>) kölcsönöz a hangnak.</p><p>A harmonikusok vegyes eloszlása a hangokon belül felelős azért, hogy meg tudjunk különböztetni ugyanazt a hangot két külön hangszeren megszólaltatva.</p><p>A legtöbb olyan hangban, amit <em>zeneinek</em> hívunk&#xFEFF;&mdash;mint például egy gitár megpengetett húrja&#xFEFF;&mdash;ezek a felhangok jól meghatározott, egyszerű, matematikai arányban állnak egymással.</p><p>Amikor ez történik, akkor őket <em>harmonikusoknak</em> nevezzük és ez van itt ábrázolva.</p>"
 		},
 		"INTERVAL": {
-			"HEADER": "Mit jelent az, hogy <em>hangköz</em>?",
-			"CONTENT": "",
-			/*
-			"CONTENT": "<p>An <em>interval</em> is the mathematical and harmonic relationship between two notes.</p><p>We give them names&#xFEFF;&mdash;such as <em>Octave</em>, <em>Fifth</em> etc.&#xFEFF;&mdash;so it's easier to speak about them.</p><p>Generally, an interval sounds more pleasing to our ear the simpler the mathematical ratio connecting the two sounds.</p>",
-			*/
-			"TRY": ""
-			/*
-			"TRY": "<p>You can try that yourself by clicking on the purple spiral pieces connecting the circles: you'll notice that the lower connections will sound more pleasing than the higher ones.</p>"
-			*/
+			"HEADER": "Mi az a <em>hangköz</em>?",
+			"CONTENT": "<p>Egy <em>hangköz</em> a matematikai és harmonikus kapcsolatot írja le két hang között.</p><p>Bizonyos hangközöknek neveket adunk&#xFEFF;&mdash;mint például az <em>Oktáv</em>, <em>Kvint</em>, stb.&#xFEFF;&mdash;, hogy könnyebben beszélhessünk róluk.</p><p>Általában egy hangköz kellemesebb a fülünknek, ha egyszerűbb az a matematikai arány, ami leírja a két hang viszonyát.</p>",
+			"TRY": "<p>Ezt te magad is kipróbálhatod úgy, hogy a spirál lila szakaszaira kattintasz: azt fogod tapasztalni, hogy az alacsonyabb kapcsolatok sokkal kellemesebben hangzanak, mint a magasabbak.</p>"
 		},
 		"MORE": {
-			"HEADER": "",
-			"CONTENT": ""
-			/*
-			"HEADER": "Are there more of these? What can I do to show my support?",
-			"CONTENT": "<p>Well, for one thing, you can <a href=\"https://www.facebook.com/sharer/sharer.php?u=http%3A//www.suonoterapia.org/overtones\" target=\"_blank\">share this with your friends</a> on your favorite channel.</p><p>We're definitely going to make more of this if there is enough interest. There is much to know and a big space for tools to understand, explore and teach. <a href=\"https://facebook.com/suonoterapia\" target=\"_blank\">Follow us on Facebook</a> to stay updated with new things like this.</p><p>If you want to give some financial support for the hundreds of hours that go into making these kind of freely available tools, you can <a href=\"https://paypal.me/sunyatasattva\" target=\"_blank\">donate to our cause</a>. Every <em>cent</em> counts (pun intended)!</p>"
-			*/
+			"HEADER": "Van még ezekből több is? Hogy tudom kifejezni támogatásomat?",
+			"CONTENT": "<p>A legegyszerűbb módja a segítségnek, ha <a href=\"https://www.facebook.com/sharer/sharer.php?u=http%3A//www.suonoterapia.org/overtones\" target=\"_blank\">megosztod ezt a barátaiddal</a> a kedvenc platformodon</p><p>Mindenképp fogjuk még ezt bővíteni, ha elég nagy a kereslet.</p><p>A témakör eléggé tágas és kevés az eszköz, ami segít annak megértésében, felfedezésében és oktatásában. <a href=\"https://facebook.com/suonoterapia\" target=\"_blank\">Kövess minket Facebook-on</a>, hogy naprakész maradj ebben a témában.</p><p>Ha anyagilag is támogatnád azt a többszáz órát, ami ennek az ingyenesen elérhető eszköznek a fejlesztésére lett áldozva, akkor <a href=\"https://paypal.me/sunyatasattva\" target=\"_blank\">adományozz</a>. Minden <em>cent</em> számít (szó szerint)!</p>"
 		},
 		"OUT_TUNE": {
 			"HEADER": "Várj, azt állítod, hogy minden hang hamis?",
@@ -71,10 +55,7 @@
 		"WHY_HARMONY": {
 			"HEADER": "Klassz! Miért van ez?",
 			"CONTENT": "<p>Főként két okból:</p><p>Először is, az agyunknak könnyebb dolga van, amikor két hang között egyszerűbb arányok vannak, mert periódusaik többször <em>kerülnek szinkronba</em>. például ha egy hang egy másik hang sebességének felével vibrál, akkor annak minden második periódusában találkoznak.</p><p>De ez a kérdés más fajta vizualizációt követel meg.</p><p>Másodszor, minél egyszerűbb két hang aránya, annál több közös felharmonikusuk lesz.</p>",
-			"TRY": ""
-			/*
-			"TRY": "<p>You can try this: play one note, for example 220 Hz (you can press <kbd>z</kbd> on your keyboard to do that) and explore a few overtones and their frequencies. Then change the fundamental frequency to 440 Hz  with the control on the top left (or, you can press <kbd>&#x21E7; Shift</kbd> + <kbd>z</kbd>).</p><p>You will notice that it is as if we moved all the overtones one spiral revolution down: what was the second is now the first, and what was the sixth is now the third.</p>"
-			*/
+			"TRY": "<p>Ezt te is kipróbálhatod: játssz le egy hangot, például 220 Hz (nyomd le a <kbd>y</kbd> billentyűt a billentyűzeteden) és fedezd fel a felhangjait és a frekvenciáit. Majd változtasd az alap frekcenciát 440 Hz-re a bal felső sarokban található csúszkával (vagy simán csak nyomd le a <kbd>&#x21E7; Shift</kbd> + <kbd>y</kbd> billentyűkombinációt).</p><p>Azt fogod tapasztalni, hogy mintha a felharmonikus spirálon csavartunk volna egyet és minden hang egy fordulattal lejjebb került volna: ami eddig a második volt az most az első és ami a hatodik volt, az most a harmadik.</p>"
 		}
 	},
 	"help": {
@@ -141,7 +122,7 @@
 			"Itt le tudod játszani a szekvenciádat, beállíthatod a sebességet, vagy hangonkként játszatod le, akár visszafele is.",
 			"<small>Ez a panel akkor érhető el, ha van rögzített felvételed</small>"
 		],
-		"STEP_SPIRAL_PIECES": ["Más részeire is kattinthatsz a spirálnak, mint például a két kört összekötő lila elemre."]
+		"STEP_SPIRAL_PIECES": ["Más részeire is kattinthatsz a spirálnak, mint például a két kört összekötő lila szakaszra."]
 	},
 	"intervals": {
 		"Perfect unison": "Tiszta prím",
@@ -152,22 +133,22 @@
 		"Augmented unison": "Bővített prím",
 		"Limma": "Limma",
 		"Chromatic semitone": "Kromatikus félhang",
-		"Small septendecimal semitone": "",
-		"Large septendecimal semitone": "",
+		"Small septendecimal semitone": "Kis szemptemdecimális félhang",
+		"Large septendecimal semitone": "Nagy szeptemdecimális félhang",
 		"Minor second": "Kis szekund",
 		"Apotome": "Nagy pitagoraszi félhang",
-		"Septimal diatonic semitone": "",
+		"Septimal diatonic semitone": "Szeptimál diatonikus félhang",
 		"Supraminor second": "",
 		"Large limma": "Nagy limma",
 		"Small neutral second": "Kis neutrális szekund",
 		"Neutral second": "Neutrális szekund",
 		"Submajor second": "",
-		"Minor tone": "Kis fél hangköz",
+		"Minor tone": "Kis félhang",
 		"Major second": "Nagy szekund",
 		"Supermajor second": "",
 		"Subminor third": "",
 		"Minor third": "Kis terc",
-		"Tridecimal neutral third": "",
+		"Tridecimal neutral third": "Tridecimális neutrális terc",
 		"Major third": "Nagy terc",
 		"Perfect fourth": "Tiszta kvart",
 		"Superfourth": "",
