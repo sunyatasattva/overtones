@@ -97,8 +97,10 @@ body > footer {
 }
 
 #main-header {
+	align-items:      center;
 	background-color: #262626;
 	border-bottom:    1px solid #1f1f1f;
+	display:          flex;
 	padding:          10px;
 	width:            100vw;
 	height:           100px;
@@ -109,6 +111,45 @@ body > footer {
 	> a:first-child {
 		display: inline-block;
 		height:  100%;
+	}
+
+	nav {
+		display: inline-block;
+	}
+
+	.asmi-nav {
+		align-items:     center;
+    display:         flex;
+    justify-content: space-between;
+    list-style-type: none;
+		margin:          0;
+    padding:         0;
+
+		a {
+			align-items:      center;
+			background-color: #222;
+			display:          flex;
+			border-radius:    25px;
+			padding:          10px 15px;
+			width:            auto;
+			height:           auto;
+
+			&:hover {
+				background-color: #333;
+			}
+		}
+
+		li {
+			background-color: #1b1b1b;
+			border-radius:    25px;
+    	padding:          5px;
+		}
+
+		svg {
+			margin-right: 1em;
+			width:  40px;
+			height: 40px;
+		}
 	}
 }
 
