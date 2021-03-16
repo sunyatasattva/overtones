@@ -1,0 +1,57 @@
+html:lang(en) {
+	[data-hide-lang*="en"] {
+		display: none;
+	}
+	
+	#group-notes {
+		&::after { content: "Group notes"; }
+		
+		&:not(.off) {
+			&::after { content: "Ungroup notes"; }
+		}
+	}
+	
+	#help {
+		@include has-tooltip("Explain me what I'm seeing", top);
+	}
+	
+	#info {
+		&::after { content: "More information"; }
+	}
+	
+	#microphone {
+		&::after { content: "Activate Microphone"; }
+
+    	&:not(.off) {
+        	&::after { content: "Deactivate Microphone"; }
+    	}
+	}
+	
+	#play-sequence {
+		&::after { content: "Play recorded sequence"; }
+	}
+	
+	#record {
+		&.off {
+			&::after  { content: "Record sequence"; }
+		}
+		
+		&::after { content: "Stop recording"; }
+	}
+	
+	#reduce-to-octave {
+		&::after { content: "Reduce to octave"; }
+	}
+	
+	#sequence-next {
+		&::after { content: "Forward one step"; }
+	}
+	
+	#sequence-prev {
+		&::after { content: "Back one step"; }
+	}
+	
+	#sustain {
+		&::after { content: "Sustain notes"; }
+	}
+}

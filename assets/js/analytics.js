@@ -11,7 +11,7 @@ window.dataLayer = window.dataLayer || [];
 
 module.exports = function($){
 	$(document)
-	.on('overtones:play overtones:options:change', function(e){
+	.on('overtones:play overtones:options:change social', function(e){
 		window.dataLayer.push({ event: e.type, data: e.details });
 	})
 	.on('overtones:help:show overtones:help:close overtones:help:complete overtones:help:denied', function(e){

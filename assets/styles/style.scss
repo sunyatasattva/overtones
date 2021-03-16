@@ -4,9 +4,15 @@
 @import "_components/options";
 @import "_components/sound-details";
 @import "_components/help";
+@import "_components/keyboard";
+@import "_components/faq-panel";
 
 @import "_components/overtone-spiral";
 
 @import "_components/_easter-egg";
 
 @import "_browsers";
+
+@import "_l10n/en-US";
+@import "_l10n/it-IT";
+@import "_l10n/da-DA";

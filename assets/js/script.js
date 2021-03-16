@@ -1,20 +1,28 @@
+/* globals Overtones */
+
 "use strict";
 
 var jQuery    = require("jquery"),
     browser   = require("detect-browser"),
     analytics = require("./analytics"),
     tour      = require("./shepherd.conf.js"),
+	social    = require("./social"),
     easterEgg = require("./easter-egg");
 
 window.Tones     = require("./lib/tones");
 window.Overtones = require("./overtones");
 
-jQuery(document).ready(function($){
-	$("body").addClass(browser.name); // This makes me sad, it's 2016 Firefox!
+navigator.getUserMedia = (navigator.getUserMedia ||
+                          navigator.webkitGetUserMedia ||
+                          navigator.mozGetUserMedia || 
+                          navigator.msGetUserMedia);
 
+
+jQuery(document).ready(function($){
+	Overtones.init();
 	tour.init();
-	window.Overtones.init();
 	analytics($);
-	
+	social.init();
+
 	easterEgg.init();
 });

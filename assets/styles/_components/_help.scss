@@ -1,6 +1,4 @@
 #help {
-	@include has-tooltip("Explain me what I'm seeing", top);
-	
 	background-color: #666;
 	border:           0;
 	border-radius:    100%;
@@ -9,6 +7,7 @@
 	font-family:      $serifFontFamily;
 	font-size:        28px;
 	line-height:      35px;
+	margin-left:      5px;
 	padding:          0;
 	text-align:       center;
 	z-index:          3;
@@ -33,10 +32,11 @@
 }
 
 .chardinjs-helper-layer {
-	color:      #fff;
-	transition: all 0.3s ease-out;
-	z-index:    4;
-	position:   absolute;
+	color:          #fff;
+	pointer-events: none;
+	transition:     all 0.3s ease-out;
+	z-index:        4;
+	position:       absolute;
 	
 	&.chardinjs-left {
 		border-left: solid #fff 1px;
@@ -128,7 +128,7 @@
 	font-size:  1em;
 	max-height: 100%;
 	max-width:  100%;
-	max-width:  24em;
+	max-width:  27em;
 	z-index:    4;
 	position:   absolute;
 	
@@ -146,6 +146,75 @@
 		a.shepherd-cancel-link {
 			margin-bottom: 0;
 			padding:       0;
+		}
+	}
+	
+	.language-switcher {
+		line-height: 39px;
+		margin-left: 45px;
+		
+		.languages-list {
+			box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
+			
+			.language {
+				background-color: #232323;
+				
+				&:hover {
+					background-color: #171717;
+				}
+			}
+		}
+	}
+	
+	.old-language-switcher {
+		opacity:        0.35;
+		padding-bottom: 20px;
+		z-index:        4;
+		position:       absolute;
+		top:            9px;
+		right:          0;
+
+		transition: opacity 0.15s ease-out;
+
+		&:hover {
+			opacity: 1;
+		}
+
+		&::before {
+			content: "\25BE";
+			display: block;
+			position: absolute;
+			left: -20px;
+			top: -4px;
+		}
+
+		.language {
+			background-position: center;
+			background-repeat:   no-repeat;
+			background-size:     25px 15px;
+			color:               transparent;
+			display:             block;
+			width:               25px;
+			height:              15px;
+		}
+
+		.language-en { background-image: url("../images/ico-flag-gb.svg"); }
+		.language-it { background-image: url("../images/ico-flag-it.svg"); }
+
+		.languages-list {
+			display:         none;
+			list-style-type: none;
+			position:        absolute;
+			top:             10px;
+			right:           0;
+
+			&.visible {
+				display: block;
+			}
+
+			li {
+				padding: 5px 0 5px;
+			}
 		}
 	}
 	
@@ -270,6 +339,12 @@
 				margin:      0 0 0.5em 0;
 				
 				&:last-child { margin-bottom: 0; }
+			}
+			
+			strong {
+				display:    block;
+				margin-top: 1.5rem;
+				text-align: center;
 			}
 		}
 	}
@@ -440,7 +515,11 @@ body.shepherd-active {
 		padding:          10px;
 	}
 	
+	#help,
 	#options,
+	#play-panel,
+	.credits,
+	.social,
 	.spiral-piece,
 	.axis,
 	.overtone {
@@ -459,12 +538,42 @@ body.shepherd-active {
 		}
 	}
 	
+	.language-switcher > .current-language {
+		color: #fff;
+	}
+	
+	.main-tour[data-id="end-tour"] {
+		text-align: center;
+	}
+	
 	.shepherd-enabled { opacity: 1 !important; }
+	
+	.thank-you-button {
+		text-align: center;
+		width:      100%;
+	}
 	
 	&[data-shepherd-step=overtone-spiral] {
 		.spiral-piece,
 		.axis,
 		.overtone { opacity: 1 !important; }
+	}
+	
+	&[data-shepherd-step=play-panel] {
+		#play-panel {
+			opacity: 1;
+			
+			.panel {
+				opacity:    1;
+				transform:  translateX(0);
+				transition: transform 0.25s cubic-bezier(0, 1, 0, 1), 
+					        opacity 0.25s ease-in-out;
+			}
+		}
+		
+		#settings-button {
+			opacity: 0.8;
+		}
 	}
 	
 	&[data-shepherd-step=spiral-pieces] {
@@ -485,9 +594,22 @@ body.shepherd-active {
 			.input-wrapper,
 			.option-button { opacity: 0.4; }
 		}
+		
+		.option-button.shepherd-enabled {
+			background-color: #d4d4d4;
+			
+			&::before {
+				color:     #c3c3c3;
+				content:   "\25BE";
+				display:   block;
+				transform: rotate(180deg);
+				position:  absolute;
+				bottom:    -21px;
+				left:      11px;
+			}
+		}
 	}
 	
-	&[data-shepherd-step=options-octave],
 	&[data-shepherd-step=newbie-help] {
 		.shepherd-target.shepherd-enabled {
 			box-shadow: 0 0 10px #FF8A0B;

@@ -1,0 +1,63 @@
+html:lang(it) {
+	[data-hide-lang*="it"] {
+		display: none;
+	}
+	
+	#group-notes {
+		&::after { content: "Raggruppa note"; }
+		
+		&:not(.off) {
+			&::after { content: "Separa note"; }
+		}
+	}
+	
+	#help {
+		@include has-tooltip("Spiegami cosa sto vedendo!", top);
+	}
+	
+	#info {
+		&::after { content: "Voglio saperne di più"; }
+	}
+	
+	#microphone {
+		&::after { content: "Attiva Microfono"; }
+
+    	&:not(.off) {
+        	&::after { content: "Disattiva Microfono"; }
+    	}
+	}
+	
+	#note {
+		font-size:      96px;
+		line-height:    185px;
+		text-transform: none;
+	}
+	
+	#play-sequence {
+		&::after { content: "Riproduci la sequenza registrata"; }
+	}
+	
+	#record {
+		&.off {
+			&::after  { content: "Registra sequenza"; }
+		}
+		
+		&::after { content: "Ferma la registrazione"; }
+	}
+	
+	#reduce-to-octave {
+		&::after { content: "Riduci all'ottava"; }
+	}
+	
+	#sequence-next {
+		&::after { content: "Avanti di un passo"; }
+	}
+	
+	#sequence-prev {
+		&::after { content: "Indietro di un passo"; }
+	}
+	
+	#sustain {
+		&::after { content: "Sostieni le note"; }
+	}
+}

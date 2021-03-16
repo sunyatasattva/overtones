@@ -1,3 +1,18 @@
+.disabled {
+    opacity: 0.5;
+
+    .disabled {
+        opacity: 1;
+    }
+}
+
+a#sequence-next,
+a#sequence-prev {
+	&:active {
+		background-color: #d4d4d4;
+	}
+}
+
 #base-wrapper,
 #volume-control-wrapper {
 	display:  block;
@@ -18,7 +33,8 @@
 
 #base-wrapper {
 	&::before {
-	background-image: url("../images/ico-base.svg");
+		background-image: url("../images/ico-base.svg");
+		cursor:           pointer;
 	}
 }
 
@@ -41,12 +57,6 @@
 	right:     0;
 }
 
-#volume-control-wrapper {
-	&::before {
-	background-image: url("../images/ico-sound.svg");
-	}
-}
-
 #options {
 	background-color: rgba(64, 64, 64, 0.1);
 	box-sizing:       border-box;
@@ -56,10 +66,110 @@
 	position:         absolute;
 }
 
+#play-panel {
+	border:        1px solid #2b2b2b;
+	border-radius: 5px;
+	font-size:     0;
+	padding:       20px 5px;
+	opacity:       0;
+	text-align:    center;
+	z-index:       3;
+	width:         50px;
+	position:      absolute;
+	bottom:        80px;
+	left:          17px;
+	
+	transition:    opacity 0.2s ease-in-out;
+	
+	&.visible {
+		opacity:   1;
+	}
+	
+	.options-button {
+		&:hover {
+			background-color: #d4d4d4;
+		}
+	}
+	
+	.panel {
+		background-color: rgba(64, 64, 64, 0.1);
+		padding:          20px;
+		opacity:          0;
+		text-align:       center;
+		width:            170px;
+		position:         absolute;
+		bottom:           0;
+		left:             55px;
+		z-index:          -1;
+		
+		transform:        translateX(-100px);
+		transition:       transform 0.25s cubic-bezier(1, 0, 1, 0),
+			              opacity 0.25s ease-in-out;
+		
+		&.visible {
+			opacity:   1;
+			transform: translate(0);
+			z-index:   3;
+			
+			transition: transform 0.25s cubic-bezier(0, 1, 0, 1),
+			            opacity 0.25s ease-in-out;
+			
+		}
+	}
+}
+
+#sequence-speed {
+	width: 100%;
+}
+
+#sequence-speed-wrapper {
+	padding: 0 0 20px 20px;
+	position: relative;
+	
+	&::before {
+		background-image:    url("../images/ico-speed.svg");
+		background-position: center;
+		background-repeat:   no-repeat;
+		background-size:     contain;
+		content:             "";
+		display:             block;
+		width:               20px;
+		height:              20px;
+		position:            absolute;
+		top:                 -2px;
+		left:                -10px;
+	}
+}
+
+#settings-button {
+	background-image:    url(../images/ico-settings.svg);
+	background-position: center;
+	background-repeat:   no-repeat;
+	background-size:     cover;
+	border-radius:       5px;
+	display:             inline-block;
+	margin:              0 0 10px;
+	opacity:             0.3;
+	padding:             2px;
+	width:               22px;
+	height:              22px;
+	
+	&:hover,
+	&.is-active {
+		opacity: 0.8;
+	}
+}
+
+#volume-control-wrapper {
+	&::before {
+		background-image: url("../images/ico-sound.svg");
+	}
+}
+
 .options-buttons {
 	border-top: 1px solid #4E4E4E;
 	margin-top: 20px;
-	padding:    20px 0;
+	padding:    25px 0 0;
 }
 
 a.option-button {
@@ -69,11 +179,13 @@ a.option-button {
 	background-size: 60%;
 	border-radius:   20px;
 	display:         inline-block;
-	margin-right:    10px;
+	margin-right:    4px;
 	text-decoration: none;
-	width:           35px;
-	height:          35px;
+	width:           33px;
+	height:          33px;
 	position:        relative;
+	
+	&:last-child { margin: 0; }
 	
 	&:not(.off) { background-color: #d4d4d4; }
 }
@@ -81,23 +193,62 @@ a.option-button {
 a#group-notes {
 	background-image: url("../images/ico-link-broken.svg");
 	
-	&::after { content: "Group notes"; }
-	
 	&:not(.off) {
-	background-image: url("../images/ico-link.svg");
+		background-image: url("../images/ico-link.svg");
+	}
+}
+
+a#info {
+	background-image: url("../images/ico-info.svg");
+	background-size:  15px;
+	margin-right:     25px;
+	opacity:          0.5;
+	transition:       opacity 0.2s ease-out;
+
+	&:hover,
+	&.is-active {
+		opacity: 1;
+	}
+}
+
+a#microphone {
+    background-image: url("../images/ico-microphone.svg");
+}
+
+a#play-sequence {
+	background-image: url("../images/ico-play.svg");
+	margin: 0;
 	
-	&::after { content: "Ungroup notes"; }
+	&::after {
+		top:     -25px;
+		bottom:  auto;
+	}
+}
+
+a#record {
+	background-image: url("../images/ico-record.svg");
+	
+	&.off {
+		background-image: url("../images/ico-record-off.svg");
 	}
 }
 
 a#reduce-to-octave {
 	background-image: url("../images/ico-octave-reduction.svg");
+}
+
+a#sequence-next {
+	background-image: url("../images/ico-skip-forward.svg");
 	
-	&::after { content: "Reduce to octave"; }
+	&::after { left: 0; }
+}
+
+a#sequence-prev {
+	background-image: url("../images/ico-skip-backwards.svg");
+	
+	&::after { right:   0; }
 }
 
 a#sustain {
 	background-image: url("../images/ico-sustain.svg");
-	
-	&::after { content: "Sustain notes"; }
 }

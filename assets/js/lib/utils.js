@@ -36,6 +36,23 @@ module.exports = {
 		
 		return array[highestIndex];
 	},
+    /*
+     * Weighs the loudness of a frequency depending on its height.
+     *
+     * It cuts off the most frequencies in the range of 2k–6k.
+     *
+     * @param  {number}  f  The frequency to weigh.
+     *
+     * @return {number}  A weighed number from 0 to 1 to apply to loudness of the sound.
+     */
+    weighFrequencyLoudness: function(f) {
+		var a = -1.5768 * Math.pow(10, -12),
+			b = 3.70162 * Math.pow(10, -8),
+			c = -0.000220906,
+			d = 1.05609;
+		
+		return a * Math.pow(f, 3) + b * Math.pow(f, 2) + c * f + d;
+	},
 	/**
 	* Checks if a number is a power of two
 	*
@@ -85,6 +102,11 @@ module.exports = {
 		return round ? Math.round(n) : n;
 	},
 	/* jshint ignore:end */
+	getETFrequencyfromMIDINumber: function(n, a4) {
+		a4 = a4 || 440;
+		
+		return Math.pow(2, (n - 69) / 12) * a4;
+	},
 	/**
 	 * Given a MIDI note number it returns the name for that note.
 	 *
@@ -174,7 +196,10 @@ module.exports = {
 	}
 	return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
 },
-	
+    /**
+     * @see  {@link  https://lodash.com/docs#clamp|lodash.clamp}
+     */
+    clamp: require("lodash.clamp"),
 	/**
 	* @see  {@link  https://lodash.com/docs#debounce|lodash.debounce}
 	*/

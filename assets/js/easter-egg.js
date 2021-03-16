@@ -10,6 +10,46 @@ var $     = require("jquery");
 var once  = require("./lib/once");
 var Tones = require("./lib/tones");
 
+var oldSoundsGainValues;
+
+/*
+ * Dampens all the playing sounds volumes.
+ *
+ * @return void
+ */
+function dampenAllSounds() {
+	var now = Tones.context.currentTime;
+	
+	oldSoundsGainValues = [];
+	
+	Tones.sounds
+		.slice(1, Tones.sounds.length)
+		.forEach(function(sound) {
+			oldSoundsGainValues.push(sound.envelope.node.gain.value);
+		
+			sound.envelope.node.gain.setTargetAtTime(0, now, 0.25);
+		});
+}
+
+/*
+ * Restores the sound volume of all the sounds to what they were before.
+ *
+ * @return void
+ */
+function restoreSoundsVolume() {
+	var now = Tones.context.currentTime;
+	
+	Tones.sounds
+		.slice(1, Tones.sounds.length)
+		.forEach(function(sound, i) {
+			sound.envelope.node.gain.setTargetAtTime(
+				oldSoundsGainValues[i], 
+				now,
+				3
+			);
+		});
+}
+
 /**
  * Plays the Easter Egg unlocked secret music.
  *
@@ -21,25 +61,21 @@ function secretMusic(){
 		decay: 100
 	};
 	
+	dampenAllSounds();
+	
 	// Equal temperament
-	Tones.playFrequency(780, opts)
-	.then( ()=>Tones.playFrequency(739, opts) )
-	.then( ()=>Tones.playFrequency(622, opts) )
-	.then( ()=>Tones.playFrequency(440, opts) )
-	.then( ()=>Tones.playFrequency(415, opts) )
-	.then( ()=>Tones.playFrequency(659, opts) )
-	.then( ()=>Tones.playFrequency(830, opts) )
-	.then( ()=>Tones.playFrequency(1046, opts) )
+	Tones.playFrequenciesSequence(
+		[780, 739, 622, 440, 415, 659, 830, 1046],
+		opts
+	);
 	
 	// Just intonation
-	Tones.playFrequency(780, opts)
-	.then( ()=>Tones.playFrequency(731.25, opts) )
-	.then( ()=>Tones.playFrequency(624, opts) )
-	.then( ()=>Tones.playFrequency(438, opts) )
-	.then( ()=>Tones.playFrequency(416, opts) )
-	.then( ()=>Tones.playFrequency(650, opts) )
-	.then( ()=>Tones.playFrequency(832, opts) )
-	.then( ()=>Tones.playFrequency(1040, opts) )
+	Tones.playFrequenciesSequence(
+		[780, 731.25, 624, 438, 416, 650, 832, 1040],
+		opts
+	).then(function(){
+		restoreSoundsVolume();
+	});
 }
 
 module.exports = {

@@ -28,48 +28,6 @@ var extend     = require("lodash.assign"),
 masterGain.connect(ctx.destination);
 
 /**
- * Reduces the Sound pitch to a tone within an octave of the tone.
- *
- * @see  {@link Sound.prototype.reduceToSameOctaveAs}
- * @alias module:tones.reduceToSameOctave
- *
- * @param  {Sound|Object} firstTone      A Sound object (or an object containing a `frequency` property)
- * @param  {Sound|Object} referenceTone  The first sound will adjust its frequency
- *                                       to the same octave as this tone
- * @param  {bool}  excludeOctave  If this option is `true`, the exact octave will be reduced
- *                                to the unison of the original sound
- *
- * @return {Number}  The frequency of the first sound within the same octave as the reference tone.
- */
-function reduceToSameOctave(firstTone, referenceTone, excludeOctave){
-	var targetFrequency = firstTone.frequency,
-	    ratio           = targetFrequency / referenceTone.frequency;
-
-	if( excludeOctave ) {
-		while( ratio <= 0.5 || ratio >= 2 ){
-			if( ratio <= 0.5 )
-				targetFrequency = targetFrequency * 2;
-			else
-				targetFrequency = targetFrequency / 2;
-
-			ratio = targetFrequency / referenceTone.frequency;
-		}
-	}
-	else {
-		while( ratio < 0.5 || ratio > 2 ){
-			if( ratio < 0.5 )
-				targetFrequency = targetFrequency * 2;
-			else
-				targetFrequency = targetFrequency / 2;
-
-			ratio = targetFrequency / referenceTone.frequency;
-		}
-	}
-
-return targetFrequency;
-}
-
-/**
  * @typedef Envelope
  *
  * @type Object
@@ -153,7 +111,21 @@ function Sound(oscillator, envelope, opts){
 		sustain:   envelope.sustain,
 		release:   envelope.release,
 		volume:    opts.volume,
-		maxVolume: opts.maxVolume
+		maxVolume: opts.maxVolume,
+		
+		/*
+		 * Changes an envelope property and recalculates the duration.
+		 *
+		 * @param  {string}  prop  The property to change.
+		 * @param  {Number}  val   The new value.
+		 *
+		 * @return void
+		 */
+		setProperty: (prop, val) => {
+			this.envelope[prop] = val;
+			
+			this.duration = this.calculateDuration();
+		}
 	};
 	/** @type  {OscillatorNode} */
 	this.oscillator = oscillator;
@@ -161,8 +133,136 @@ function Sound(oscillator, envelope, opts){
 	this.detune     = oscillator.detune.value;
 	this.waveType   = oscillator.type;
 
-	this.duration = envelope.attack + envelope.decay + envelope.sustain + envelope.release;
+	this.duration = this.calculateDuration();
 }
+
+/*
+ * Calculates the duration of a sound from its envelope.
+ *
+ * @return {Number} The duration of the sound in seconds.
+ */
+Sound.prototype.calculateDuration = function(){
+	var e = this.envelope;
+	
+	return e.attack + e.decay + e.sustain + e.release;
+}
+
+/*
+ * Duplicates itself.
+ *
+ * @see {@link duplicateSound}
+ *
+ * @return  {Sound}  The copy of the sound.
+ */
+Sound.prototype.duplicate = function(opts){
+	return duplicateSound(this, opts);
+};
+
+/**
+ * Fades out a sound according to its release value. Useful for sustained sounds.
+ *
+ * @return  void
+ */
+Sound.prototype.fadeOut = function(){
+	var now  = ctx.currentTime,
+	    self = this;
+	
+	this.envelope.node.gain.cancelScheduledValues(now);
+	this.envelope.node.gain.setTargetAtTime( 0, now, this.envelope.release / 5 );
+	this.isPlaying = false;
+	this.isStopping = true;
+	
+	return new Promise(function(resolve, reject){
+		setTimeout( function() {
+			self.stop();
+			resolve(self);
+		}, self.envelope.release * 1250 );
+	});
+};
+
+/**
+ * Calculates the interval in cents with another tone.
+ *
+ * @example
+ * // Assume `sound` has a frequency of 440Hz
+ * sound.intervalInCents(660); // returns 702
+ *
+ * @param  {Sound|Object|Number}  tone            A Sound object, or an object
+ *                                                containing a `frequency` property,
+ *                                                or the frequency itself.
+ * @param  {bool}                 reduceToOctave  Whether to reduce the second
+ *                                                frequency to the same octave.
+ *
+ * @return {int}  The interval between the two sounds rounded to the closest cent.
+ */
+Sound.prototype.intervalInCents = function(tone, reduceToOctave){
+	var frequency = tone.frequency || tone,
+	    ratio;
+	
+	if(reduceToOctave)
+		frequency = reduceToSameOctave( { frequency: frequency }, this);
+	
+	ratio = this.frequency / frequency;
+	
+	return Math.round( 1200 * utils.logBase(2, ratio) );
+};
+
+/**
+ * Calculates the approximate interval ratio with another tone.
+ *
+ * @example
+ * // Assume `sound` has a frequency of 440Hz
+ * sound.intervalRatio(660); // returns [0, 3, 2]
+ *
+ * @param  {Sound|Object|Number}  tone            A Sound object, or an object
+ *                                                containing a `frequency` property,
+ *                                                or the frequency itself.
+ * @param  {bool}                 reduceToOctave  Whether to reduce the second
+ *                                                frequency to the same octave.
+ *
+ * @return {Array}  The return value is an array of the form `[quot, num, den]`
+ *                  where `quot === 0` for improper fractions.
+ */
+Sound.prototype.intervalRatio = function(tone, reduceToOctave){
+	var frequency = tone.frequency || tone;
+	
+	if(reduceToOctave)
+		frequency = reduceToSameOctave( { frequency: frequency }, this);
+
+	return utils.fraction(this.frequency / frequency, 999);
+};
+
+/**
+ * Calculates if another tone is an octave of the sound.
+ *
+ * @example
+ * // Assume `sound` has a frequency of 440Hz
+ * sound.isOctaveOf( { frequency: 110 } ); // returns true
+ *
+ * @param  {Sound|Object}  tone  A Sound object (or an object containing a `frequency` property)
+ *
+ * @return {bool}  True if it is, False if it isn't.
+ */
+Sound.prototype.isOctaveOf = function(tone){
+	return utils.isPowerOfTwo( this.frequency / tone.frequency );
+};
+
+/*
+ * Modifies the speed of a sound by a specified amount.
+ *
+ * @param  {Number}  speed  The amount to speed the sound up or down (1 is normal).
+ *
+ * @return void
+ */
+Sound.prototype.modifySpeed = function(speed){
+	var e = this.envelope,
+		n = 1 / speed;
+	
+	if(e.sustain)
+		e.setProperty("sustain", e.sustain * n);
+	else
+		e.setProperty( "sustain", (e.attack + e.sustain) * n);
+};
 
 /**
  * Plays the sound
@@ -235,6 +335,35 @@ Sound.prototype.play = function(){
 };
 
 /**
+ * Reduces the Sound pitch to a tone within an octave of the tone.
+ *
+ * @example
+ * // Assume `sound` has a frequency of 440Hz
+ * sound.reduceToSameOctaveAs( { frequency: 65.41 } ); // sets the sound frequency to 110Hz
+ *
+ * @example
+ * // Assume `sound` has a frequency of 440Hz
+ * sound.reduceToSameOctaveAs( { frequency: 220 }, true ); // sets the sound frequency to 220Hz
+ *
+ * @example  <caption>The function works upwards as well</caption>
+ * // Assume `sound` has a frequency of 440Hz
+ * sound.reduceToSameOctaveAs( { frequency: 523.25 } ); // sets the sound frequency to 880Hz
+ *
+ * @param  {Sound|Object} tone    A Sound object (or an object containing a `frequency` property)
+ * @param  {bool}  excludeOctave  If this option is `true`, the exact octave will be reduced
+ *                                to the unison of the original sound
+ *
+ * @return {Sound}  The original Sound object is returned
+ */
+Sound.prototype.reduceToSameOctaveAs = function(tone, excludeOctave){
+	this.frequency = reduceToSameOctave(this, tone, excludeOctave);
+
+	this.oscillator.frequency.setValueAtTime( this.frequency, ctx.currentTime );
+
+	return this;
+};
+
+/**
  * Disconnects a sound and removes it from the array of active sounds.
  *
  * @return {Sound}  The Sound object that was removed
@@ -267,88 +396,6 @@ Sound.prototype.stop = function(){
 };
 
 /**
- * Fades out a sound according to its release value. Useful for sustained sounds.
- *
- * @return  void
- */
-Sound.prototype.fadeOut = function(){
-	var now  = ctx.currentTime,
-	    self = this;
-	
-	this.envelope.node.gain.setTargetAtTime( 0, now, this.envelope.release / 5 );
-	this.isPlaying = false;
-	this.isStopping = true;
-	
-	return new Promise(function(resolve, reject){
-		setTimeout( function() {
-			self.stop();
-			resolve(self);
-		}, self.envelope.release * 1250 );
-	});
-};
-
-/**
- * Calculates the interval in cents with another tone.
- *
- * @example
- * // Assume `sound` has a frequency of 440Hz
- * sound.intervalInCents( { frequency: 660 } ); // returns 702
- *
- * @param  {Sound|Object}  tone  A Sound object (or an object containing a `frequency` property)
- *
- * @return {int}  The interval between the two sounds rounded to the closest cent.
- */
-Sound.prototype.intervalInCents = function(tone){
-	var ratio = this.frequency / tone.frequency;
-	
-	return Math.round( 1200 * utils.logBase(2, ratio) );
-};
-
-/**
- * Calculates if another tone is an octave of the sound.
- *
- * @example
- * // Assume `sound` has a frequency of 440Hz
- * sound.isOctaveOf( { frequency: 110 } ); // returns true
- *
- * @param  {Sound|Object}  tone  A Sound object (or an object containing a `frequency` property)
- *
- * @return {bool}  True if it is, False if it isn't.
- */
-Sound.prototype.isOctaveOf = function(tone){
-	return utils.isPowerOfTwo( this.frequency / tone.frequency );
-};
-
-/**
- * Reduces the Sound pitch to a tone within an octave of the tone.
- *
- * @example
- * // Assume `sound` has a frequency of 440Hz
- * sound.reduceToSameOctaveAs( { frequency: 65.41 } ); // sets the sound frequency to 110Hz
- *
- * @example
- * // Assume `sound` has a frequency of 440Hz
- * sound.reduceToSameOctaveAs( { frequency: 220 }, true ); // sets the sound frequency to 220Hz
- *
- * @example  <caption>The function works upwards as well</caption>
- * // Assume `sound` has a frequency of 440Hz
- * sound.reduceToSameOctaveAs( { frequency: 523.25 } ); // sets the sound frequency to 880Hz
- *
- * @param  {Sound|Object} tone    A Sound object (or an object containing a `frequency` property)
- * @param  {bool}  excludeOctave  If this option is `true`, the exact octave will be reduced
- *                                to the unison of the original sound
- *
- * @return {Sound}  The original Sound object is returned
- */
-Sound.prototype.reduceToSameOctaveAs = function(tone, excludeOctave){
-	this.frequency = reduceToSameOctave(this, tone, excludeOctave);
-
-	this.oscillator.frequency.setValueAtTime( this.frequency, ctx.currentTime );
-
-	return this;
-};
-
-/**
  * Creates and initializes a Sound object.
  *
  * The function accepts an optional `opts` argument.
@@ -367,6 +414,8 @@ Sound.prototype.reduceToSameOctaveAs = function(tone, excludeOctave){
  * @param  {number}  [opts.sustain]    The sustain duration of the sound (in ms). See {@link _createEnvelope}
  * @param  {string}  [opts.type]       The shape of the wave. See {@link _createOscillator}
  * @param  {float}   [opts.volume]     The amplitude of the sound, after the decay. 1 is full amplitude.
+ * @param  {bool}    [opts.weigh]      If `true` weighs the volume according to the frequency.
+ *                                     E.g. Volume is adjusted down for frequencies that "sound" louder.
  *
  * @return {Sound}  The Sound object.
  */
@@ -378,6 +427,11 @@ function createSound(frequency, opts){
 	
 	opts.maxVolume = opts.maxVolume || opts.volume;
 	
+	if(opts.weigh) {
+		opts.maxVolume = utils.weighFrequencyLoudness(frequency) * opts.maxVolume;
+		opts.volume    = utils.weighFrequencyLoudness(frequency) * opts.volume;
+	}
+	
 	thisSound = new Sound(oscillator, envelope, opts);
 	
 	oscillator.connect(envelope.node);
@@ -386,6 +440,26 @@ function createSound(frequency, opts){
 	sounds.push(thisSound);
 	
 	return thisSound;
+}
+
+/*
+ * Duplicates a sound, optionally applying different options.
+ *
+ * @param  {Sound}  sound  The sound to duplicate.
+ * @param  {Object} [opts] The options to replace in the original sound.
+ *
+ * @return {Sound}  The duplicated sound.
+ */
+function duplicateSound(sound, opts) {
+	var opts = extend({}, opts),
+		envelope = extend({}, sound.envelope, {
+			attack:    sound.envelope.attack * 1000,
+			decay:     sound.envelope.decay * 1000,
+			sustain:   sound.envelope.sustain * 1000,
+			release:   sound.envelope.release * 1000
+		}, opts.envelope);
+	
+	return createSound(sound.frequency, envelope);
 }
 
 /**
@@ -404,23 +478,131 @@ function playFrequency(frequency, opts) {
 	return thisSound.play();
 }
 
+/*
+ * Simple way to play a sequence of frequencies.
+ *
+ * @see {@link createSound} and {@link playSequence}.
+ * @alias module:tones.playFrequenciesSequence
+ *
+ * @param  {Array}  frequencies  An array of frequencies to be played.
+ * @param  {Object} [opts]  Options for the sounds and the sequence.
+ *
+ * @return {Promise}  The sequence promise.
+ */
+function playFrequenciesSequence(frequencies, opts) {
+	var sounds = frequencies.map(function(frequency) {
+		return createSound(frequency, opts);
+	});
+	
+	return playSequence(sounds, opts);
+}
+
+/*
+ * Plays a sequence of overtones.
+ *
+ * It updates the fundamental frequency and optionally it animates the overtones
+ * while playing them. The sequence is always played of copies of sounds, so the
+ * originals are preserved.
+ *
+ * An optional options object can be passed to modify every single sound in the
+ * sequence. Particularly implements a `speed` option to modify the speed of each
+ * of the sounds in the sequence.
+ *
+ * @alias module:tones.playSequence
+ *
+ * @param  {Array.<Sound>}  sounds  An array of sounds to be played.
+ * @param  {Object}  [opts]  Options to apply to each sound.
+ *                           See {@link createSound}
+ * @param  {Number}  [opts.speed]  The relative speed of playback of each sound.
+ * @param  {bool}    [opts.copy]   Whether to create a copy of those sounds before
+ *                                 playing them.
+ *
+ * @return {Promise} The sequence promise.
+ *
+ */
+function playSequence(sounds, opts) {
+	var sequence = Promise.resolve();
+	
+	if(opts.copy) {
+		sounds = sounds.map(function(sound) {
+			return sound.duplicate(opts);
+		});
+	}
+	
+	sounds.forEach(function(sound) {
+		if(opts.speed)
+			sound.modifySpeed(opts.speed);
+
+		sequence = sequence.then(function() {
+			return sound.play();
+		}); 
+	});
+	
+	return sequence;
+}
+
+/**
+ * Reduces the Sound pitch to a tone within an octave of the tone.
+ *
+ * @see  {@link Sound.prototype.reduceToSameOctaveAs}
+ * @alias module:tones.reduceToSameOctave
+ *
+ * @param  {Sound|Object} firstTone      A Sound object (or an object containing a `frequency` property)
+ * @param  {Sound|Object} referenceTone  The first sound will adjust its frequency
+ *                                       to the same octave as this tone
+ * @param  {bool}  excludeOctave  If this option is `true`, the exact octave will be reduced
+ *                                to the unison of the original sound
+ *
+ * @return {Number}  The frequency of the first sound within the same octave as the reference tone.
+ */
+function reduceToSameOctave(firstTone, referenceTone, excludeOctave){
+	var targetFrequency = firstTone.frequency,
+	    ratio           = targetFrequency / referenceTone.frequency;
+
+	if( excludeOctave ) {
+		while( ratio <= 0.5 || ratio >= 2 ){
+			if( ratio <= 0.5 )
+				targetFrequency = targetFrequency * 2;
+			else
+				targetFrequency = targetFrequency / 2;
+
+			ratio = targetFrequency / referenceTone.frequency;
+		}
+	}
+	else {
+		while( ratio < 0.5 || ratio > 2 ){
+			if( ratio < 0.5 )
+				targetFrequency = targetFrequency * 2;
+			else
+				targetFrequency = targetFrequency / 2;
+
+			ratio = targetFrequency / referenceTone.frequency;
+		}
+	}
+
+return targetFrequency;
+}
+
 module.exports = {
 	/**
 	 * The Audio Context where the module operates
 	 * @type  {AudioContext}
 	 */
-	context:       ctx,
-	createSound:   createSound,
+	context:        ctx,
+	createSound:    createSound,
+	duplicateSound: duplicateSound,
 	/**
 	 * The Master Gain node that is attached to the output device
 	 * @type  {GainNode}
 	 */
-	masterGain:         masterGain,
-	playFrequency:      playFrequency,
-	reduceToSameOctave: reduceToSameOctave,
+	masterGain:              masterGain,
+	playFrequency:           playFrequency,
+	playFrequenciesSequence: playFrequenciesSequence,
+	playSequence:            playSequence,
+	reduceToSameOctave:      reduceToSameOctave,
 	/**
 	 * A list of currently active sounds for manipulation
 	 * @type  {array}
 	 */
-	sounds:             sounds,
+	sounds: sounds,
 };

@@ -111,9 +111,9 @@ gulp.task('javascript', function () {
 });
 
 gulp.task('watch', function() {
-	gulp.watch(['index.html', './assets/images/overtone-spiral.svg'], ['html']);
+	gulp.watch(['index.html', 'components/*.html', './assets/images/overtone-spiral.svg'], ['html']);
 	gulp.watch(['./assets/styles/*.scss', './assets/styles/**/*.scss'], ['css:dev']);
-	gulp.watch('./assets/js/**/*.js', ['javascript:dev']);
+	gulp.watch(['./assets/js/**/*.js', './assets/js/**/*.json'], ['javascript:dev']);
 });
 
 gulp.task('build', ['css', 'javascript'], function(){
