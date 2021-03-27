@@ -2,10 +2,10 @@ const DEFAULT_LOCALE = "en-US",
   LANGUAGES = {
     "en-US": "English",
     "it-IT": "Italiano",
-    "da-DA": "Dansk",
+    "da-DK": "Dansk",
     "hu-HU": "Magyar",
   },
-  SUPPORTED_LANGUAGES = ["en-US", "it-IT", "da-DA", "hu-HU"];
+  SUPPORTED_LANGUAGES = ["en-US", "it-IT", "da-DK", "hu-HU"];
 
 var $ = require("jquery"),
   get = require("lodash.get"),
@@ -13,7 +13,7 @@ var $ = require("jquery"),
   dictionary = {
     "en-US": require("./l10n/en-US.json"),
     "it-IT": require("./l10n/it-IT.json"),
-    "da-DA": require("./l10n/da-DA.json"),
+    "da-DK": require("./l10n/da-DK.json"),
     "hu-HU": require("./l10n/hu-HU.json"),
   },
   currentLocale = DEFAULT_LOCALE;
