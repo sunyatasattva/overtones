@@ -1,192 +1,200 @@
 {
-	"Books": "Könyvek",
-	"credits": "<span class=\"hide-on-small\">Örömmel készítette</span> <a href=\"https://facebook.com/sunyatasattva\">Marco Lucio Giannotta</a> és <a href=\"https://www.facebook.com/skye.lofvander\">Skye Løfvander</a>. <span class=\"version hide-on-medium\">Verzió: <a href=\"https://github.com/sunyatasattva/overtones/releases/\">1.1.3</a></span>",
-	"Donate": "Támogatás",
-	"easter_egg": {
-		"SUBTITLE": "Sajnos csak ennyi a jutalom. De végülis a megtett út a fontos, nem?",
-		"TEXT": "Oszd meg az Overtones világa iránti rajongásaidat barátaiddal és nézd meg, hogy ők is megtalálják-e ezt a szivárványt! ",
-		"TITLE": "Megtaláltad a titkos szivárványt!"
-	},
-	"guide": {
-		"DIFFERENCE": {
-			"HEADER": "Oké, rákattintottam a dobozra és nem is hangzott annyira különbözőnek. Ez lenne a nagy szám?",
-			"CONTENT": "<p>Nos&hellip; vitathatóan.</p><p>Valójában ez egy személyes vélemény lesz: igen, számít. A tiszta harmonikusoknak van egy olyan varázsa, ereje és színezete, amit a temperált hangok sose adhatnak vissza.</p><p>Plusz, amikor minden hang <em>egyenlő távolságra van egymástól</em>, akkor elvész a zene karakteréből egy csodás különbség, ami teljesen megváltoztathatja annak hangulatát. Pontosan ezt csinálják jól az <a href=\"https://en.wikipedia.org/wiki/Indian_classical_music\">indiaiak</a></p>",
-			"TRY": "<p>Ha nem vagy meggyőzve, hogy a különbség hallható, akkor próbáld ki ezt: kapcsold be a &#8220;Reduce to Octave&#8221; és &#8220;Sustain&#8221; opciókat (balról a második és harmadik a beállítások panelen) és nyomd meg a hetedik felhangot. Most tartsd lenyomva az egeret egy kicsit a dobozon.</p><p>Hallottad?! Elég rettenetes!</p><p> Amit hallottál, azt <a href=\"https://en.wikipedia.org/wiki/Beat_(acoustics)\">lüktetésnek</a> nevezzük és akkor hallhatod, amikor a hangok frekvenciája elég közel van egymáshoz, bár mégsincsenek teljesen fedésben.</p><p>El tudod képzelni az összes lüktetést a felharmonikusok között?</p>"
-		},
-		"ET": {
-			"HEADER": "Próbáltam elolvasni a belinkelt wikipédia cikket, de még mindig nem értem mi az, hogy <em>12 fokú temperált hangsor</em> és hogyan kapcsolódik mindehez.",
-			"CONTENT": "<p>Ez egy elég komplikált kérdés, de megpróbálom levezetni.</p><p>Emlékszel, amikor azt mondtuk, hogy az egyszerűbb arányok harmonikusabbak? Kiderült, hogy <em>ténylegesen felhasználni őket</em> zenékhez nem is annyira egyszerű.</p><p>Nem fogok túlzottan belemenni a részletekbe, de mivel tudjuk, hogy egy kör oktávonként ismétlődik (vagyis mindegyik duplázódásnál), a feladat adott, hogy felosszuk a köztes szakaszt harmonikus lépésekre, amikkel aztán zenét tudunk alkotni</p><p>De persze nem csak az alaphang és az oktáv között szeretnénk, ha jól hangoznának ezek a hangok, hanem egymáshoz képest is. És, ideális esetben, a nyugati zenében, mindegyik hangnál szeretnénk, ha az lehetne az alaphang (vagyis a zenénk közepe).</p><p>Apropó! Még azt is szeretnénk, hogy nehezen, vagy egyáltalán nem hangolható hangszereket bármikor áthangolhassunk: ilyen például a zongora, az orgona, vagy csak simán a furulya.</p><p>Matematikailag lehetetlen (hidd el!) kielégíteni az előbb felsorolt összes igényt kielégíteni, és ez a zeneszerők, zenészek és hangszerkészítők keresztje volt évszázadokig, és <a href=\"https://hu.wikipedia.org/wiki/Hangol%C3%A1s\">sok rendszer lett feltalálva eltérő kompromisszumokkal</a>.</p><p>Egy ponton azonban a nyugati kultúrában (igazából a kínaiak voltak az elsők, de arról majd máskor&hellip;), elhatároztuk, hogy az alábbi kompromisszumot hozzuk: vedd az oktávot és oszd el tizenkét egyenlő részre; <em>és íme!</em> Most már minden hangközünk egyforma!</p><p><em>&#8220;Várj!&#8221;</em> szinte hallom, ahogy mondod <em>&#8220;Ez nem azt jelenti, hogy így nincs olyan hangköz, ahol a hangok harmonikus kapcsolatban állnának egymással?&#8221;</em></p><p>De.</p><p>De úgy döntöttünk, hogy jó ez így és majd ha sok hangot egymásra pakolunk, hogy nagy zajjá álljon össze, akkor remélhetőleg senki se fogja ezt észrevenni!</p>"
-		},
-		"EXPLAIN": {
-			"HEADER": "Rendben, ez mind nagyon jópofa, de el tudnád mondani egyszerűbben, hogy ez most mit is jelent?",
-			"CONTENT": "<p>Dióhéjban és erősen leegyszerűsítve: a természetben található hangok többsége egy halom kisebb komponensből áll össze, <em>harmonikusokból</em>.</p><p>Általában ezekből a legmélyebbet halljuk meg, ami az <em>alaphang</em> (ez lenne a spirál közepén álló kör), míg a többi csak bizonyos <em>színt</em> (vagy <em><a href=\"//en.wikipedia.org/wiki/Timbre\" target=\"_blank\">csengést</a></em>) kölcsönöz a hangnak.</p><p>A harmonikusok vegyes eloszlása a hangokon belül felelős azért, hogy meg tudjunk különböztetni ugyanazt a hangot két külön hangszeren megszólaltatva.</p><p>A legtöbb olyan hangban, amit <em>zeneinek</em> hívunk&#xFEFF;&mdash;mint például egy gitár megpengetett húrja&#xFEFF;&mdash;ezek a felhangok jól meghatározott, egyszerű, matematikai arányban állnak egymással.</p><p>Amikor ez történik, akkor őket <em>harmonikusoknak</em> nevezzük és ez van itt ábrázolva.</p>"
-		},
-		"INTERVAL": {
-			"HEADER": "Mi az a <em>hangköz</em>?",
-			"CONTENT": "<p>Egy <em>hangköz</em> a matematikai és harmonikus kapcsolatot írja le két hang között.</p><p>Bizonyos hangközöknek neveket adunk&#xFEFF;&mdash;mint például az <em>Oktáv</em>, <em>Kvint</em>, stb.&#xFEFF;&mdash;, hogy könnyebben beszélhessünk róluk.</p><p>Általában egy hangköz kellemesebb a fülünknek, ha egyszerűbb az a matematikai arány, ami leírja a két hang viszonyát.</p>",
-			"TRY": "<p>Ezt te magad is kipróbálhatod úgy, hogy a spirál lila szakaszaira kattintasz: azt fogod tapasztalni, hogy az alacsonyabb kapcsolatok sokkal kellemesebben hangzanak, mint a magasabbak.</p>"
-		},
-		"MORE": {
-			"HEADER": "Van még ezekből több is? Hogy tudom kifejezni támogatásomat?",
-			"CONTENT": "<p>A legegyszerűbb módja a segítségnek, ha <a href=\"https://www.facebook.com/sharer/sharer.php?u=http%3A//www.suonoterapia.org/overtones\" target=\"_blank\">megosztod ezt a barátaiddal</a> a kedvenc platformodon</p><p>Mindenképp fogjuk még ezt bővíteni, ha elég nagy a kereslet.</p><p>A témakör eléggé tágas és kevés az eszköz, ami segít annak megértésében, felfedezésében és oktatásában. <a href=\"https://facebook.com/suonoterapia\" target=\"_blank\">Kövess minket Facebook-on</a>, hogy naprakész maradj ebben a témában.</p><p>Ha anyagilag is támogatnád azt a többszáz órát, ami ennek az ingyenesen elérhető eszköznek a fejlesztésére lett áldozva, akkor <a href=\"https://paypal.me/sunyatasattva\" target=\"_blank\">adományozz</a>. Minden <em>cent</em> számít (szó szerint)!</p>"
-		},
-		"OUT_TUNE": {
-			"HEADER": "Várj, azt állítod, hogy minden hang hamis?",
-			"CONTENT": "Igen. Nos, az oktávot kivéve. És a kvintek is eléggé rendben vannak!",
-			"TRY": "<p>Megnézheted, hogy mennyire hamisak a mi nyugati hangjaink a jobb oldalt található dobozban, amikor rákattintasz egy körre. Az alul levő szám az, <a href=\"https://hu.wikipedia.org/wiki/Cent_(zene)\">centekben</a> kifejezve.</p><p>Rákattinthatsz a dobozra, hogy halld, hogyan hangzik az a hang a mi nyugati hangolásunk szerint.</p>"
-		},
-		"OVERTONES": {
-			"HEADER": "Szóval, mik azok a <em>felharmonikusok</em>?",
-			"CONTENT": "<em>Felharmonikusoknak</em> nevezzük egy alaphang felhangjait, alapfrekvenciáinak egész többszöröseit"
-		},
-		"PITCH_CLASS": {
-			"HEADER": "Miért ugyanaz a neve az azonos tengelyeken levő köröknek?",
-			"CONTENT": "<p>Azok a felhangok mind <em>Oktáv</em> távolságra vannak egymástól (2:1 arány): Az előbb említett okok miatt ez a legösszecsengőbb hangzás, amit kaphatsz (kultúrától és helytől függetlenül mindenki egyetért ebben).</p><p>Annyira összecsengőek ezek a hangok, hogy <em>már-már</em> azonosnak halljuk.</p>"
-		},
-		"RESOURCES": {
-			"HEADER": "Ez mind nagyon klassz. Van még valami, amit kihagytunk?",
-			"CONTENT": "Ez még csak a jéghegy teteje. Itt van egy pár forrás, amit megnézhetsz, ha jobban beleásnád magad."
-		},
-		"VOICE": {
-			"HEADER": "A saját hangom is tartalmaz felharmonikusokat?",
-			"CONTENT": "<p>Sőt, mi több, attól függően, hogy hogyan formálod a hangképző szerveidet, tudod szabályozni, hogy mely harmonikusok legyenek hangosabbak, vagy halkabbak.</p><p>Egyes éneklési technikák&#xFEFF;&mdash;összesítő nevükön <em><a href=\"//en.wikipedia.org/wiki/Overtone_singing\" target=\"_blank\">Felharmonikus éneklés</a></em>&#xFEFF;&mdash;erre alapozva hoznak létre csodás hangzásokat. Ez kiemelkedően jelen van egyes kultúrákban, mint például a <a href=\"https://www.youtube.com/watch?v=RxK4pQgVvfg\" title=\"Traditional Tuvan band Huun Huur Tu demonstrate Sygyt Throat singing style\">tuvai népeknél</a>, de <a href=\"https://www.youtube.com/watch?v=sQkA3__50aE\" title=\"Nory Jacoby talks about his composition for Polyphonic Overtone singing\">egyre ismertebbé válik</a> a <a href=\"https://www.youtube.com/watch?v=s4BJ3wng6Mk\" title=\"Supersonus performing Ritus, featuring Anna Maria Hefele polyphonic overtone singing\">nyugaton is</a>!</p><p>Egyes hangszerek, mint például a <a href=\"https://hu.wikipedia.org/wiki/Doromb\" target=\"_blank\">doromb</a> és a <a href=\"https://en.wikipedia.org/wiki/Didzseridu\" target=\"_blank\">dizseridu</a> szintén a torkodban formált felharmonikusokkal alkot hangot.</p><p>Tudtad, hogy valójában a felharmonikusok miatt tudjuk megkülönböztetni egy nyelv magánhangzóit? Minden magánhangzó különböző felharmonikusok összessége.</p>",
-			"TRY": "<p>Próbáld ki: endegélyezd a mikrofont a bal felső sarokban található gombbal, majd énekelj és tarts ki egy már majdnem teljesen nazális <em>&#8220;ú&#8221;</em> hangot, majd lassan formáld azt át egy <em>&#8220;í&#8221;</em> hanggá. A spirálon más és más felharmonikusok fognak felvillanni.</p>"
-		},
-		"WHY_HARMONY": {
-			"HEADER": "Klassz! Miért van ez?",
-			"CONTENT": "<p>Főként két okból:</p><p>Először is, az agyunknak könnyebb dolga van, amikor két hang között egyszerűbb arányok vannak, mert periódusaik többször <em>kerülnek szinkronba</em>. például ha egy hang egy másik hang sebességének felével vibrál, akkor annak minden második periódusában találkoznak.</p><p>De ez a kérdés más fajta vizualizációt követel meg.</p><p>Másodszor, minél egyszerűbb két hang aránya, annál több közös felharmonikusuk lesz.</p>",
-			"TRY": "<p>Ezt te is kipróbálhatod: játssz le egy hangot, például 220 Hz (nyomd le a <kbd>y</kbd> billentyűt a billentyűzeteden) és fedezd fel a felhangjait és a frekvenciáit. Majd változtasd az alap frekcenciát 440 Hz-re a bal felső sarokban található csúszkával (vagy simán csak nyomd le a <kbd>&#x21E7; Shift</kbd> + <kbd>y</kbd> billentyűkombinációt).</p><p>Azt fogod tapasztalni, hogy mintha a felharmonikus spirálon csavartunk volna egyet és minden hang egy fordulattal lejjebb került volna: ami eddig a második volt az most az első és ami a hatodik volt, az most a harmadik.</p>"
-		}
-	},
-	"help": {
-		"buttons": {
-			"CANCEL": "Köszönöm, boldogulok",
-			"NEXT": "Következő",
-			"SHOW_AROUND": "Vezess körbe!",
-			"TELL_MORE": "Várj, erről mondj többet!",
-			"THANKS": "Köszönöm!"
-		},
-		"NEWBIE_HELP": {
-			"TITLE": "Nem egyértelmű, amit látsz?",
-			"CONTENT": ["Erre a gombra kattintva bármikor kérhetsz egy körbevezetést, hogy megtudd, mi is történik itt."]
-		},
-		"STEP_END": ["Ennyi volna! Jó szórakozást!"],
-		"STEP_FIRST_PARTIAL": [
-			"A spirál közepén álló kör reprezentálja az alaphangot, a felhangsor első eleme.",
-			"<small>Minden más kör a soron következő felharmonikust reprezentálja, a 16-ikig bezárólag.</small>",
-			"<strong>Kattints a körre, hogy halld a hangját.</strong>"
-		],
-		"STEP_INTERVAL_DETAILS": [
-			"Ebben az esetben a két hang közötti kapcsolatról olvashatsz információt.",
-			"<small>Ebből következik az, hogy a spirál részei a felhangsor akkordjainak felelnek meg.</small>"
-		],
-		"STEP_NOTE_DETAILS": [
-			"Itt találsz információt arról a hangról, amit hallottál.",
-			"Rákattinthatsz a részletekre, hogy halld a referencia hangot."
-		],
-		"STEP_OVERTONE_SPIRAL": [
-			"Ez a vizuális reprezentációja egy alaphangnak és a hozzátartozó felharmonikusoknak.",
-			"Minden egyes csavar a spirálon egy oktávot reprezentál."
-		],
-		"STEP_OPTIONS_BASE": [
-			"Meg tudod változtatni az alaphang magasságát a csúszka mozgatásával.",
-			"<small>A számot közvetlenül tudod szerkeszteni a precízebb hangolás érdekében!</small>"
-		],
-		"STEP_OPTIONS_GROUP": ["Ha ezt az opciót kikapcsolod, akkor az akkordok hangjai külön fognak szólni."],
-		"STEP_OPTIONS_KEYBOARD": [
-			"Meg tudod változtatni az alaphangot a billentyűzettel is, amivel gyorsan megtalálod azokat a hangokat, amik bármely átlag zongorán is megtalálhatóak.",
-			"Minden hang a zongorán megfelel egy gombnak a billentyűzeteden; vagy közvetlenül meg is nyomhatod a gombokat, ha úgy jobban tetszik.",
-			"<small>Ezt a billentyűzetet elő tudod hozni, ha rákattintasz az alaphang csúszkája melletti ikonra.</small>"
-		],
-		"STEP_OPTIONS_MICROPHONE": [
-			"<span class=\"label\">Béta</span>Ha ezt az opciót bekapcsolod, akkor a saját hangod, vagy a mikrofonba küldött bármilyen hang felharmonikusait láthatod.",
-			"A körök megnőnek és reagálnak, hogy megmutassák, mennyire erős az egyes felharmonikusai a hangodnak, valamint az alaphang is meg fog változni, hogy egyezzen a hangodéval.",
-			"<small>Ne felejtsd el engedélyezni a mikrofont, miután bekapcsoltad ezt az opciót.</small>"
-		],
-		"STEP_OPTIONS_OCTAVE": ["Ha ezt az opciót bekapcsolod, akkor az összes hang olyan frekvenciákon fog szólni, amik az alaphanghoz képest egy oktávon belül vannak."],
-		"STEP_OPTIONS_RECORD": [
-			"Ha ezt az opciót bekapcsolod, akkor az általad játszott felharmonikusokból felvételt készítünk, amíg le nem állítod. Az alaphangot természetesen meg tudod változtatni felvétel közben.",
-			"<small>Figyelem: egyszerre csak egy szekvenciát tudsz rögzíteni; amint ezt a gombot megnyomod, az előző felvételt törlöd.</small>",
-			"<small>A felvételt a böngésződben addig tároljuk, amíg ki nem törlöd az böngészési adatokat: vagyis be is zárhatod ezt az ablakot és ki is kapcsolhatod  gépet, a felvételed megmarad.</small>"
-		],
-		"STEP_OPTIONS_SUSTAIN": [
-			"Ha ezt az opciót bekapcsolod, akkor a hangok addig szólnak, amíg manuálisan le nem állítod.",
-			"Le tudod állítani a hangokat manuálisan, ha rákattintasz ismét a körre, kikapcsolod ezt az opciót, vagy az alap frekvenciát megváltoztatod.",
-			"<small>Amíg ez az opció be van kapcsolva, addig az éppen lenyomott és a legutóbbi hang által képzett akkordról fog megjelenni információ. Ezzel be tudod járni az összes hangközt a spirálon.</small>"
-		],
-		"STEP_OPTIONS_VOLUME": [
-			"Az összes hang erejét tudod változtatni ezzel a csúszkával.",
-			"<small>Vigyázz, ha fejhallgatót használsz! A magasabb felharmonikusok lényegesen hangosabbak.</small>"
-		],
-		"STEP_PLAY_PANEL": [
-			"Itt le tudod játszani a szekvenciádat, beállíthatod a sebességet, vagy hangonkként játszatod le, akár visszafele is.",
-			"<small>Ez a panel akkor érhető el, ha van rögzített felvételed</small>"
-		],
-		"STEP_SPIRAL_PIECES": ["Más részeire is kattinthatsz a spirálnak, mint például a két kört összekötő lila szakaszra."]
-	},
-	"intervals": {
-		"Perfect unison": "Tiszta prím",
-		"Schisma": "Schisma",
-		"Syntonic comma": "Szintonikus komma",
-		"Pythagorean comma": "Pitagoraszi komma",
-		"Enharmonic diesis": "Enharmonikus diézis",
-		"Augmented unison": "Bővített prím",
-		"Limma": "Limma",
-		"Chromatic semitone": "Kromatikus félhang",
-		"Small septendecimal semitone": "Kis szemptemdecimális félhang",
-		"Large septendecimal semitone": "Nagy szeptemdecimális félhang",
-		"Minor second": "Kis szekund",
-		"Apotome": "Nagy pitagoraszi félhang",
-		"Septimal diatonic semitone": "Szeptimál diatonikus félhang",
-		"Supraminor second": "",
-		"Large limma": "Nagy limma",
-		"Small neutral second": "Kis neutrális szekund",
-		"Neutral second": "Neutrális szekund",
-		"Submajor second": "",
-		"Minor tone": "Kis félhang",
-		"Major second": "Nagy szekund",
-		"Supermajor second": "",
-		"Subminor third": "",
-		"Minor third": "Kis terc",
-		"Tridecimal neutral third": "Tridecimális neutrális terc",
-		"Major third": "Nagy terc",
-		"Perfect fourth": "Tiszta kvart",
-		"Superfourth": "",
-		"Augmented fourth": "Bővített kvart",
-		"Diminished fifth": "Szűkített kvint",
-		"Undecimal subfifth": "",
-		"Perfect fifth": "Tiszta kvint",
-		"Minor sixth": "Kis szext",
-		"Neutral sixth": "Neutrális szext",
-		"Major sixth": "Nagy szext",
-		"Harmonic seventh": "Harmonikus szeptim",
-		"Minor seventh": "Kis szeptim",
-		"Major seventh": "Nagy szeptim",
-		"Perfect octave": "Tiszta oktáv",
-		"Unknown interval": "Ismeretlen hangköz"
-	},
-	"Music": "Zene",
-	"notes": {
-		"C": "C",
-		"C#": "Cisz",
-		"Db": "Desz",
-		"D": "D",
-		"D#": "Disz",
-		"Eb": "Esz",
-		"E": "E",
-		"F": "F",
-		"F#": "Fisz",
-		"Gb": "Gesz",
-		"G": "G",
-		"G#": "Gisz",
-		"Ab": "Asz",
-		"A": "A",
-		"A#": "Aisz",
-		"Bb": "B",
-		"B": "H"
-	},
-	"Online": "Online",
-	"Options": "Beállítások",
-	"Overtones Spiral": "Felharmonikus Spirál",
-	"Share": "Megosztás"
+  "Books": "Könyvek",
+  "credits": "<span class=\"hide-on-small\">Örömmel készítette</span> <a href=\"https://facebook.com/sunyatasattva\">Marco Lucio Giannotta</a> és <a href=\"https://www.facebook.com/skye.lofvander\">Skye Løfvander</a>. <span class=\"version hide-on-medium\">Verzió: <a href=\"https://github.com/sunyatasattva/overtones/releases/\">2.0.0</a></span>",
+  "Donate": "Támogatás",
+  "easter_egg": {
+    "SUBTITLE": "Sajnos csak ennyi a jutalom. De végülis a megtett út a fontos, nem?",
+    "TEXT": "Oszd meg az Overtones világa iránti rajongásaidat barátaiddal és nézd meg, hogy ők is megtalálják-e ezt a szivárványt! ",
+    "TITLE": "Megtaláltad a titkos szivárványt!"
+  },
+  "guide": {
+    "DIFFERENCE": {
+      "HEADER": "Oké, rákattintottam a dobozra és nem is hangzott annyira különbözőnek. Ez lenne a nagy szám?",
+      "CONTENT": "<p>Nos&hellip; vitathatóan.</p><p>Valójában ez egy személyes vélemény lesz: igen, számít. A tiszta harmonikusoknak van egy olyan varázsa, ereje és színezete, amit a temperált hangok sose adhatnak vissza.</p><p>Plusz, amikor minden hang <em>egyenlő távolságra van egymástól</em>, akkor elvész a zene karakteréből egy csodás különbség, ami teljesen megváltoztathatja annak hangulatát. Pontosan ezt csinálják jól az <a href=\"https://en.wikipedia.org/wiki/Indian_classical_music\">indiaiak</a></p>",
+      "TRY": "<p>Ha nem vagy meggyőzve, hogy a különbség hallható, akkor próbáld ki ezt: kapcsold be a &#8220;Reduce to Octave&#8221; és &#8220;Sustain&#8221; opciókat (balról a második és harmadik a beállítások panelen) és nyomd meg a hetedik felhangot. Most tartsd lenyomva az egeret egy kicsit a dobozon.</p><p>Hallottad?! Elég rettenetes!</p><p> Amit hallottál, azt <a href=\"https://en.wikipedia.org/wiki/Beat_(acoustics)\">lüktetésnek</a> nevezzük és akkor hallhatod, amikor a hangok frekvenciája elég közel van egymáshoz, bár mégsincsenek teljesen fedésben.</p><p>El tudod képzelni az összes lüktetést a felharmonikusok között?</p>"
+    },
+    "ET": {
+      "HEADER": "Próbáltam elolvasni a belinkelt wikipédia cikket, de még mindig nem értem mi az, hogy <em>12 fokú temperált hangsor</em> és hogyan kapcsolódik mindehez.",
+      "CONTENT": "<p>Ez egy elég komplikált kérdés, de megpróbálom levezetni.</p><p>Emlékszel, amikor azt mondtuk, hogy az egyszerűbb arányok harmonikusabbak? Kiderült, hogy <em>ténylegesen felhasználni őket</em> zenékhez nem is annyira egyszerű.</p><p>Nem fogok túlzottan belemenni a részletekbe, de mivel tudjuk, hogy egy kör oktávonként ismétlődik (vagyis mindegyik duplázódásnál), a feladat adott, hogy felosszuk a köztes szakaszt harmonikus lépésekre, amikkel aztán zenét tudunk alkotni</p><p>De persze nem csak az alaphang és az oktáv között szeretnénk, ha jól hangoznának ezek a hangok, hanem egymáshoz képest is. És, ideális esetben, a nyugati zenében, mindegyik hangnál szeretnénk, ha az lehetne az alaphang (vagyis a zenénk közepe).</p><p>Apropó! Még azt is szeretnénk, hogy nehezen, vagy egyáltalán nem hangolható hangszereket bármikor áthangolhassunk: ilyen például a zongora, az orgona, vagy csak simán a furulya.</p><p>Matematikailag lehetetlen (hidd el!) kielégíteni az előbb felsorolt összes igényt kielégíteni, és ez a zeneszerők, zenészek és hangszerkészítők keresztje volt évszázadokig, és <a href=\"https://hu.wikipedia.org/wiki/Hangol%C3%A1s\">sok rendszer lett feltalálva eltérő kompromisszumokkal</a>.</p><p>Egy ponton azonban a nyugati kultúrában (igazából a kínaiak voltak az elsők, de arról majd máskor&hellip;), elhatároztuk, hogy az alábbi kompromisszumot hozzuk: vedd az oktávot és oszd el tizenkét egyenlő részre; <em>és íme!</em> Most már minden hangközünk egyforma!</p><p><em>&#8220;Várj!&#8221;</em> szinte hallom, ahogy mondod <em>&#8220;Ez nem azt jelenti, hogy így nincs olyan hangköz, ahol a hangok harmonikus kapcsolatban állnának egymással?&#8221;</em></p><p>De.</p><p>De úgy döntöttünk, hogy jó ez így és majd ha sok hangot egymásra pakolunk, hogy nagy zajjá álljon össze, akkor remélhetőleg senki se fogja ezt észrevenni!</p>"
+    },
+    "EXPLAIN": {
+      "HEADER": "Rendben, ez mind nagyon jópofa, de el tudnád mondani egyszerűbben, hogy ez most mit is jelent?",
+      "CONTENT": "<p>Dióhéjban és erősen leegyszerűsítve: a természetben található hangok többsége egy halom kisebb komponensből áll össze, <em>harmonikusokból</em>.</p><p>Általában ezekből a legmélyebbet halljuk meg, ami az <em>alaphang</em> (ez lenne a spirál közepén álló kör), míg a többi csak bizonyos <em>színt</em> (vagy <em><a href=\"//en.wikipedia.org/wiki/Timbre\" target=\"_blank\">csengést</a></em>) kölcsönöz a hangnak.</p><p>A harmonikusok vegyes eloszlása a hangokon belül felelős azért, hogy meg tudjunk különböztetni ugyanazt a hangot két külön hangszeren megszólaltatva.</p><p>A legtöbb olyan hangban, amit <em>zeneinek</em> hívunk&#xFEFF;&mdash;mint például egy gitár megpengetett húrja&#xFEFF;&mdash;ezek a felhangok jól meghatározott, egyszerű, matematikai arányban állnak egymással.</p><p>Amikor ez történik, akkor őket <em>harmonikusoknak</em> nevezzük és ez van itt ábrázolva.</p>"
+    },
+    "INTERVAL": {
+      "HEADER": "Mi az a <em>hangköz</em>?",
+      "CONTENT": "<p>Egy <em>hangköz</em> a matematikai és harmonikus kapcsolatot írja le két hang között.</p><p>Bizonyos hangközöknek neveket adunk&#xFEFF;&mdash;mint például az <em>Oktáv</em>, <em>Kvint</em>, stb.&#xFEFF;&mdash;, hogy könnyebben beszélhessünk róluk.</p><p>Általában egy hangköz kellemesebb a fülünknek, ha egyszerűbb az a matematikai arány, ami leírja a két hang viszonyát.</p>",
+      "TRY": "<p>Ezt te magad is kipróbálhatod úgy, hogy a spirál lila szakaszaira kattintasz: azt fogod tapasztalni, hogy az alacsonyabb kapcsolatok sokkal kellemesebben hangzanak, mint a magasabbak.</p>"
+    },
+    "MORE": {
+      "HEADER": "Van még ezekből több is? Hogy tudom kifejezni támogatásomat?",
+      "CONTENT": "<p>A legegyszerűbb módja a segítségnek, ha <a href=\"https://www.facebook.com/sharer/sharer.php?u=http%3A//www.suonoterapia.org/overtones\" target=\"_blank\">megosztod ezt a barátaiddal</a> a kedvenc platformodon</p><p>Mindenképp fogjuk még ezt bővíteni, ha elég nagy a kereslet.</p><p>A témakör eléggé tágas és kevés az eszköz, ami segít annak megértésében, felfedezésében és oktatásában. <a href=\"https://facebook.com/suonoterapia\" target=\"_blank\">Kövess minket Facebook-on</a>, hogy naprakész maradj ebben a témában.</p><p>Ha anyagilag is támogatnád azt a többszáz órát, ami ennek az ingyenesen elérhető eszköznek a fejlesztésére lett áldozva, akkor <a href=\"https://paypal.me/sunyatasattva\" target=\"_blank\">adományozz</a>. Minden <em>cent</em> számít (szó szerint)!</p>"
+    },
+    "OUT_TUNE": {
+      "HEADER": "Várj, azt állítod, hogy minden hang hamis?",
+      "CONTENT": "Igen. Nos, az oktávot kivéve. És a kvintek is eléggé rendben vannak!",
+      "TRY": "<p>Megnézheted, hogy mennyire hamisak a mi nyugati hangjaink a jobb oldalt található dobozban, amikor rákattintasz egy körre. Az alul levő szám az, <a href=\"https://hu.wikipedia.org/wiki/Cent_(zene)\">centekben</a> kifejezve.</p><p>Rákattinthatsz a dobozra, hogy halld, hogyan hangzik az a hang a mi nyugati hangolásunk szerint.</p>"
+    },
+    "OVERTONES": {
+      "HEADER": "Szóval, mik azok a <em>felharmonikusok</em>?",
+      "CONTENT": "<em>Felharmonikusoknak</em> nevezzük egy alaphang felhangjait, alapfrekvenciáinak egész többszöröseit"
+    },
+    "PITCH_CLASS": {
+      "HEADER": "Miért ugyanaz a neve az azonos tengelyeken levő köröknek?",
+      "CONTENT": "<p>Azok a felhangok mind <em>Oktáv</em> távolságra vannak egymástól (2:1 arány): Az előbb említett okok miatt ez a legösszecsengőbb hangzás, amit kaphatsz (kultúrától és helytől függetlenül mindenki egyetért ebben).</p><p>Annyira összecsengőek ezek a hangok, hogy <em>már-már</em> azonosnak halljuk.</p>"
+    },
+    "RESOURCES": {
+      "HEADER": "Ez mind nagyon klassz. Van még valami, amit kihagytunk?",
+      "CONTENT": "Ez még csak a jéghegy teteje. Itt van egy pár forrás, amit megnézhetsz, ha jobban beleásnád magad."
+    },
+    "VOICE": {
+      "HEADER": "A saját hangom is tartalmaz felharmonikusokat?",
+      "CONTENT": "<p>Sőt, mi több, attól függően, hogy hogyan formálod a hangképző szerveidet, tudod szabályozni, hogy mely harmonikusok legyenek hangosabbak, vagy halkabbak.</p><p>Egyes éneklési technikák&#xFEFF;&mdash;összesítő nevükön <em><a href=\"//en.wikipedia.org/wiki/Overtone_singing\" target=\"_blank\">Felharmonikus éneklés</a></em>&#xFEFF;&mdash;erre alapozva hoznak létre csodás hangzásokat. Ez kiemelkedően jelen van egyes kultúrákban, mint például a <a href=\"https://www.youtube.com/watch?v=RxK4pQgVvfg\" title=\"Traditional Tuvan band Huun Huur Tu demonstrate Sygyt Throat singing style\">tuvai népeknél</a>, de <a href=\"https://www.youtube.com/watch?v=sQkA3__50aE\" title=\"Nory Jacoby talks about his composition for Polyphonic Overtone singing\">egyre ismertebbé válik</a> a <a href=\"https://www.youtube.com/watch?v=s4BJ3wng6Mk\" title=\"Supersonus performing Ritus, featuring Anna Maria Hefele polyphonic overtone singing\">nyugaton is</a>!</p><p>Egyes hangszerek, mint például a <a href=\"https://hu.wikipedia.org/wiki/Doromb\" target=\"_blank\">doromb</a> és a <a href=\"https://en.wikipedia.org/wiki/Didzseridu\" target=\"_blank\">dizseridu</a> szintén a torkodban formált felharmonikusokkal alkot hangot.</p><p>Tudtad, hogy valójában a felharmonikusok miatt tudjuk megkülönböztetni egy nyelv magánhangzóit? Minden magánhangzó különböző felharmonikusok összessége.</p>",
+      "TRY": "<p>Próbáld ki: endegélyezd a mikrofont a bal felső sarokban található gombbal, majd énekelj és tarts ki egy már majdnem teljesen nazális <em>&#8220;ú&#8221;</em> hangot, majd lassan formáld azt át egy <em>&#8220;í&#8221;</em> hanggá. A spirálon más és más felharmonikusok fognak felvillanni.</p>"
+    },
+    "WHY_HARMONY": {
+      "HEADER": "Klassz! Miért van ez?",
+      "CONTENT": "<p>Főként két okból:</p><p>Először is, az agyunknak könnyebb dolga van, amikor két hang között egyszerűbb arányok vannak, mert periódusaik többször <em>kerülnek szinkronba</em>. például ha egy hang egy másik hang sebességének felével vibrál, akkor annak minden második periódusában találkoznak.</p><p>De ez a kérdés más fajta vizualizációt követel meg.</p><p>Másodszor, minél egyszerűbb két hang aránya, annál több közös felharmonikusuk lesz.</p>",
+      "TRY": "<p>Ezt te is kipróbálhatod: játssz le egy hangot, például 220 Hz (nyomd le a <kbd>y</kbd> billentyűt a billentyűzeteden) és fedezd fel a felhangjait és a frekvenciáit. Majd változtasd az alap frekcenciát 440 Hz-re a bal felső sarokban található csúszkával (vagy simán csak nyomd le a <kbd>&#x21E7; Shift</kbd> + <kbd>y</kbd> billentyűkombinációt).</p><p>Azt fogod tapasztalni, hogy mintha a felharmonikus spirálon csavartunk volna egyet és minden hang egy fordulattal lejjebb került volna: ami eddig a második volt az most az első és ami a hatodik volt, az most a harmadik.</p>"
+    }
+  },
+  "help": {
+    "buttons": {
+      "CANCEL": "Köszönöm, boldogulok",
+      "NEXT": "Következő",
+      "SHOW_AROUND": "Vezess körbe!",
+      "TELL_MORE": "Várj, erről mondj többet!",
+      "THANKS": "Köszönöm!"
+    },
+    "NEWBIE_HELP": {
+      "TITLE": "Nem egyértelmű, amit látsz?",
+      "CONTENT": [
+        "Erre a gombra kattintva bármikor kérhetsz egy körbevezetést, hogy megtudd, mi is történik itt."
+      ]
+    },
+    "STEP_END": ["Ennyi volna! Jó szórakozást!"],
+    "STEP_FIRST_PARTIAL": [
+      "A spirál közepén álló kör reprezentálja az alaphangot, a felhangsor első eleme.",
+      "<small>Minden más kör a soron következő felharmonikust reprezentálja, a 16-ikig bezárólag.</small>",
+      "<strong>Kattints a körre, hogy halld a hangját.</strong>"
+    ],
+    "STEP_INTERVAL_DETAILS": [
+      "Ebben az esetben a két hang közötti kapcsolatról olvashatsz információt.",
+      "<small>Ebből következik az, hogy a spirál részei a felhangsor akkordjainak felelnek meg.</small>"
+    ],
+    "STEP_NOTE_DETAILS": [
+      "Itt találsz információt arról a hangról, amit hallottál.",
+      "Rákattinthatsz a részletekre, hogy halld a referencia hangot."
+    ],
+    "STEP_OVERTONE_SPIRAL": [
+      "Ez a vizuális reprezentációja egy alaphangnak és a hozzátartozó felharmonikusoknak.",
+      "Minden egyes csavar a spirálon egy oktávot reprezentál."
+    ],
+    "STEP_OPTIONS_BASE": [
+      "Meg tudod változtatni az alaphang magasságát a csúszka mozgatásával.",
+      "<small>A számot közvetlenül tudod szerkeszteni a precízebb hangolás érdekében!</small>"
+    ],
+    "STEP_OPTIONS_GROUP": [
+      "Ha ezt az opciót kikapcsolod, akkor az akkordok hangjai külön fognak szólni."
+    ],
+    "STEP_OPTIONS_KEYBOARD": [
+      "Meg tudod változtatni az alaphangot a billentyűzettel is, amivel gyorsan megtalálod azokat a hangokat, amik bármely átlag zongorán is megtalálhatóak.",
+      "Minden hang a zongorán megfelel egy gombnak a billentyűzeteden; vagy közvetlenül meg is nyomhatod a gombokat, ha úgy jobban tetszik.",
+      "<small>Ezt a billentyűzetet elő tudod hozni, ha rákattintasz az alaphang csúszkája melletti ikonra.</small>"
+    ],
+    "STEP_OPTIONS_MICROPHONE": [
+      "<span class=\"label\">Béta</span>Ha ezt az opciót bekapcsolod, akkor a saját hangod, vagy a mikrofonba küldött bármilyen hang felharmonikusait láthatod.",
+      "A körök megnőnek és reagálnak, hogy megmutassák, mennyire erős az egyes felharmonikusai a hangodnak, valamint az alaphang is meg fog változni, hogy egyezzen a hangodéval.",
+      "<small>Ne felejtsd el engedélyezni a mikrofont, miután bekapcsoltad ezt az opciót.</small>"
+    ],
+    "STEP_OPTIONS_OCTAVE": [
+      "Ha ezt az opciót bekapcsolod, akkor az összes hang olyan frekvenciákon fog szólni, amik az alaphanghoz képest egy oktávon belül vannak."
+    ],
+    "STEP_OPTIONS_RECORD": [
+      "Ha ezt az opciót bekapcsolod, akkor az általad játszott felharmonikusokból felvételt készítünk, amíg le nem állítod. Az alaphangot természetesen meg tudod változtatni felvétel közben.",
+      "<small>Figyelem: egyszerre csak egy szekvenciát tudsz rögzíteni; amint ezt a gombot megnyomod, az előző felvételt törlöd.</small>",
+      "<small>A felvételt a böngésződben addig tároljuk, amíg ki nem törlöd az böngészési adatokat: vagyis be is zárhatod ezt az ablakot és ki is kapcsolhatod  gépet, a felvételed megmarad.</small>"
+    ],
+    "STEP_OPTIONS_SUSTAIN": [
+      "Ha ezt az opciót bekapcsolod, akkor a hangok addig szólnak, amíg manuálisan le nem állítod.",
+      "Le tudod állítani a hangokat manuálisan, ha rákattintasz ismét a körre, kikapcsolod ezt az opciót, vagy az alap frekvenciát megváltoztatod.",
+      "<small>Amíg ez az opció be van kapcsolva, addig az éppen lenyomott és a legutóbbi hang által képzett akkordról fog megjelenni információ. Ezzel be tudod járni az összes hangközt a spirálon.</small>"
+    ],
+    "STEP_OPTIONS_VOLUME": [
+      "Az összes hang erejét tudod változtatni ezzel a csúszkával.",
+      "<small>Vigyázz, ha fejhallgatót használsz! A magasabb felharmonikusok lényegesen hangosabbak.</small>"
+    ],
+    "STEP_PLAY_PANEL": [
+      "Itt le tudod játszani a szekvenciádat, beállíthatod a sebességet, vagy hangonkként játszatod le, akár visszafele is.",
+      "<small>Ez a panel akkor érhető el, ha van rögzített felvételed</small>"
+    ],
+    "STEP_SPIRAL_PIECES": [
+      "Más részeire is kattinthatsz a spirálnak, mint például a két kört összekötő lila szakaszra."
+    ]
+  },
+  "intervals": {
+    "Perfect unison": "Tiszta prím",
+    "Schisma": "Schisma",
+    "Syntonic comma": "Szintonikus komma",
+    "Pythagorean comma": "Pitagoraszi komma",
+    "Enharmonic diesis": "Enharmonikus diézis",
+    "Augmented unison": "Bővített prím",
+    "Limma": "Limma",
+    "Chromatic semitone": "Kromatikus félhang",
+    "Small septendecimal semitone": "Kis szemptemdecimális félhang",
+    "Large septendecimal semitone": "Nagy szeptemdecimális félhang",
+    "Minor second": "Kis szekund",
+    "Apotome": "Nagy pitagoraszi félhang",
+    "Septimal diatonic semitone": "Szeptimál diatonikus félhang",
+    "Supraminor second": "szupra-kis szekund",
+    "Large limma": "Nagy limma",
+    "Small neutral second": "Kis neutrális szekund",
+    "Neutral second": "Neutrális szekund",
+    "Submajor second": "szub-nagy szekund",
+    "Minor tone": "Kis félhang",
+    "Major second": "Nagy szekund",
+    "Supermajor second": "szupra-nagy szekund",
+    "Subminor third": "szub-kis terc",
+    "Minor third": "Kis terc",
+    "Tridecimal neutral third": "Tridecimális neutrális terc",
+    "Major third": "Nagy terc",
+    "Perfect fourth": "Tiszta kvart",
+    "Superfourth": "Szupra-kvart",
+    "Augmented fourth": "Bővített kvart",
+    "Diminished fifth": "Szűkített kvint",
+    "Undecimal subfifth": "Undecimális szub-kvint",
+    "Perfect fifth": "Tiszta kvint",
+    "Minor sixth": "Kis szext",
+    "Neutral sixth": "Neutrális szext",
+    "Major sixth": "Nagy szext",
+    "Harmonic seventh": "Harmonikus szeptim",
+    "Minor seventh": "Kis szeptim",
+    "Major seventh": "Nagy szeptim",
+    "Perfect octave": "Tiszta oktáv",
+    "Unknown interval": "Ismeretlen hangköz"
+  },
+  "Music": "Zene",
+  "notes": {
+    "C": "C",
+    "C#": "Cisz",
+    "Db": "Desz",
+    "D": "D",
+    "D#": "Disz",
+    "Eb": "Esz",
+    "E": "E",
+    "F": "F",
+    "F#": "Fisz",
+    "Gb": "Gesz",
+    "G": "G",
+    "G#": "Gisz",
+    "Ab": "Asz",
+    "A": "A",
+    "A#": "Aisz",
+    "Bb": "B",
+    "B": "H"
+  },
+  "Online": "Online",
+  "Options": "Beállítások",
+  "Overtones Spiral": "Felharmonikus Spirál",
+  "Share": "Megosztás"
 }
