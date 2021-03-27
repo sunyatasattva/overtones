@@ -1,0 +1,172 @@
+{
+	"credits": "<span class=\"hide-on-small\">Formgivet og programmeret</span> af <a href=\"https://www.facebook.com/sunyatasattva\" target=\"_blank\">Marco Lucio Giannotta</a> and <a href=\"https://www.facebook.com/skye.lofvander/\" target=\"_blank\">Skye Løfvander</a>. <span class=\"hide-on-medium version\">Version <a href=\"https://github.com/sunyatasattva/overtones/releases/\">2.0.0</a></span>",
+	"easter_egg": {
+		"SUBTITLE": "Beklager, du får ikke en krukke med guld, men rejsen er lige så vigtig som målet, ikke?",
+		"TEXT": "Hvorfor ikke dele din glæde for overtonernes verden med dine venner og se, om de også kan finde regnbuen?",
+		"TITLE": "Tillykke, du har fundet den hemmelige regnbue!"
+	},
+	"guide": {
+		"DIFFERENCE": {
+			"HEADER": "Okay, altså, jeg har klikket på boksen, men jeg synes ikke det lød som nogen særlig forskel. Er der overhovedet noget reelt i det her?",
+			"CONTENT": "<p>Tja, det kan man mene ...</p><p>Her vil jeg faktisk tillade mig at fremsætte mit syn på det: Ja, det er der! <a href=\"https://www.musikipedia.dk/leksikon/overtoneraekke\" target=\"_blank\">Overtonerækken</a>s toner har en magi, kraft og farve, som tempererede tonerelationer aldrig vil komme i nærheden af.</p><p>Hvis alle toner ydermere tempereres <em><a href=\"https://www.musikipedia.dk/stemningssystemer#6\" target=\"_blank\">ligesvævende</a></em>, mister du de smukke nuanceforskelle og karakteregenskaber, som fuldstændig kan forvandle et musikstykkes udtryk. Det er, hvad eksempelvis <a href=\"https://en.wikipedia.org/wiki/Indian_classical_music\" target=\"_blank\">indisk klassisk musik</a> er i stand til.</p>",
+			"TRY": "<p>Hvis du stadig ikke er overbevist om en hørbar forskel, så prøv dette: Aktivér indstillingerne “Reducér til primær oktav” og “Sustain” (henholdsvis&nbsp;<span face=\"arial, sans-serif\" style=\"background-color: white; color: #202124; font-size: 16px;\"> 𝄞 </span>&nbsp;og&nbsp;<span face=\"arial, sans-serif\" style=\"background-color: white; color: #202124; font-size: 16px;\"><span style=\"vertical-align: sub;\"><span style=\"font-size: medium;\">&nbsp;𝄐&nbsp;</span></span></span> ikon på indstillingspanelet) og klik på den syvende partialtone. Når tonen klinger, så klik også på boksen til højre, så længe du kan holde det ud.</p><p>Kunne du høre det?! Ret stygt!</p><p>Dette fænomen kaldes <a href=\"https://www.musikipedia.dk/interferens#2\">stødtoner</a>, og det er, hvad der sker, når to toner ligger relativt tæt, men ikke stemmer.</p><p>Kan du forestille dig alle de stødtoner, som findes mellem overtonerne?</p>"
+		},
+		"ET": {
+			"HEADER": "Jeg forsøgte at læse Wikikipedia-artiklen, men jeg forstår stadig ikke, hvad <em><a href=\"https://www.musikipedia.dk/stemningssystemer#6\" target=\"_blank\">Ligesvævende temperatur</a></em> er, og hvad det betyder i forbindelse med <a href=\"https://www.musikipedia.dk/overtoner\" target=\"_blank\">overtoner</a>.",
+			"CONTENT": "<p>Okay, det er også et omfattende spørgsmål, men jeg vil forsøge at gøre det kort og klart.</p><p>Husk, at vi blev enige om, at toner med indbyrdes simple talproportioner (ratio) klinger smukkere? Det viser sig desværre, at når man faktisk forsøger at bruge disse rene intervaller i tonesystemer, så bliver det mere speget.</p><p>Vi skal ikke gå i detaljer med det her, men eftersom vi ved, at tonecirklerne gentager sig ved hver oktav (ratio 1:2), skal vi regne ud, hvordan man opdeler intervallet mellem 1 (prim) og 2 (oktav) i mindre størrelser, der giver mening som skalaskridt.</p><p>Vi ønsker vel at mærke ikke kun, at intervallerne mellem disse trin og primen skal være så harmonisk som muligt, men at de også skal stå i et harmonisk forhold til hinanden. Ideelt set ønsker vi også i vestlig musik, at man skal kunne tage ethvert af disse trin og gøre det til grundtone (det tonale centrum) i en skala.</p><p>Åh! Og så ønsker vi også, at alle disse krav skal kunne opfyldes for instrumenter, som er meget upraktiske (eller umulige) at stemme om på stedet, som for eksempel piano, orgel eller bare en fløjte.</p><p>At opfylde alle disse krav er en matematisk umulighed (tro mig på mit ord!), og det har været et evigt problem for komponister, musikere og instrumentmagere gennem århundreder, og <a href=\"https://www.musikipedia.dk/stemningssystemer\" target=\"_blank\">mange stemningssystemer</a>, hver med sine kompromisser, er blevet udtænkt.</p><p>På et tidspunkt besluttede man sig i Vesten (faktisk kom kineserne først, men den historie må vente til et andet afsnit) til at indgå dette kompromis: Tag oktaven og inddel den i tolv matematisk lige store dele. <em>Tada!</em> Nu er alle relationer mellem de forskellige toner jævnbyrdige!</p><p><em>“Men vent!”</em> hører jeg dig sige <em>“Betyder det, at ingen af tonerne nu står i et enkelt harmonisk forhold med de andre toner længere?”</em></p><p>Jep!</p><p>Men vi besluttede, at det var godt nok, og at hvis vi bare stabler en masse toner oven på hinanden og således skaber en masse støj, så er der sikkert ingen, som vil bemærke noget!</p>"
+		},
+		"EXPLAIN": {
+			"HEADER": "Okay, det ser alt samme meget sjovt ud og lyder ligeså, men kan du med enkle ord forklare, hvad dette faktisk betyder?",
+			"CONTENT": "<p>Hvis du er med på, at det følgende er simplificeret, så er sagen i en nøddeskal, at de allerfleste af naturens lyde består af flere frekvenser og således egentlig er klange. Deres mindre bestanddele kaldets&nbsp;<em>partialtoner</em>.</p><p>Normalt vil vi identificere den dybeste af disse partialtoner i klangen, <em>primærtonen</em> (det er cirklen i midten), mens de andre bidrager til den særlige <em>klang</em> eller <em><a href=\"https://da.wikipedia.org/wiki/Klangfarve\" target=\"_blank\">klangfarve</a></em>).</p><p> Hver tones særlige sammensætning af disse partialtoner er altså grunden til, at vi kan skelne mellem toner spillet på forskellige instrumenter.</p><p>I de fleste af de lyde, som vi oplever som <em>musikalske</em>, som for eksempel lyden af en anslået guitarstreng, vil disse partialtoner have en enkel matematisk relation med hinanden: <a href=\"https://www.musikipedia.dk/overtoner\" target=\"_blank\">Overtonerne</a> er multipler af primærtonen.</p><p>I disse tilfælde er klangen bygget op af <em>overtoner</em>, og det er, hvad du kan se afbildet her.</p>"
+		},
+		"INTERVAL": {
+			"HEADER": "Hvad betyder <em>interval</em> egentlig?",
+			"CONTENT": "<p>Et <em><a href=\"https://www.musikipedia.dk/intervaller\" target=\"_blank\">interval</a></em> er den matematiske og harmoniske relation mellem to toner.</p><p>Vi giver dem navne – som for eksempel <em><a href=\"https://www.musikipedia.dk/leksikon/oktav\" target=\"_blank\">oktav</a></em> og <em><a href=\"https://www.musikipedia.dk/leksikon/kvint\" target=\"_blank\">kvint</a></em> – for bedre at kunne referere til dem.</p><p>I store træk lyder et interval mere konsonant, mere harmonisk, når der findes en enkel matematisk frekvens- (og bølgelængde-) relation mellem de to toner, der udgør det. Med et fagudtryk er deres indbyrdes <i><a href=\"https://ordnet.dk/ddo/ordbog?query=ratio&amp;tab=for\" target=\"_blank\">ratio</a></i> simpel, fx 1:2 (oktaven), 2:3 (ren kvint), 3:4 (ren kvart), ...&nbsp;</p>",
+			"TRY": "<p>Du kan afprøve denne påstand ved selv at klikke på de violette spiralsegmenter, som forbinder partialtonecirklerne. Du vil sikkert bemærke, at intervallerne tættest på centrum lyder mest konsonant, mens de, som er længere ude i spiralen, bliver mere dissonante.</p>"
+		},
+		"MORE": {
+			"HEADER": "Findes der mere som dette? Hvad kan jeg gøre for at støtte projektet?",
+			"CONTENT": "<p>Du kan i hvert fald dele dette med dine venner på dit foretrukne sociale netmedie.</p><p>Vi vil helt sikkert lave mere lignende, hvis der viser sig at være nok interesse for det. Der er meget at vide noget om og vidt spillerum for redskaber, der kan lette forståelsen og blive afsæt til undersøgelser og undervisning. <a href=\"https://facebook.com/suonoterapia\" target=\"_blank\">Følg os på Facebook</a> for at blive holdt underrettet om nye, lignende projekter.</p><p>Hvis du tilmed vil yde noget økonomisk støtte for de hundreder af timers arbejde, som ligger til grund for frit tilgængelige redskaber som dette, kan du <a href=\"https://paypal.me/sunyatasattva\" target=\"_blank\">give dit bidrag her</a>. Hvert et øre og hver en øre tæller!</p>"
+		},
+		"OUT_TUNE": {
+			"HEADER": "Hov, stop lige engang! Antyder du lige, at min musik slet ikke stemmer?",
+			"CONTENT": "Ja. Det vil sige bortset fra oktaven. Kvint og kvart kan gå an, men tertser og sekster er i permanent krise",
+			"TRY": "<p>Du kan selv både se og høre, hvor falske vores tonesystems toner faktisk er. Når du klikker på en af partialtonecirklerne, dukker en boks op til højre. Tallet i bunden af den angiver afvigelsen i værdien <a href=\"https://www.musikipedia.dk/leksikon/cent\">cent</a>.</p><p>Når du klikker på selve boksen, kan du også hører den tilsvarende tone i ligesvævende temperatur.</p>"
+		},
+		"OVERTONES": {
+			"HEADER": "Hvad er <em>overtoner</em> så?",
+			"CONTENT": "<em>Overtoner</em> er egentlig bare navnet for de partialtoner, som ligger over primærtonen (klangens basis. Engelsk: The fundamental)."
+		},
+		"PITCH_CLASS": {
+			"HEADER": "Hvorfor har alle partialtonecirkler på samme orange radius det samme navn?",
+			"CONTENT": "<p>Disse overtoner står alle i et <em>oktav-</em>forhold med hinanden, altså ratio 1:2. Af de grunde, som beskrives ovenfor, er dette det mest konsonerende interval overhovedet, og det er praktisk talt, hvad mennesker oplever over hele kloden på tværs af kulturer.</p><p>Det er faktisk så konsonerende, at vi opfatter toner i oktavafstand som sammenfaldende og altså i en vis forstand <em>essentielt de samme</em>.</p>"
+		},
+		"RESOURCES": {
+			"HEADER": "Det er alt sammen meget sejt ... er der mere, jeg skal vide?",
+			"CONTENT": "Vi har endnu kun kradset lidt i overfladen. Her er nogle henvisninger til materiale, som du vil kunne komme videre med."
+		},
+		"VOICE": {
+			"HEADER": "Frembringer min stemme overtoner?",
+			"CONTENT": "<p>Ja, simpelthen! Faktisk kan du – ved at forme <a href=\"https://www.musikipedia.dk/stemmen-og-oeret\" target=\"_blank\">ansatsrøret</a> på forskellige måder – påvirke, hvilke overtoner som står frem i klangen.</p><p>Nogle teknikker med samlebetegnelsen <em><a href=\"https://en.wikipedia.org/wiki/Overtone_singing\" target=\"_blank\">overtonesang</a></em> udnytter dette forhold til at skabe smuk musik. Overtonesang er fremherskende i visse kulturer, som <a  href=\"https://www.youtube.com/watch?v=RxK4pQgVvfg\">her fra Tuva</a>, men bliver <a href=\"https://www.youtube.com/watch?v=sQkA3__50aE\">mere og mere udbredt</a> i <a href=\"https://www.youtube.com/watch?v=s4BJ3wng6Mk\"> Vesten også</a>!</p><p>Nogle instrumenter, såsom <a href=\"https://www.musikipedia.dk/leksikon/mundharpe\" target=\"_blank\">jødeharpe</a> og <a href=\"https://www.musikipedia.dk/leksikon/didgeridoo\" target=\"_blank\">didgeridoo</a>, frembringer musik, som kontrolleres af dit ansatsrørs overtoner.</p><p>Vidste du, at dette faktisk er grunden til, at man kan skelne den ene vokallyd fra den anden, også i talesproget? Hver vokal har sin særlige overtoneprofil, sammensætning af overtoner.</p>",
+			"TRY": "<p>Prøv dette: Aktivér mikrofonknappen i indstillingerne, øverst til venstre, og syng en jævn tone i et behageligt leje på en <em>“u-”</em>lyd, og skift så til en <em>“i-”</em>lyd. Du vil da kunne se, at forskellige overtoner lyser op i spiralen.</p>"
+		},
+		"WHY_HARMONY": {
+			"HEADER": "Spændende! Hvad er grunden?",
+			"CONTENT": "<p>Der er to væsentlige grunde:</p><p>For det første behøver vores hjerner at bearbejde en mindre mængde data, når to toner har en simpel ratio imellem sig, fordi deres cyklusser oftere er <em>sammenfaldende</em>, mønsteret er simplere. Hvis eksempelvis en tone svinger med den halve frekvens af en anden tone, så vil den første have en bølgetop for præcis to af den anden tones bølgetoppe.</p><p>Men dette kan måske blive et tema i en anden visualisering .</p><p>For det andet gælder, at jo enklere forhold, der findes mellem to toner, des flere fælles overtoner vil de også have.</p>",
+			"TRY": "<p>Du kan afprøve dette: Spil en tone, for eksempel 220 Hz (du kan trykke på <kbd>z</kbd> på dit tastatur for at få tonen frem), og undersøg dernæst et par overtoner og deres tilhørende frekvenser ved at klikke på partialtonecirklerne. Skift så den primære frekvens til 440 Hz i indstillingspanelet øverst til venstre (<span face=\"arial, sans-serif\" style=\"background-color: white; color: #4d5156; font-size: 14px;\">⊙</span>-ikon). Alternativt kan du på dit tastatur trykke <kbd>⇧ Shift</kbd> + <kbd>z</kbd>).</p><p>Du vil da bemærke, at det er, som om  alle overtoner flyttes en spiralvinding nedad: Partialtone nummer to, svarer nu til nummer ét, og partialtone seks svarer nu til nummer tre.</p>"
+		}
+	},
+	"help": {
+		"buttons": {
+			"CANCEL": "Nej tak, jeg klarer mig",
+			"NEXT": "Næste",
+			"SHOW_AROUND": "Giv mig en rundvisning!",
+			"TELL_MORE": "Nej, vent, fortæl mere!",
+			"THANKS": "Mange tak!"
+		},
+		"NEWBIE_HELP": {
+			"TITLE": "Er du forvirret over, hvad du ser?",
+			"CONTENT": ["Du kan altid klikke på denne knap for at få et hurtigt overblik over, hvad der sker."]
+		},
+		"STEP_END": ["Det er det hele. God fornøjelse!"],
+		"STEP_FIRST_PARTIAL": [
+			"Cirklen i spiralens centrum repræsenterer primærtonen (engelsk: The fundamental), den første partialtone i overtonerækken.",
+			"<small>Hver af de følgende cirkler repræsenterer de følgende partialtoner op til nummer 16.</small>",
+		   	"<strong>Klik på cirklen for at høre dens tone.</strong>"
+		],
+		"STEP_INTERVAL_DETAILS": [
+			"I dette tilfælde ser du information om intervallet mellem de to toner, du netop har hørt.",
+		   	"<small>Spiralsegmenterne (her fra partialtone 2 til 3) repræsenterer således intervaller i overtonerækken.</small>"
+		],
+		"STEP_NOTE_DETAILS": [
+			"Her kan du se information om den tone, du netop har hørt.",
+			"Du kan klikke på selve informationsboksen for at høre tonen, der refereres til."
+		],
+		"STEP_OVERTONE_SPIRAL": [
+			"Dette er en visualisering af en primærtone (klangens fundament) og dens overtoner.",
+			"Hver vinding af spiralen repræsenterer en oktav, ratio 1:2."
+		],
+		"STEP_OPTIONS_BASE": [
+			"Du kan ændre primærtonens frekvens ved at benytte denne skyder.",
+		  "<small>Du kan også taste den ønskede frekvens ind direkte (anbring markøren i feltet, foran 'Hz').</small>"
+		],
+		"STEP_OPTIONS_GROUP": ["Hvis du vælger denne indstilling fra, vil du høre hver tone separat, når der klikkes på et interval."],
+		"STEP_OPTIONS_KEYBOARD": [
+			"Du kan også ændre primærtonen ved at benytte din computers tastatur. Du kan således finde de toner, som findes på et almindeligt piano.",
+			"Hver af pianoets tangenter korresponderer med en taste på dit tastatur, så tonen kommer frem, uanset om du vælger tastetryk eller tangenttryk med musemarkør på pianografikken.",
+			"<small>Dette lille keyboard kommer frem, når du klikker på&nbsp;<span face=\"arial, sans-serif\" style=\"background-color: white; color: #202124; font-size: 16px;\">⊙</span>-ikonet ved siden af skyderen for primær frekvens.</small>"
+		],
+		"STEP_OPTIONS_MICROPHONE": [
+			"<span class=\"label\">Beta&nbsp;</span>Hvis du klikker på dette&nbsp;ikon, vil du kunne se din stemmes overtonespektrum eller hvilken som helst anden lyd gennem din computers mikrofon.",
+			"Partialtonecirklerne vil vokse og reagere som udtryk for, hvor stærkt enkelte overtoner er repræsenteret i klangen. Angivelsen af primærfrekvensen vil skifte i overensstemmelse hermed.",
+			"<small>Husk at tillade programmet adgang til din mikrofon, når du har aktiveret denne indstilling.</small>"
+		],
+		"STEP_OPTIONS_OCTAVE": ["Hvis du klikker på dette ikon, vil alle toner blive spillet inden for én oktav af primærtonen."],
+		"STEP_OPTIONS_RECORD": [
+			"Når du klikker på 'optag'-knappen vil tonerne, du spiller, blive optaget, indtil du klikker på det igen. Du kan ændre primærtonen, mens du optager.",
+			"<small>OBS! Du kan kun optage én sekvens ad gangen. Så snart du klikker på ikonet, bliver den tidligere optagede sekvens overskrevet.</small>",
+			"<small>Optagede sekvenser gemmes i din browser, indtil du sletter dine browserdata. Du kan derfor lukke vinduet med programmet eller helt slukke computeren og alligevel stadig kunne finde din optagelse i programmets afspiller.</small>"
+		],
+		"STEP_OPTIONS_SUSTAIN": [
+			"Ved klik på dette ikon vil tonerne spille kontinuerligt, indtil de stoppes manuelt.",
+			"Du kan manuelt standse lyden ved at klikke på cirklen igen, ved at klikke på ikonet igen eller ved at ændre primærfrekvensen",
+			"<small>Når dette ikon er aktivt, vil den information, som vises, gælde intervallet mellem den lyd, du spiller, og den forrige. Dette muliggør en udforskning af alle intervaller inden for spiralens ramme.</small>"
+		],
+		"STEP_OPTIONS_VOLUME": [
+			"Du kan ændre alle tonernes volumen på denne skyder.",
+		   	"<small>OBS! Vær forsigtig, når du lytter gennem hovedtelefoner! De højere overtoner kan virke meget gennemtrængende.</small>"
+		],
+		"STEP_PLAY_PANEL": [
+			"I dette panel kan du afspille din optagne sekvens. Det er muligt at regulere afspilningshastigheden (metronom-ikon) og at afspille én tone ad gangen – forfra og bagfra.",
+			"<small>Dette afspillerpanel er tilgængeligt, når du har optaget en lydsekvens.</small>"
+		],
+		"STEP_SPIRAL_PIECES": ["Du kan også klikke på andre af spiralens elementer, som eksempelvis de violette segmenter, der forbinder to partialtonecirkler."]
+	},
+  "intervals": {
+		"Perfect unison": "Unison",
+		"Schisma": "Schisma",
+		"Syntonic comma": "Syntonisk komma",
+		"Pythagorean comma": "Pythagoræisk komma",
+		"Enharmonic diesis": "Lille diesis",
+		"Augmented unison": "Forstørret prim",
+		"Limma": "Limma",
+		"Chromatic semitone": "Kromatisk halvtone",
+		"Small septendecimal semitone":"Lille septendecimal halvtone",
+		"Large septendecimal semitone":"Stor septendecimal halvtone",
+		"Minor second":"Lille sekund",
+		"Apotome": "Stor pythagoræisk halvtone",
+		"Septimal diatonic semitone": "Septimal diatonisk halvtone",
+		"Supraminor second": "Tridecimal forstørret halvtone",
+		"Large limma": "Stor limma",
+		"Small neutral second": "Tridecimal neutral halvtone ",
+		"Neutral second": "Lille undecimal neutral sekund",
+		"Submajor second": "Undecimal submajor sekund",
+		"Minor tone": "Lille heltone",
+		"Major second": "Stor heltone",
+		"Supermajor second": "Septimal sekund",
+		"Subminor third": "Septimal terts",
+		"Minor third": "Lille terts",
+		"Tridecimal neutral third": "Tridecimal neutral terts",
+		"Major third": "Stor terts",
+		"Perfect fourth": "Ren kvart",
+		"Superfourth": "Halvforstørret kvart",
+		"Augmented fourth": "Forstørret kvart",
+		"Diminished fifth": "Formindsket kvint",
+		"Undecimal subfifth": "Undecimal subkvint",
+		"Perfect fifth": "Ren kvint",
+		"Neutral sixth": "Neutral sekst",
+		"Major sixth": "Stor sekst",
+		"Harmonic seventh": "Harmonisk septim",
+		"Minor seventh": "Lille septim",
+		"Major seventh": "Stor septim",
+		"Perfect octave": "Ren oktav",
+		"Unknown interval": "Ukendt interval"
+	},
+  "Donate": "Donér",
+	"Music": "Musik",
+	"Online": "Online",
+	"Options": "Kontrolpanel",
+	"Overtones Spiral": "Overtonespiral",
+	"Share": "Del",
+  "The Sound of Color": "Farvetoner"
+}

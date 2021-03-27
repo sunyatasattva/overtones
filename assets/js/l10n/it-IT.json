@@ -1,6 +1,6 @@
 {
 	"Books": "Libri",
-	"credits": "<span class=\"hide-on-small\">Progettato e partorito con gioia da</span> <a href=\"https://facebook.com/sunyatasattva\">Marco Lucio Giannotta</a> e <a href=\"https://www.facebook.com/skye.lofvander\">Skye Løfvander</a>. <span class=\"hide-on-medium version\">Versione <a href=\"https://github.com/sunyatasattva/overtones/releases/\">1.1.3</a></span>",
+	"credits": "<span class=\"hide-on-small\">Progettato e partorito con gioia da</span> <a href=\"https://facebook.com/sunyatasattva\">Marco Lucio Giannotta</a> e <a href=\"https://www.facebook.com/skye.lofvander\">Skye Løfvander</a>. <span class=\"hide-on-medium version\">Versione <a href=\"https://github.com/sunyatasattva/overtones/releases/\">2.0.0</a></span>",
 	"Donate": "Supporta",
 	"easter_egg": {
 		"SUBTITLE": "Spiacente! Nessun pentolone d'oro. Ma è il percorso che conta, no?",
@@ -188,5 +188,6 @@
 	"Online": "Sulla rete",
 	"Options": "Opzioni",
 	"Overtones Spiral": "Spirale Armonica",
-	"Share": "Condividi"
+	"Share": "Condividi",
+	"The Sound of Color": "Il Suono dei Colori"
 }

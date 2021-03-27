@@ -1,0 +1,57 @@
+html:lang(da) {
+	[data-hide-lang*="da"] {
+		display: none;
+	}
+	
+	#group-notes {
+		&::after { content: "Gruppér toner"; }
+		
+		&:not(.off) {
+			&::after { content: "Separér toner"; }
+		}
+	}
+	
+	#help {
+		@include has-tooltip("Forklar mig, hvad jeg ser", top);
+	}
+	
+	#info {
+		&::after { content: "Mere information"; }
+	}
+	
+	#microphone {
+		&::after { content: "Aktivér mikrofon"; }
+
+    	&:not(.off) {
+        	&::after { content: "Deaktivér mikrofon"; }
+    	}
+	}
+	
+	#play-sequence {
+		&::after { content: "Spil optagne sekvens"; }
+	}
+	
+	#record {
+		&.off {
+			&::after  { content: "Optag sekvens"; }
+		}
+		
+		&::after { content: "Stop optagelse"; }
+	}
+	
+	#reduce-to-octave {
+		&::after { content: "Reducér til oktav"; }
+	}
+	
+	#sequence-next {
+		&::after { content: "Ét skridt fremad"; }
+	}
+	
+	#sequence-prev {
+		&::after { content: "Ét skridt bagud"; }
+	}
+	
+	#sustain {
+		&::after { content: "Sustain"; }
+	}
+}
