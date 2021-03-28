@@ -1,0 +1,57 @@
+html:lang(hu) {
+	[data-hide-lang*="hu"] {
+		display: none;
+	}
+	
+	#group-notes {
+		&::after { content: "Hangok csoportba zárása"; }
+		
+		&:not(.off) {
+			&::after { content: "Hang csoportba zárásának felbontása"; }
+		}
+	}
+	
+	#help {
+		@include has-tooltip("Magyarázd el, mit látok", top);
+	}
+	
+	#info {
+		&::after { content: "Több információ"; }
+	}
+	
+	#microphone {
+		&::after { content: "Mikrofon bekapcsolása"; }
+
+		&:not(.off) {
+			&::after { content: "Mikrofon kikapcsolása"; }
+		}
+	}
+	
+	#play-sequence {
+		&::after { content: "A rögzített dallam lejátszása"; }
+	}
+	
+	#record {
+		&.off {
+			&::after  { content: "Dallam rögzítése"; }
+		}
+		
+		&::after { content: "Rögzítés leállítása"; }
+	}
+	
+	#reduce-to-octave {
+		&::after { content: "Oktávvá redukálás"; }
+	}
+	
+	#sequence-next {
+		&::after { content: "Előre lépés"; }
+	}
+	
+	#sequence-prev {
+		&::after { content: "Hátra lépés"; }
+	}
+	
+	#sustain {
+		&::after { content: "Hangok kitartása"; }
+	}
+}

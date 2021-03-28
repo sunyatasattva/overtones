@@ -22,9 +22,9 @@ html:lang(en) {
 	#microphone {
 		&::after { content: "Activate Microphone"; }
 
-    	&:not(.off) {
-        	&::after { content: "Deactivate Microphone"; }
-    	}
+		&:not(.off) {
+			&::after { content: "Deactivate Microphone"; }
+		}
 	}
 	
 	#play-sequence {
