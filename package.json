@@ -1,6 +1,6 @@
 {
   "name": "overtones",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Visualization of the overtones spiral of a sound",
   "main": "index.html",
   "scripts": {

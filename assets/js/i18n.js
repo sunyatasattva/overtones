@@ -1,21 +1,22 @@
 const DEFAULT_LOCALE = "en-US",
-	  LANGUAGES = {
-		"en-US": "English",
-		"it-IT": "Italiano",
-		"da-DA": "Dansk"
-	  },
-	  SUPPORTED_LANGUAGES = ["en-US", "it-IT", "da-DA"];
-	  
+  LANGUAGES = {
+    "en-US": "English",
+    "it-IT": "Italiano",
+    "da-DK": "Dansk",
+    "hu-HU": "Magyar",
+  },
+  SUPPORTED_LANGUAGES = ["en-US", "it-IT", "da-DK", "hu-HU"];
 
-var $          = require("jquery"),
-	get        = require("lodash.get"),
-	extend     = require("lodash.assign"),
-	dictionary = {
-		"en-US": require("./l10n/en-US.json"),
-		"it-IT": require("./l10n/it-IT.json"),
-		"da-DA": require("./l10n/da-DA.json")
-	},
-	currentLocale = DEFAULT_LOCALE;
+var $ = require("jquery"),
+  get = require("lodash.get"),
+  extend = require("lodash.assign"),
+  dictionary = {
+    "en-US": require("./l10n/en-US.json"),
+    "it-IT": require("./l10n/it-IT.json"),
+    "da-DK": require("./l10n/da-DK.json"),
+    "hu-HU": require("./l10n/hu-HU.json"),
+  },
+  currentLocale = DEFAULT_LOCALE;
 
 /**
  * Returns a native name for a language from its code.
@@ -25,7 +26,7 @@ var $          = require("jquery"),
  * @return {String}  The native name for the language.
  */
 function getLanguageNameFromCode(code) {
-	return LANGUAGES[code];
+  return LANGUAGES[code];
 }
 
 /**
@@ -34,37 +35,35 @@ function getLanguageNameFromCode(code) {
  * @return  {String}  The current locale in ISO-639 / ISO-3166 format.
  */
 function getLocale() {
-	return currentLocale;
+  return currentLocale;
 }
 
 /**
  * See which of the supported locales is the best for the user settings.
  *
- * @return  {String|undefined}  The locale in ISO-639 / ISO-3166 format 
+ * @return  {String|undefined}  The locale in ISO-639 / ISO-3166 format
  *                              or `undefined`.
  */
 function getPreferredSupportedLocale() {
-	var preferredLocales = getUserLanguages(),
-		locale;
-	
-	if(preferredLocales) {
-		locale = preferredLocales.reduce(function(set, lang) {
-			if(set)
-				return set;
-			
-			if( SUPPORTED_LANGUAGES.includes(lang) )
-				return lang;
-			else {
-				return SUPPORTED_LANGUAGES.find(function(supportedLanguage) {
-					return supportedLanguage.split("-")[0] === lang;
-				});
-			}
-			
-			return false;
-		}, false);
-	}
-	
-	return locale;
+  var preferredLocales = getUserLanguages(),
+    locale;
+
+  if (preferredLocales) {
+    locale = preferredLocales.reduce(function (set, lang) {
+      if (set) return set;
+
+      if (SUPPORTED_LANGUAGES.includes(lang)) return lang;
+      else {
+        return SUPPORTED_LANGUAGES.find(function (supportedLanguage) {
+          return supportedLanguage.split("-")[0] === lang;
+        });
+      }
+
+      return false;
+    }, false);
+  }
+
+  return locale;
 }
 
 /**
@@ -77,9 +76,9 @@ function getPreferredSupportedLocale() {
  *                   actually ordered by preference.
  */
 function getUserLanguages() {
-	return navigator.languages ?
-		navigator.languages :
-		[navigator.language || navigator.userLanguage]
+  return navigator.languages
+    ? navigator.languages
+    : [navigator.language || navigator.userLanguage];
 }
 
 /**
@@ -92,13 +91,13 @@ function getUserLanguages() {
  * @return void
  */
 function setLocale(locale) {
-	currentLocale = locale;
-	
-	$("html").attr("lang", locale);
-	$(document).trigger({
-		type: "i18n:localeChange",
-		details: { locale: locale }
-	});
+  currentLocale = locale;
+
+  $("html").attr("lang", locale);
+  $(document).trigger({
+    type: "i18n:localeChange",
+    details: { locale: locale },
+  });
 }
 
 /**
@@ -114,10 +113,10 @@ function setLocale(locale) {
  *                   defaults to the untranslated string/key.
  */
 function translate(string, namespace, locale) {
-	var locale = locale || currentLocale,
-		path = namespace ? [locale].concat(namespace) : [locale];
-	
-	return get( dictionary, path.concat( [string] ) ) || string;
+  var locale = locale || currentLocale,
+    path = namespace ? [locale].concat(namespace) : [locale];
+
+  return get(dictionary, path.concat([string])) || string;
 }
 
 /**
@@ -133,43 +132,41 @@ function translate(string, namespace, locale) {
  *                              or `undefined`.
  */
 function trySettingLocaleToPreferred(fallbackToDefault) {
-	var locale = getPreferredSupportedLocale();
-	
-	if(locale)
-		setLocale(locale);
-	else if(fallbackToDefault)
-		setLocale(DEFAULT_LOCALE);
-	
-	return locale;
+  var locale = getPreferredSupportedLocale();
+
+  if (locale) setLocale(locale);
+  else if (fallbackToDefault) setLocale(DEFAULT_LOCALE);
+
+  return locale;
 }
 
 module.exports = {
-	/**
-	 * @alias module:i18n.getLanguageNameFromCode
-	 */
-	getLanguageNameFromCode: getLanguageNameFromCode,
-	/**
-	 * @alias module:i18n.getLocale
-	 */
-	getLocale: getLocale,
-	/**
-	 * @alias module:i18n.getPreferredSupportedLocale
-	 */
-	getPreferredSupportedLocale: getPreferredSupportedLocale,
-	/*
-	 * @alias module:i18n.getUserLanguages
-	 */
-	getUserLanguages: getUserLanguages,
-	/*
-	 * @alias module:i18n.setLocale
-	 */
-	setLocale: setLocale,
-	/*
-	 * @alias module:i18n.translate
-	 */
-	t: translate,
-	/*
-	 * @alias module:i18n.trySettingLocaleToPreferred
-	 */
-	trySettingLocaleToPreferred: trySettingLocaleToPreferred
-}
+  /**
+   * @alias module:i18n.getLanguageNameFromCode
+   */
+  getLanguageNameFromCode: getLanguageNameFromCode,
+  /**
+   * @alias module:i18n.getLocale
+   */
+  getLocale: getLocale,
+  /**
+   * @alias module:i18n.getPreferredSupportedLocale
+   */
+  getPreferredSupportedLocale: getPreferredSupportedLocale,
+  /*
+   * @alias module:i18n.getUserLanguages
+   */
+  getUserLanguages: getUserLanguages,
+  /*
+   * @alias module:i18n.setLocale
+   */
+  setLocale: setLocale,
+  /*
+   * @alias module:i18n.translate
+   */
+  t: translate,
+  /*
+   * @alias module:i18n.trySettingLocaleToPreferred
+   */
+  trySettingLocaleToPreferred: trySettingLocaleToPreferred,
+};
